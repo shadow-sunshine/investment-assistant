@@ -1,0 +1,3 @@
+﻿# 可选：启用本地语义嵌入
+# 设置 $env:RAG_EMBEDDING_MODE="semantic" 后，系统会加载下方模型。
+sentence-transformers>=5.0.0

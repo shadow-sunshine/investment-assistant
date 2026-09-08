@@ -1,0 +1,314 @@
+{
+  "ticker": "AAPL",
+  "topic": "?????????????",
+  "horizon": "??",
+  "report_mode": "auto",
+  "market_snapshot": {
+    "ticker": "AAPL",
+    "fetched_at": "2026-09-08T06:32:27.878535+00:00",
+    "data_available": true,
+    "source": "Yahoo Finance via yfinance",
+    "latest_trading_date": "2026-09-04T00:00:00-04:00",
+    "period": "1y",
+    "observations": 252,
+    "latest_close": 319.97,
+    "period_return_pct": 33.99,
+    "one_month_return_pct": 2.51,
+    "annualized_volatility_pct": 25.09,
+    "max_drawdown_pct": -13.8,
+    "volume_latest": 39551800
+  },
+  "financial_snapshot": {
+    "ticker": "AAPL",
+    "fetched_at": "2026-09-08T06:32:31.657318+00:00",
+    "data_available": true,
+    "source": "Yahoo Finance via yfinance",
+    "revenue": 416161000000.0,
+    "revenue_period_end": "2025-09-30",
+    "net_income": 112010000000.0,
+    "net_income_period_end": "2025-09-30",
+    "free_cash_flow": 98767000000.0,
+    "free_cash_flow_period_end": "2025-09-30",
+    "trailing_pe": 36.60984,
+    "price_to_book": 43.474186,
+    "valuation_as_of": "2026-09-08T06:32:31.657318+00:00",
+    "unavailable_fields": [],
+    "error": null
+  },
+  "sources": [
+    {
+      "content": "﻿# AAPL 研究笔记（示例） 本文档仅用于演示本地 RAG 的索引、检索和引用链路，不构成投资建议。 研究 AAPL 时，应至少核验收入增长、服务业务占比、设备出货、供应链约束、竞争格局、监管风险和估值水平。单一价格走势不能支持长期基本面结论。 来源：项目内置示例资料；创建日期：2026-09-07。",
+      "metadata": {
+        "source_id": "file-708f15e563f5de81aa16",
+        "indexed_at": "2026-09-08T06:33:01.032125+00:00",
+        "source_type": "text",
+        "page": "",
+        "file_name": "aapl_research_note.md",
+        "source": "本地研究资料",
+        "path": "D:\\It\\Test_Project\\Investment_Assistant\\data\\knowledge_base\\aapl_research_note.md",
+        "url": "",
+        "chunk_index": "0",
+        "published_at": "未提供"
+      },
+      "distance": 0.9093023538589478,
+      "vector_score": 0.523752,
+      "lexical_score": 0.125,
+      "rerank_score": 0.404126,
+      "citation": "S1"
+    },
+    {
+      "content": "rally consistent for each reportable segment in Note 13 , “ Segment Information and Geographic Data ” for 2025 , 2024 and 2023 , except in Greater China, where iPhone revenue represented a moderately higher proportion of net sales. As of September 27, 2025 and September 28, 2024 , the Company had total deferred revenue of $13.7 billion and $12.8 billion , respectively. As of September 27, 2025 , the Company expects 66% of total deferred revenue to be realized in less than a year, 23% within one-to-two years, 9% within two-to-three years and 2% in greater than three years. Note 3 – Earnings Per Share The following table shows the computation of basic and diluted earnings per share for 2025 , 2024 and 2023 (net income in millions and shares in thousands): 2025 2024 2023 Numerator: Net income $ 112,010 $ 93,736 $ 96,995 Denominator: Weighted",
+      "metadata": {
+        "file_name": "Apple_2025_Form_10-K.pdf",
+        "chunk_index": "1",
+        "published_at": "未提供",
+        "indexed_at": "2026-09-08T06:33:28.267502+00:00",
+        "source": "本地 PDF 研究资料",
+        "source_type": "pdf",
+        "url": "",
+        "path": "D:\\It\\Test_Project\\Investment_Assistant\\data\\knowledge_base\\Apple_2025_Form_10-K.pdf",
+        "page": "39",
+        "source_id": "pdf-578fbdf84203da4a02fd"
+      },
+      "distance": 0.9869639873504639,
+      "vector_score": 0.50328,
+      "lexical_score": 0.0,
+      "rerank_score": 0.352296,
+      "citation": "S2"
+    },
+    {
+      "content": "Report of Indep endent Registered Public Accounting Firm To the Shareholders and the Board of Directors of Apple Inc. Opinion on the Financial Statements We have audited the accompanying consolidated balance sheets of Apple Inc. ( the “Company”) as of September 27, 2025 and September 28, 2024 , the related consolidated statements of operations, comprehensive income, shareholders’ equity and cash flows for each of the three years in the period ended September 27, 2025 , and the related notes (collectively referred to as the “financial statements”). In our opinion, the financial statements present fairly, in all material respects, the financial position of the Company at September 27, 2025 and September 28, 2024 , and the results of its operations and its cash flows for each of the three years in the period ended September 27, 2025 , in con",
+      "metadata": {
+        "source_id": "pdf-01ea943aaee7083ac2fc",
+        "path": "D:\\It\\Test_Project\\Investment_Assistant\\data\\knowledge_base\\Apple_2025_Form_10-K.pdf",
+        "url": "",
+        "chunk_index": "0",
+        "indexed_at": "2026-09-08T06:33:35.657356+00:00",
+        "source": "本地 PDF 研究资料",
+        "source_type": "pdf",
+        "published_at": "未提供",
+        "file_name": "Apple_2025_Form_10-K.pdf",
+        "page": "52"
+      },
+      "distance": 1.0335688591003418,
+      "vector_score": 0.491746,
+      "lexical_score": 0.0,
+      "rerank_score": 0.344222,
+      "citation": "S3"
+    },
+    {
+      "content": "rposes of making decisions and assessing segment performance excludes asset information. The following tables show information by reportable s egment for 2025 , 2024 and 2023 (in millions): 2025 Greater Rest of Americas Europe China Japan Asia Pacific Corporate Total Net sales $ 178,353 $ 111,032 $ 64,377 $ 28,703 $ 33,696 $ — $ 416,161 Cost of sales (95,699) (58,617) (35,141) (13,779) (17,724) — (220,960) Research and development — — — — — (34,550) (34,550) Selling and marketing (10,174) (4,676) (2,319) (969) (1,386) — (19,524) General and administrative — — — — — (8,077) (8,077) Operating income/(loss) $ 72,480 $ 47,739 $ 26,917 $ 13,955 $ 14,586 $ (42,627) $ 133,050 2024 Greater Rest of Americas Europe China Japan Asia Pacific Corporate Total Net sales $ 167,045 $ 101,328 $ 66,952 $ 25,052 $ 30,658 $ — $ 391,035 Cost of sales (89,587) ",
+      "metadata": {
+        "chunk_index": "2",
+        "page": "50",
+        "indexed_at": "2026-09-08T06:33:34.814789+00:00",
+        "source_type": "pdf",
+        "source": "本地 PDF 研究资料",
+        "url": "",
+        "file_name": "Apple_2025_Form_10-K.pdf",
+        "path": "D:\\It\\Test_Project\\Investment_Assistant\\data\\knowledge_base\\Apple_2025_Form_10-K.pdf",
+        "published_at": "未提供",
+        "source_id": "pdf-0f12b8f21c388418e8aa"
+      },
+      "distance": 1.0613901615142822,
+      "vector_score": 0.48511,
+      "lexical_score": 0.0,
+      "rerank_score": 0.339577,
+      "citation": "S4"
+    }
+  ],
+  "market_model": {
+    "state": "样本期上涨",
+    "period_return_pct": 33.99,
+    "annualized_volatility_pct": 25.09,
+    "max_drawdown_pct": -13.8,
+    "risk_level": "中等或较低",
+    "evidence": [
+      "真实历史行情快照"
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "积极情景",
+      "condition": "结合营收、净利润、自由现金流与估值指标的变化后，基本面数据、行业需求与外部新闻形成正向共振。",
+      "implication": "仅作为研究假设，不代表收益预期。[S1] [S2]"
+    },
+    {
+      "name": "基准情景",
+      "condition": "延续当前样本期上涨，并接受波动、回撤与估值变化的不确定性。",
+      "implication": "应持续跟踪价格、财报、自由现金流、估值和监管事件。[S1] [S2]"
+    },
+    {
+      "name": "压力情景",
+      "condition": "营收增速、盈利能力或现金流恶化，且宏观环境、竞争、估值或流动性进一步承压。",
+      "implication": "历史最大回撤不代表未来下限，应预先定义可承受损失和复核频率。"
+    }
+  ],
+  "llm_result": {
+    "used": true,
+    "model": "qwen-plus",
+    "template": "苹果公司最新财年营收、净利润、自由现金流、滚动市盈率及市净率等核心财务与估值指标已在结构化快照中提供【来源：结构化快照】。服务业务分部收入、研发费用、经营活动产生的现金流、中国地区净销售额及实际所得税率未纳入结构化快照【来源：结构化快照】。根据审计报告，公司截至最近财年末的财务报表公允反映了其财务状况与经营成果[S3]。",
+    "raw_template": "苹果公司最新财年营收、净利润、自由现金流、滚动市盈率及市净率等核心财务与估值指标已在结构化快照中提供。服务业务分部收入、研发费用、经营活动产生的现金流、中国地区净销售额及实际所得税率未纳入结构化快照。根据审计报告，公司截至最近财年末的财务报表公允反映了其财务状况与经营成果[S3]。",
+    "narrative": "苹果公司最新财年营收、净利润、自由现金流、滚动市盈率及市净率等核心财务与估值指标已在结构化快照中提供【来源：结构化快照】。服务业务分部收入、研发费用、经营活动产生的现金流、中国地区净销售额及实际所得税率未纳入结构化快照【来源：结构化快照】。根据审计报告，公司截至最近财年末的财务报表公允反映了其财务状况与经营成果[S3]。",
+    "template_check": {
+      "passed": true,
+      "used_citations": [
+        "S3"
+      ],
+      "invalid_citations": [],
+      "used_slots": [],
+      "unknown_slots": [],
+      "missing_required_slots": [],
+      "semantic_conflicts": [],
+      "findings": []
+    },
+    "numeric_check": {
+      "passed": true,
+      "narrative_numbers": [],
+      "injected_numbers": [
+        "+00",
+        "-04",
+        "-08",
+        "-09",
+        "-13.8%",
+        "-30",
+        "0",
+        "00",
+        "112,010,000,000",
+        "2.51%",
+        "2025",
+        "2026",
+        "25.09%",
+        "31.657318",
+        "319.97",
+        "32",
+        "33.99%",
+        "36.6098",
+        "416,161,000,000",
+        "43.4742",
+        "6",
+        "98,767,000,000"
+      ],
+      "evidence_numbers": [
+        "-07",
+        "-09",
+        "1,386",
+        "10,174",
+        "101,328",
+        "111,032",
+        "112,010",
+        "12.8",
+        "13",
+        "13,779",
+        "13,955",
+        "13.7",
+        "133,050",
+        "14,586",
+        "167,045",
+        "17,724",
+        "178,353",
+        "19,524",
+        "2%",
+        "2,319",
+        "2023",
+        "2024",
+        "2025",
+        "2026",
+        "220,960",
+        "23%",
+        "25,052",
+        "26,917",
+        "27,",
+        "28,",
+        "28,703",
+        "3",
+        "30,658",
+        "33,696",
+        "34,550",
+        "35,141",
+        "391,035",
+        "4,676",
+        "416,161",
+        "42,627",
+        "47,739",
+        "58,617",
+        "64,377",
+        "66%",
+        "66,952",
+        "72,480",
+        "8,077",
+        "89,587",
+        "9%",
+        "93,736",
+        "95,699",
+        "96,995",
+        "969"
+      ],
+      "unsupported_numbers": [],
+      "findings": []
+    },
+    "consistency_check": {
+      "passed": true,
+      "contradictions": [],
+      "findings": []
+    },
+    "attribution_check": {
+      "passed": true,
+      "findings": []
+    },
+    "rag_attribution_check": {
+      "passed": true,
+      "findings": []
+    },
+    "availability": {
+      "structured_snapshot_available": [
+        "营收",
+        "净利润",
+        "自由现金流",
+        "滚动市盈率（PE）",
+        "市净率（PB）"
+      ],
+      "structured_snapshot_missing": [],
+      "not_in_structured_snapshot": [
+        "服务业务分部收入",
+        "研发费用",
+        "经营活动产生的现金流",
+        "中国地区净销售额",
+        "实际所得税率"
+      ]
+    },
+    "usage": {
+      "input_tokens": 1559,
+      "output_tokens": 94,
+      "total_tokens": 1653,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "attempts": 1
+  },
+  "report": "# AAPL 投研研究简报\n\n- 研究主题：?????????????\n- 观察期限：??\n- 生成时间（UTC）：2026-09-08T06:33:54.155830+00:00\n- 报告模式：受控 LLM 版（模型：qwen-plus；槽位、引用与数字溯源校验通过）\n\n## 1. 真实市场数据快照\n\n最新收盘价 319.97；样本期收益 33.99%；近一月收益 2.51%；年化波动率 25.09%；最大回撤 -13.8%。\n\n数据来源：Yahoo Finance via yfinance；交易日：2026-09-04T00:00:00-04:00；抓取时间：2026-09-08T06:32:27.878535+00:00。\n\n## 2. 财报与估值快照\n\n- 营收：416,161,000,000；报表期末：2025-09-30\n- 净利润：112,010,000,000；报表期末：2025-09-30\n- 自由现金流：98,767,000,000；报表期末：2025-09-30\n- 滚动市盈率（PE）：36.60984；估值抓取时间：2026-09-08T06:32:31.657318+00:00\n- 市净率（PB）：43.474186；估值抓取时间：2026-09-08T06:32:31.657318+00:00\n\n数据来源：Yahoo Finance via yfinance；抓取时间：2026-09-08T06:32:31.657318+00:00；快照字段缺失：无。\n\n## 3. 市场建模观察\n\n样本期状态：样本期上涨。风险等级：中等或较低。\n\n## 4. 受控研究叙述\n\n苹果公司最新财年营收、净利润、自由现金流、滚动市盈率及市净率等核心财务与估值指标已在结构化快照中提供【来源：结构化快照】。服务业务分部收入、研发费用、经营活动产生的现金流、中国地区净销售额及实际所得税率未纳入结构化快照【来源：结构化快照】。根据审计报告，公司截至最近财年末的财务报表公允反映了其财务状况与经营成果[S3]。\n\n## 5. 情景推理\n\n- **积极情景**：条件：结合营收、净利润、自由现金流与估值指标的变化后，基本面数据、行业需求与外部新闻形成正向共振。 观察：仅作为研究假设，不代表收益预期。[S1] [S2]\n- **基准情景**：条件：延续当前样本期上涨，并接受波动、回撤与估值变化的不确定性。 观察：应持续跟踪价格、财报、自由现金流、估值和监管事件。[S1] [S2]\n- **压力情景**：条件：营收增速、盈利能力或现金流恶化，且宏观环境、竞争、估值或流动性进一步承压。 观察：历史最大回撤不代表未来下限，应预先定义可承受损失和复核频率。\n\n## 6. 研究结论与后续核验\n\n当前结论仅是基于有限价格统计、财报估值快照和已检索资料的研究观察，不应被视为交易信号。后续应核验最新财报、估值、行业供需、政策变化以及来源资料的时效性。\n\n## 7. 证据与来源\n\n- [S1] aapl_research_note.md；来源：本地研究资料；发布日期：未提供；页码：不适用；链接：未提供\n- [S2] Apple_2025_Form_10-K.pdf；来源：本地 PDF 研究资料；发布日期：未提供；页码：39；链接：未提供\n- [S3] Apple_2025_Form_10-K.pdf；来源：本地 PDF 研究资料；发布日期：未提供；页码：52；链接：未提供\n- [S4] Apple_2025_Form_10-K.pdf；来源：本地 PDF 研究资料；发布日期：未提供；页码：50；链接：未提供\n\n## 8. 风险声明\n\n仅用于学习和研究，不构成投资建议。 市场存在本金损失风险；历史价格、财报、估值与新闻内容均不能预测未来表现。请在任何决策前核验原始来源，并结合自身风险承受能力咨询持牌专业人士。\n",
+  "risk_flags": [],
+  "evaluation": {
+    "passed": true,
+    "citation_hits": 9,
+    "blocked_patterns": [],
+    "invalid_citations": [],
+    "findings": []
+  },
+  "retrieval_evaluation": {
+    "passed": true,
+    "query": "AAPL ????????????? ?? 营收 净利润 自由现金流 估值 风险 行业 新闻",
+    "retrieved_count": 4,
+    "pdf_source_count": 3,
+    "page_citation_coverage": 1.0,
+    "expected_source_recall": null,
+    "findings": []
+  },
+  "retrieval_status": {
+    "embedding_mode": "semantic",
+    "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "fallback_reason": null
+  },
+  "created_at": "2026-09-08T06:33:54.155830+00:00"
+}

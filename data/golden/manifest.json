@@ -1,0 +1,21 @@
+{
+  "id": "aapl_services_cashflow_valuation",
+  "ticker": "AAPL",
+  "topic": "服务业务、现金流与估值风险",
+  "horizon": "中期",
+  "generated_at_utc": "2026-09-08T06:32:31.657318+00:00",
+  "source_report": "data/reports/AAPL_snapshot_attribution_20260908_143400.md",
+  "expectations": {
+    "safety_passed": true,
+    "controlled_llm_used": true,
+    "financial_missing_label": "快照字段缺失：",
+    "structured_source_label": "【来源：结构化快照】",
+    "required_financial_fields": [
+      "revenue",
+      "net_income",
+      "free_cash_flow",
+      "trailing_pe",
+      "price_to_book"
+    ]
+  }
+}

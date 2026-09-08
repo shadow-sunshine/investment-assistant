@@ -1,0 +1,54 @@
+{
+  "rows": [
+    {
+      "id": "services_revenue",
+      "question": "Apple 2025 财年服务业务收入是多少？",
+      "auto_mode": "受控 LLM",
+      "auto_reason": "引用校验通过",
+      "auto_safety_passed": true,
+      "rule_safety_passed": true,
+      "auto_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\services_revenue_auto.md",
+      "rule_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\services_revenue_rule.md"
+    },
+    {
+      "id": "r_and_d_expense",
+      "question": "Apple 2025 年研发费用是多少？",
+      "auto_mode": "受控 LLM",
+      "auto_reason": "引用校验通过",
+      "auto_safety_passed": true,
+      "rule_safety_passed": true,
+      "auto_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\r_and_d_expense_auto.md",
+      "rule_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\r_and_d_expense_rule.md"
+    },
+    {
+      "id": "operating_cash_flow",
+      "question": "Apple 2025 年经营活动产生的现金是多少？",
+      "auto_mode": "受控 LLM",
+      "auto_reason": "引用校验通过",
+      "auto_safety_passed": true,
+      "rule_safety_passed": true,
+      "auto_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\operating_cash_flow_auto.md",
+      "rule_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\operating_cash_flow_rule.md"
+    },
+    {
+      "id": "china_sales",
+      "question": "Apple 2025 年在中国的净销售额是多少？",
+      "auto_mode": "受控 LLM",
+      "auto_reason": "引用校验通过",
+      "auto_safety_passed": true,
+      "rule_safety_passed": true,
+      "auto_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\china_sales_auto.md",
+      "rule_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\china_sales_rule.md"
+    },
+    {
+      "id": "effective_tax_rate",
+      "question": "Apple 2025 年的实际所得税率是多少？",
+      "auto_mode": "受控 LLM",
+      "auto_reason": "引用校验通过",
+      "auto_safety_passed": true,
+      "rule_safety_passed": true,
+      "auto_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\effective_tax_rate_auto.md",
+      "rule_report": "D:\\It\\Test_Project\\Investment_Assistant\\data\\reports\\llm_rule_comparison_20260908_110530\\effective_tax_rate_rule.md"
+    }
+  ]
+}

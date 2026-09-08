@@ -1,0 +1,18 @@
+﻿.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.streamlit/
+
+data/chroma/
+data/evaluation_chroma/
+data/models/
+data/api_stderr.log
+data/api_stdout.log
+
+# 只排除内容而非目录本身，否则下面的例外不生效
+data/reports/*
+# README 引用的冻结验收产物需要随仓库保留
+!data/reports/llm_rule_comparison_20260908_110530/
+
+tmp_*

@@ -1,0 +1,12 @@
+﻿langgraph==1.0.6
+chromadb>=1.0.0,<2.0.0
+yfinance>=1.0.0
+pandas>=2.2.0
+numpy>=2.0.0
+pydantic>=2.7.0
+pytest>=8.0.0
+pypdf>=5.0.0
+dashscope==1.25.5
+
+fastapi>=0.115.0,<1.0.0
+streamlit>=1.40.0,<2.0.0
