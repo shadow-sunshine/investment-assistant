@@ -1,0 +1,179 @@
+{
+  "evaluated_at": "2026-09-09",
+  "frozen_main_set": {
+    "path": "data/apple_10k_eval_set.json",
+    "case_count": 20,
+    "top_k": 4
+  },
+  "stages": {
+    "baseline": {
+      "hash": {
+        "metrics": {
+          "recall_at_k": 0.2,
+          "keyword_verified_recall_at_k": 0.2,
+          "citation_page_relevance_at_k": 0.05,
+          "top1_page_relevance": 0.0
+        },
+        "status": {
+          "embedding_mode": "hash",
+          "semantic_model": null,
+          "fallback_reason": null,
+          "reranker_mode": "disabled",
+          "reranker_model": null,
+          "reranker_fallback_reason": null
+        }
+      },
+      "semantic": {
+        "metrics": {
+          "recall_at_k": 0.6,
+          "keyword_verified_recall_at_k": 0.3,
+          "citation_page_relevance_at_k": 0.175,
+          "top1_page_relevance": 0.3
+        },
+        "status": {
+          "embedding_mode": "semantic",
+          "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "fallback_reason": null,
+          "reranker_mode": "disabled",
+          "reranker_model": null,
+          "reranker_fallback_reason": null
+        }
+      }
+    },
+    "stage1": {
+      "hash": {
+        "metrics": {
+          "recall_at_k": 0.95,
+          "keyword_verified_recall_at_k": 0.8,
+          "citation_page_relevance_at_k": 0.3375,
+          "top1_page_relevance": 0.4
+        },
+        "status": {
+          "embedding_mode": "hash",
+          "semantic_model": null,
+          "fallback_reason": null,
+          "reranker_mode": "disabled",
+          "reranker_model": null,
+          "reranker_fallback_reason": null
+        }
+      },
+      "semantic": {
+        "metrics": {
+          "recall_at_k": 0.8,
+          "keyword_verified_recall_at_k": 0.55,
+          "citation_page_relevance_at_k": 0.3125,
+          "top1_page_relevance": 0.45
+        },
+        "status": {
+          "embedding_mode": "semantic",
+          "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "fallback_reason": null,
+          "reranker_mode": "disabled",
+          "reranker_model": null,
+          "reranker_fallback_reason": null
+        }
+      }
+    },
+    "stage2": {
+      "hash": {
+        "metrics": {
+          "recall_at_k": 0.95,
+          "keyword_verified_recall_at_k": 0.8,
+          "citation_page_relevance_at_k": 0.3375,
+          "top1_page_relevance": 0.4
+        },
+        "status": {
+          "embedding_mode": "hash",
+          "semantic_model": null,
+          "fallback_reason": null,
+          "reranker_mode": "hybrid_fallback",
+          "reranker_model": null,
+          "reranker_fallback_reason": "Cross-Encoder ????????????????????????????????????????OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run the library in offline mode at 'https://huggingface.co/docs/transformers/installation#offline-mode'."
+        }
+      },
+      "semantic": {
+        "metrics": {
+          "recall_at_k": 0.8,
+          "keyword_verified_recall_at_k": 0.55,
+          "citation_page_relevance_at_k": 0.3125,
+          "top1_page_relevance": 0.45
+        },
+        "status": {
+          "embedding_mode": "semantic",
+          "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "fallback_reason": null,
+          "reranker_mode": "hybrid_fallback",
+          "reranker_model": null,
+          "reranker_fallback_reason": "Cross-Encoder ????????????????????????????????????????OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run the library in offline mode at 'https://huggingface.co/docs/transformers/installation#offline-mode'."
+        }
+      }
+    },
+    "holdout": {
+      "hash": {
+        "metrics": {
+          "recall_at_k": 0.8,
+          "keyword_verified_recall_at_k": 0.4,
+          "citation_page_relevance_at_k": 0.2,
+          "top1_page_relevance": 0.6
+        },
+        "status": {
+          "embedding_mode": "hash",
+          "semantic_model": null,
+          "fallback_reason": null,
+          "reranker_mode": "hybrid_fallback",
+          "reranker_model": null,
+          "reranker_fallback_reason": "Cross-Encoder 重排器不可用，已显式降级为既有混合重排（仅允许默认缓存离线加载，不会下载模型）：OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run the library in offline mode at 'https://huggingface.co/docs/transformers/installation#offline-mode'."
+        }
+      },
+      "semantic": {
+        "metrics": {
+          "recall_at_k": 1.0,
+          "keyword_verified_recall_at_k": 0.8,
+          "citation_page_relevance_at_k": 0.3,
+          "top1_page_relevance": 0.6
+        },
+        "status": {
+          "embedding_mode": "semantic",
+          "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "fallback_reason": null,
+          "reranker_mode": "hybrid_fallback",
+          "reranker_model": null,
+          "reranker_fallback_reason": "Cross-Encoder 重排器不可用，已显式降级为既有混合重排（仅允许默认缓存离线加载，不会下载模型）：OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run the library in offline mode at 'https://huggingface.co/docs/transformers/installation#offline-mode'."
+        }
+      }
+    }
+  },
+  "new_keyword_verified_cases": {
+    "hash": [
+      "capex",
+      "cash_balance",
+      "deferred_revenue",
+      "net_income",
+      "ppe_balance",
+      "r_and_d_expense",
+      "services_gross_profit",
+      "services_growth",
+      "services_margin",
+      "services_revenue",
+      "share_repurchase",
+      "term_debt"
+    ],
+    "semantic": [
+      "deferred_revenue",
+      "net_income",
+      "services_revenue",
+      "share_repurchase",
+      "term_debt"
+    ]
+  },
+  "cross_encoder": {
+    "requested_model": "BAAI/bge-reranker-v2-m3",
+    "loaded": false,
+    "reason": "Cross-Encoder ????????????????????????????????????????OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run the library in offline mode at 'https://huggingface.co/docs/transformers/installation#offline-mode'."
+  },
+  "holdout": {
+    "path": "data/apple_10k_holdout_eval_set.json",
+    "case_count": 5,
+    "disjoint_from_main_set": true
+  }
+}

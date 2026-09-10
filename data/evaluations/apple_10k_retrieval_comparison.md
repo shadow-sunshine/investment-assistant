@@ -23,7 +23,7 @@
 - geographic_segments：目标页 [50]，召回页 [76, 5, 77, 4]。
 - ppe_balance：目标页 [34, 42]，召回页 [77, 50, 43, 59]。
 - term_debt：目标页 [47]，召回页 [77, 50, 43, 59]。
-- effective_tax_rate：目标页 [28, 44]，召回页 [77, 61, 24, 34]。
+- effective_tax_rate：目标页 [28, 44]，召回页 [77, 61, 34, 51]。
 - services_revenue_recognition：目标页 [38]，召回页 [76, 5, 77, 80]。
 - services_gross_profit：目标页 [27]，召回页 [77, 61, 34, 51]。
 

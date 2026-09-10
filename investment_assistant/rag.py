@@ -1,4 +1,4 @@
-﻿"""本地持久化 RAG：文本/PDF 页码解析、混合检索与可选语义嵌入。
+"""本地持久化 RAG：文本/PDF 页码解析、混合检索与可选语义嵌入。
 
 默认使用确定性哈希向量，保证首次运行不依赖模型下载。设置
 RAG_EMBEDDING_MODE=semantic 并安装 requirements-semantic.txt 后，改用
@@ -8,6 +8,7 @@ SentenceTransformers 本地语义向量；若模型未安装或加载失败，�
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 from datetime import UTC, datetime
@@ -18,12 +19,41 @@ import chromadb
 import numpy as np
 from pypdf import PdfReader
 
-from .config import CHROMA_DIR, KNOWLEDGE_DIR
+from .config import CHROMA_DIR, DATA_DIR, KNOWLEDGE_DIR
 
 HASH_COLLECTION_NAME = "investment_research_sources_hash_v3"
 SEMANTIC_COLLECTION_NAME = "investment_research_sources_semantic_v2"
 HASH_EMBEDDING_DIMENSION = 384
 SEMANTIC_MODEL_NAME = os.getenv("RAG_SEMANTIC_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+TERM_MAP_PATH = DATA_DIR / "financial_term_map.json"
+CROSS_ENCODER_MODEL_NAME = os.getenv("RAG_RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
+CROSS_ENCODER_CANDIDATE_LIMIT = 30
+
+
+def _load_financial_term_map() -> dict[str, list[str]]:
+    """加载可审阅的中英财务术语映射；缺失或格式错误时不扩展查询。"""
+    try:
+        raw = json.loads(TERM_MAP_PATH.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    if not isinstance(raw, dict):
+        return {}
+    return {
+        str(term): [str(variant) for variant in variants if str(variant).strip()]
+        for term, variants in raw.items()
+        if isinstance(variants, list)
+    }
+
+
+def expand_financial_query(query: str) -> str:
+    """将命中的中文财务术语扩展为英文变体，供向量与字面检索共同使用。"""
+    variants: list[str] = []
+    lowered = query.lower()
+    for term, mapped_variants in _load_financial_term_map().items():
+        if term.lower() in lowered:
+            variants.extend(mapped_variants)
+    unique_variants = list(dict.fromkeys(variant for variant in variants if variant not in query))
+    return query if not unique_variants else f"{query} {' '.join(unique_variants)}"
 
 
 def _stable_id(prefix: str, text: str) -> str:
@@ -123,11 +153,50 @@ def _lexical_overlap(query: str, text: str) -> float:
     return len(query_tokens & text_tokens) / len(query_tokens)
 
 
+def _anchor_score(query: str, text: str) -> float:
+    """为同页候选块选择保留含问题实体、术语或数字锚点的文本块。"""
+    anchors = re.findall(r"[A-Za-z][A-Za-z .,&-]{2,}|\d+(?:[,.]\d+)*(?:%|\s*%|\s*billion)?", query)
+    lowered_text = text.lower()
+    return float(sum(1 for anchor in anchors if anchor.strip() and anchor.lower().strip() in lowered_text))
+
+
+class RerankerProvider:
+    """可选 Cross-Encoder 重排器；仅允许本地缓存加载，失败必须记录降级原因。"""
+
+    def __init__(self) -> None:
+        requested_mode = os.getenv("RAG_RERANKER_MODE", "disabled").strip().lower()
+        self.mode = "disabled"
+        self.model: Any | None = None
+        self.model_name: str | None = None
+        self.fallback_reason: str | None = None
+        if requested_mode not in {"cross_encoder", "cross-encoder", "crossencoder"}:
+            return
+        try:
+            from sentence_transformers import CrossEncoder
+
+            self.model = CrossEncoder(CROSS_ENCODER_MODEL_NAME, local_files_only=True)
+            self.mode = "cross_encoder"
+            self.model_name = CROSS_ENCODER_MODEL_NAME
+        except Exception as exc:
+            self.mode = "hybrid_fallback"
+            self.fallback_reason = (
+                "Cross-Encoder 重排器不可用，已显式降级为既有混合重排"
+                f"（仅允许默认缓存离线加载，不会下载模型）：{type(exc).__name__}: {exc}"
+            )
+
+    def score(self, query: str, documents: list[str]) -> list[float] | None:
+        if self.mode != "cross_encoder" or self.model is None:
+            return None
+        scores = self.model.predict([(query, document) for document in documents], show_progress_bar=False)
+        return [float(score) for score in scores]
+
+
 class LocalResearchRAG:
     """使用 Chroma PersistentClient 保存页码级证据，并执行向量召回后的混合重排。"""
 
     def __init__(self, path: Path = CHROMA_DIR) -> None:
         self.provider = EmbeddingProvider()
+        self.reranker = RerankerProvider()
         self.client = chromadb.PersistentClient(path=str(path))
         self.collection = self.client.get_or_create_collection(name=self.provider.collection_name, embedding_function=None)
 
@@ -225,10 +294,12 @@ class LocalResearchRAG:
         matching_count = self.collection.count() if where is None else len(self.collection.get(where=where, include=[]).get("ids", []))
         if matching_count == 0:
             return []
-        # PDF 每页可能包含多个文本块，扩大召回池后再按来源页去重，避免同页块挤占 Top-K。
-        candidate_limit = min(max(limit * 12, 48), matching_count)
+        # Cross-Encoder 实际启用时固定召回 30 条候选；其他情况保留既有 48 条混合检索候选池。
+        expanded_query = expand_financial_query(query)
+        cross_encoder_active = self.reranker.mode == "cross_encoder"
+        candidate_limit = min(CROSS_ENCODER_CANDIDATE_LIMIT if cross_encoder_active else max(limit * 12, 48), matching_count)
         response = self.collection.query(
-            query_embeddings=self.provider.embed([query]),
+            query_embeddings=self.provider.embed([expanded_query]),
             n_results=min(candidate_limit, matching_count),
             where=where,
             include=["documents", "metadatas", "distances"],
@@ -240,21 +311,28 @@ class LocalResearchRAG:
         for index, document in enumerate(documents):
             distance = float(distances[index]) if index < len(distances) else 1.0
             vector_score = 1.0 / (1.0 + max(distance, 0.0))
-            lexical_score = _lexical_overlap(query, document)
+            lexical_score = _lexical_overlap(expanded_query, document)
             rerank_score = round(vector_score * 0.7 + lexical_score * 0.3, 6)
-            candidates.append({"content": document, "metadata": metadata[index], "distance": distance, "vector_score": round(vector_score, 6), "lexical_score": round(lexical_score, 6), "rerank_score": rerank_score})
-        candidates.sort(key=lambda item: item["rerank_score"], reverse=True)
-        deduplicated = []
-        seen_sources = set()
+            candidates.append({"content": document, "metadata": metadata[index], "distance": distance, "vector_score": round(vector_score, 6), "lexical_score": round(lexical_score, 6), "rerank_score": rerank_score, "anchor_score": _anchor_score(expanded_query, document)})
+        cross_scores = self.reranker.score(expanded_query, [item["content"] for item in candidates])
+        if cross_scores is not None:
+            for item, score in zip(candidates, cross_scores):
+                item["cross_encoder_score"] = round(score, 6)
+                item["rerank_score"] = round(score, 6)
+        # 每页可有多个块：页级排序按最高相关分，同页则展示含问题锚点最多的块。
+        page_candidates: dict[tuple[str | None, str | None], dict[str, Any]] = {}
         for item in candidates:
-            metadata = item["metadata"]
-            source_key = (metadata.get("source_id"), metadata.get("page")) if metadata.get("source_type") == "pdf" else (metadata.get("source_id"), metadata.get("chunk_index"))
-            if source_key in seen_sources:
+            item_metadata = item["metadata"]
+            source_key = (item_metadata.get("source_id"), item_metadata.get("page")) if item_metadata.get("source_type") == "pdf" else (item_metadata.get("source_id"), item_metadata.get("chunk_index"))
+            existing = page_candidates.get(source_key)
+            if existing is None:
+                page_candidates[source_key] = {"display": item, "page_score": item["rerank_score"]}
                 continue
-            seen_sources.add(source_key)
-            deduplicated.append(item)
-            if len(deduplicated) >= limit:
-                break
+            existing["page_score"] = max(existing["page_score"], item["rerank_score"])
+            display = existing["display"]
+            if (item["anchor_score"], item["rerank_score"]) > (display["anchor_score"], display["rerank_score"]):
+                existing["display"] = item
+        deduplicated = [entry["display"] for entry in sorted(page_candidates.values(), key=lambda entry: entry["page_score"], reverse=True)[:limit]]
         return [{**item, "citation": f"S{index + 1}"} for index, item in enumerate(deduplicated)]
 
     def local_document_count(self, ticker: str) -> int:
@@ -266,5 +344,12 @@ class LocalResearchRAG:
 
 
     def retrieval_status(self) -> dict[str, str | None]:
-        return {"embedding_mode": self.provider.mode, "semantic_model": SEMANTIC_MODEL_NAME if self.provider.mode == "semantic" else None, "fallback_reason": self.provider.fallback_reason}
+        return {
+            "embedding_mode": self.provider.mode,
+            "semantic_model": SEMANTIC_MODEL_NAME if self.provider.mode == "semantic" else None,
+            "fallback_reason": self.provider.fallback_reason,
+            "reranker_mode": self.reranker.mode,
+            "reranker_model": self.reranker.model_name,
+            "reranker_fallback_reason": self.reranker.fallback_reason,
+        }
 

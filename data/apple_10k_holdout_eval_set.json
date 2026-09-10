@@ -1,0 +1,58 @@
+[
+  {
+    "id": "total_gross_margin",
+    "question": "Apple 2025 年的总毛利是多少？",
+    "target_pages": [
+      27
+    ],
+    "keywords": [
+      "Total gross margin",
+      "195,201"
+    ]
+  },
+  {
+    "id": "sga_expense",
+    "question": "Apple 2025 年的销售、一般与行政管理费用是多少？",
+    "target_pages": [
+      27,
+      32
+    ],
+    "keywords": [
+      "Selling, general and administrative",
+      "27,601"
+    ]
+  },
+  {
+    "id": "accounts_payable",
+    "question": "截至 2025 年 9 月 Apple 的应付账款余额是多少？",
+    "target_pages": [
+      34
+    ],
+    "keywords": [
+      "Accounts payable",
+      "69,860"
+    ]
+  },
+  {
+    "id": "inventory_balance",
+    "question": "截至 2025 年 9 月 Apple 的存货余额是多少？",
+    "target_pages": [
+      34
+    ],
+    "keywords": [
+      "Inventories",
+      "5,718"
+    ]
+  },
+  {
+    "id": "dividends_declared",
+    "question": "Apple 2025 年宣告的股息及股息等价物金额是多少？",
+    "target_pages": [
+      35
+    ],
+    "keywords": [
+      "Dividends and dividend equivalents declared",
+      "15,413"
+    ]
+  }
+]

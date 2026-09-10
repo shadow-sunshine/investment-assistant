@@ -1,0 +1,274 @@
+{
+  "hash": {
+    "mode": "hash",
+    "reranker_requested": "disabled",
+    "top_k": 4,
+    "evaluated_at": "2026-09-09T06:51:09.411943+00:00",
+    "status": {
+      "embedding_mode": "hash",
+      "semantic_model": null,
+      "fallback_reason": null,
+      "reranker_mode": "disabled",
+      "reranker_model": null,
+      "reranker_fallback_reason": null
+    },
+    "indexed_pdf": "D:\\It\\Test_Project\\Investment_Assistant\\data\\knowledge_base\\Apple_2025_Form_10-K.pdf",
+    "indexed_chunks": 406,
+    "case_count": 5,
+    "metrics": {
+      "recall_at_k": 0.8,
+      "keyword_verified_recall_at_k": 0.4,
+      "citation_page_relevance_at_k": 0.2,
+      "top1_page_relevance": 0.6
+    },
+    "cases": [
+      {
+        "id": "total_gross_margin",
+        "question": "Apple 2025 年的总毛利是多少？",
+        "target_pages": [
+          27
+        ],
+        "keywords": [
+          "Total gross margin",
+          "195,201"
+        ],
+        "retrieved_pages": [
+          27,
+          32,
+          42,
+          51
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": false,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 27,
+        "top_result_is_relevant": true
+      },
+      {
+        "id": "sga_expense",
+        "question": "Apple 2025 年的销售、一般与行政管理费用是多少？",
+        "target_pages": [
+          27,
+          32
+        ],
+        "keywords": [
+          "Selling, general and administrative",
+          "27,601"
+        ],
+        "retrieved_pages": [
+          27,
+          50,
+          4,
+          16
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 27,
+        "top_result_is_relevant": true
+      },
+      {
+        "id": "accounts_payable",
+        "question": "截至 2025 年 9 月 Apple 的应付账款余额是多少？",
+        "target_pages": [
+          34
+        ],
+        "keywords": [
+          "Accounts payable",
+          "69,860"
+        ],
+        "retrieved_pages": [
+          36,
+          34,
+          77,
+          28
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 36,
+        "top_result_is_relevant": false
+      },
+      {
+        "id": "inventory_balance",
+        "question": "截至 2025 年 9 月 Apple 的存货余额是多少？",
+        "target_pages": [
+          34
+        ],
+        "keywords": [
+          "Inventories",
+          "5,718"
+        ],
+        "retrieved_pages": [
+          36,
+          77,
+          50,
+          43
+        ],
+        "page_hit_at_k": false,
+        "keyword_verified_hit_at_k": false,
+        "citation_page_relevance": 0.0,
+        "top_result_page": 36,
+        "top_result_is_relevant": false
+      },
+      {
+        "id": "dividends_declared",
+        "question": "Apple 2025 年宣告的股息及股息等价物金额是多少？",
+        "target_pages": [
+          35
+        ],
+        "keywords": [
+          "Dividends and dividend equivalents declared",
+          "15,413"
+        ],
+        "retrieved_pages": [
+          35,
+          29,
+          36,
+          4
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": false,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 35,
+        "top_result_is_relevant": true
+      }
+    ]
+  },
+  "semantic": {
+    "mode": "semantic",
+    "reranker_requested": "disabled",
+    "top_k": 4,
+    "evaluated_at": "2026-09-09T06:52:30.392230+00:00",
+    "status": {
+      "embedding_mode": "semantic",
+      "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "fallback_reason": null,
+      "reranker_mode": "disabled",
+      "reranker_model": null,
+      "reranker_fallback_reason": null
+    },
+    "indexed_pdf": "D:\\It\\Test_Project\\Investment_Assistant\\data\\knowledge_base\\Apple_2025_Form_10-K.pdf",
+    "indexed_chunks": 406,
+    "case_count": 5,
+    "metrics": {
+      "recall_at_k": 1.0,
+      "keyword_verified_recall_at_k": 0.8,
+      "citation_page_relevance_at_k": 0.3,
+      "top1_page_relevance": 0.6
+    },
+    "cases": [
+      {
+        "id": "total_gross_margin",
+        "question": "Apple 2025 年的总毛利是多少？",
+        "target_pages": [
+          27
+        ],
+        "keywords": [
+          "Total gross margin",
+          "195,201"
+        ],
+        "retrieved_pages": [
+          32,
+          33,
+          27,
+          34
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": false,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 32,
+        "top_result_is_relevant": false
+      },
+      {
+        "id": "sga_expense",
+        "question": "Apple 2025 年的销售、一般与行政管理费用是多少？",
+        "target_pages": [
+          27,
+          32
+        ],
+        "keywords": [
+          "Selling, general and administrative",
+          "27,601"
+        ],
+        "retrieved_pages": [
+          32,
+          50,
+          27,
+          5
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.5,
+        "top_result_page": 32,
+        "top_result_is_relevant": true
+      },
+      {
+        "id": "accounts_payable",
+        "question": "截至 2025 年 9 月 Apple 的应付账款余额是多少？",
+        "target_pages": [
+          34
+        ],
+        "keywords": [
+          "Accounts payable",
+          "69,860"
+        ],
+        "retrieved_pages": [
+          36,
+          34,
+          59,
+          50
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 36,
+        "top_result_is_relevant": false
+      },
+      {
+        "id": "inventory_balance",
+        "question": "截至 2025 年 9 月 Apple 的存货余额是多少？",
+        "target_pages": [
+          34
+        ],
+        "keywords": [
+          "Inventories",
+          "5,718"
+        ],
+        "retrieved_pages": [
+          34,
+          36,
+          32,
+          50
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 34,
+        "top_result_is_relevant": true
+      },
+      {
+        "id": "dividends_declared",
+        "question": "Apple 2025 年宣告的股息及股息等价物金额是多少？",
+        "target_pages": [
+          35
+        ],
+        "keywords": [
+          "Dividends and dividend equivalents declared",
+          "15,413"
+        ],
+        "retrieved_pages": [
+          35,
+          33,
+          34,
+          36
+        ],
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 35,
+        "top_result_is_relevant": true
+      }
+    ]
+  }
+}

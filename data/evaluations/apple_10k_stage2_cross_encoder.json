@@ -1,24 +1,25 @@
 {
   "hash": {
     "mode": "hash",
+    "reranker_requested": "cross_encoder",
     "top_k": 4,
-    "evaluated_at": "2026-09-09T06:28:23.823357+00:00",
+    "evaluated_at": "2026-09-09T06:44:58.929370+00:00",
     "status": {
       "embedding_mode": "hash",
       "semantic_model": null,
       "fallback_reason": null,
-      "reranker_mode": "disabled",
+      "reranker_mode": "hybrid_fallback",
       "reranker_model": null,
-      "reranker_fallback_reason": null
+      "reranker_fallback_reason": "Cross-Encoder ????????????????????????????????????????OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run the library in offline mode at 'https://huggingface.co/docs/transformers/installation#offline-mode'."
     },
     "indexed_pdf": "D:\\It\\Test_Project\\Investment_Assistant\\data\\knowledge_base\\Apple_2025_Form_10-K.pdf",
     "indexed_chunks": 406,
     "case_count": 20,
     "metrics": {
-      "recall_at_k": 0.2,
-      "keyword_verified_recall_at_k": 0.2,
-      "citation_page_relevance_at_k": 0.05,
-      "top1_page_relevance": 0.0
+      "recall_at_k": 0.95,
+      "keyword_verified_recall_at_k": 0.8,
+      "citation_page_relevance_at_k": 0.3375,
+      "top1_page_relevance": 0.4
     },
     "cases": [
       {
@@ -33,16 +34,16 @@
           "109,158"
         ],
         "retrieved_pages": [
-          77,
-          61,
-          34,
-          51
+          26,
+          39,
+          25,
+          32
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
-        "top_result_is_relevant": false
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.5,
+        "top_result_page": 26,
+        "top_result_is_relevant": true
       },
       {
         "id": "services_growth",
@@ -55,15 +56,15 @@
           "14 %"
         ],
         "retrieved_pages": [
-          22,
-          39,
-          61,
-          51
+          10,
+          27,
+          26,
+          39
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 22,
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 10,
         "top_result_is_relevant": false
       },
       {
@@ -77,16 +78,16 @@
           "75.4%"
         ],
         "retrieved_pages": [
-          65,
-          68,
-          64,
-          43
+          27,
+          18,
+          10,
+          6
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 65,
-        "top_result_is_relevant": false
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 27,
+        "top_result_is_relevant": true
       },
       {
         "id": "r_and_d_expense",
@@ -99,15 +100,15 @@
           "34,550"
         ],
         "retrieved_pages": [
-          77,
-          61,
-          51,
-          34
+          27,
+          32,
+          44,
+          6
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 27,
         "top_result_is_relevant": false
       },
       {
@@ -124,16 +125,16 @@
           "416,161"
         ],
         "retrieved_pages": [
-          77,
-          61,
-          34,
-          51
+          51,
+          27,
+          32,
+          25
         ],
         "page_hit_at_k": true,
         "keyword_verified_hit_at_k": true,
-        "citation_page_relevance": 0.25,
-        "top_result_page": 77,
-        "top_result_is_relevant": false
+        "citation_page_relevance": 0.5,
+        "top_result_page": 51,
+        "top_result_is_relevant": true
       },
       {
         "id": "net_income",
@@ -149,15 +150,15 @@
           "112,010"
         ],
         "retrieved_pages": [
-          77,
-          61,
-          51,
-          34
+          33,
+          32,
+          36,
+          39
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.75,
+        "top_result_page": 33,
         "top_result_is_relevant": false
       },
       {
@@ -171,16 +172,16 @@
           "111,482"
         ],
         "retrieved_pages": [
-          77,
-          61,
-          34,
-          51
+          36,
+          41,
+          27,
+          28
         ],
-        "page_hit_at_k": false,
+        "page_hit_at_k": true,
         "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
-        "top_result_is_relevant": false
+        "citation_page_relevance": 0.25,
+        "top_result_page": 36,
+        "top_result_is_relevant": true
       },
       {
         "id": "capex",
@@ -193,15 +194,15 @@
           "12,715"
         ],
         "retrieved_pages": [
-          77,
-          61,
-          34,
-          51
+          42,
+          37,
+          36,
+          12
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 42,
         "top_result_is_relevant": false
       },
       {
@@ -217,15 +218,15 @@
           "89.3 billion"
         ],
         "retrieved_pages": [
-          77,
-          61,
-          34,
-          51
+          47,
+          29,
+          22,
+          35
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.5,
+        "top_result_page": 47,
         "top_result_is_relevant": false
       },
       {
@@ -241,16 +242,16 @@
           "35,934"
         ],
         "retrieved_pages": [
-          77,
-          50,
-          43,
-          59
+          36,
+          34,
+          40,
+          28
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
-        "top_result_is_relevant": false
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.75,
+        "top_result_page": 36,
+        "top_result_is_relevant": true
       },
       {
         "id": "deferred_revenue",
@@ -265,13 +266,13 @@
         ],
         "retrieved_pages": [
           77,
-          59,
+          39,
           43,
-          50
+          59
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
         "top_result_page": 77,
         "top_result_is_relevant": false
       },
@@ -286,15 +287,15 @@
           "Greater China"
         ],
         "retrieved_pages": [
-          76,
           5,
-          77,
-          4
+          50,
+          20,
+          39
         ],
-        "page_hit_at_k": false,
+        "page_hit_at_k": true,
         "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 76,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 5,
         "top_result_is_relevant": false
       },
       {
@@ -376,16 +377,16 @@
           "49,834"
         ],
         "retrieved_pages": [
-          77,
-          50,
-          43,
-          59
+          42,
+          34,
+          37,
+          36
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
-        "top_result_is_relevant": false
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.5,
+        "top_result_page": 42,
+        "top_result_is_relevant": true
       },
       {
         "id": "term_debt",
@@ -398,16 +399,16 @@
           "91,281"
         ],
         "retrieved_pages": [
-          77,
-          50,
-          43,
-          59
+          47,
+          34,
+          33,
+          42
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
-        "top_result_is_relevant": false
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 47,
+        "top_result_is_relevant": true
       },
       {
         "id": "effective_tax_rate",
@@ -423,8 +424,8 @@
         "retrieved_pages": [
           77,
           61,
-          34,
-          51
+          24,
+          34
         ],
         "page_hit_at_k": false,
         "keyword_verified_hit_at_k": false,
@@ -443,15 +444,15 @@
           "transfers over time"
         ],
         "retrieved_pages": [
-          76,
-          5,
-          77,
-          80
+          25,
+          39,
+          38,
+          26
         ],
-        "page_hit_at_k": false,
+        "page_hit_at_k": true,
         "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 76,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 25,
         "top_result_is_relevant": false
       },
       {
@@ -465,39 +466,40 @@
           "82,314"
         ],
         "retrieved_pages": [
-          77,
-          61,
-          34,
-          51
+          27,
+          32,
+          10,
+          25
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 77,
-        "top_result_is_relevant": false
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 27,
+        "top_result_is_relevant": true
       }
     ]
   },
   "semantic": {
     "mode": "semantic",
+    "reranker_requested": "cross_encoder",
     "top_k": 4,
-    "evaluated_at": "2026-09-09T06:29:55.737108+00:00",
+    "evaluated_at": "2026-09-09T06:46:00.350649+00:00",
     "status": {
       "embedding_mode": "semantic",
       "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
       "fallback_reason": null,
-      "reranker_mode": "disabled",
+      "reranker_mode": "hybrid_fallback",
       "reranker_model": null,
-      "reranker_fallback_reason": null
+      "reranker_fallback_reason": "Cross-Encoder ????????????????????????????????????????OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run the library in offline mode at 'https://huggingface.co/docs/transformers/installation#offline-mode'."
     },
     "indexed_pdf": "D:\\It\\Test_Project\\Investment_Assistant\\data\\knowledge_base\\Apple_2025_Form_10-K.pdf",
     "indexed_chunks": 406,
     "case_count": 20,
     "metrics": {
-      "recall_at_k": 0.6,
-      "keyword_verified_recall_at_k": 0.3,
-      "citation_page_relevance_at_k": 0.175,
-      "top1_page_relevance": 0.3
+      "recall_at_k": 0.8,
+      "keyword_verified_recall_at_k": 0.55,
+      "citation_page_relevance_at_k": 0.3125,
+      "top1_page_relevance": 0.45
     },
     "cases": [
       {
@@ -513,13 +515,13 @@
         ],
         "retrieved_pages": [
           32,
-          50,
-          33,
-          48
+          26,
+          25,
+          39
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.5,
         "top_result_page": 32,
         "top_result_is_relevant": false
       },
@@ -535,9 +537,9 @@
         ],
         "retrieved_pages": [
           27,
-          46,
-          28,
-          44
+          25,
+          13,
+          12
         ],
         "page_hit_at_k": false,
         "keyword_verified_hit_at_k": false,
@@ -557,9 +559,9 @@
         ],
         "retrieved_pages": [
           27,
-          46,
-          38,
-          18
+          18,
+          5,
+          10
         ],
         "page_hit_at_k": true,
         "keyword_verified_hit_at_k": false,
@@ -578,15 +580,15 @@
           "34,550"
         ],
         "retrieved_pages": [
-          5,
+          27,
           32,
-          48,
-          50
+          5,
+          44
         ],
         "page_hit_at_k": true,
         "keyword_verified_hit_at_k": true,
         "citation_page_relevance": 0.25,
-        "top_result_page": 5,
+        "top_result_page": 27,
         "top_result_is_relevant": false
       },
       {
@@ -604,13 +606,13 @@
         ],
         "retrieved_pages": [
           32,
+          26,
           34,
-          33,
-          24
+          27
         ],
         "page_hit_at_k": true,
         "keyword_verified_hit_at_k": true,
-        "citation_page_relevance": 0.25,
+        "citation_page_relevance": 0.5,
         "top_result_page": 32,
         "top_result_is_relevant": true
       },
@@ -629,13 +631,13 @@
         ],
         "retrieved_pages": [
           33,
-          50,
           32,
-          5
+          36,
+          35
         ],
         "page_hit_at_k": true,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.25,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.75,
         "top_result_page": 33,
         "top_result_is_relevant": false
       },
@@ -651,9 +653,9 @@
         ],
         "retrieved_pages": [
           36,
-          34,
-          33,
-          50
+          52,
+          41,
+          46
         ],
         "page_hit_at_k": true,
         "keyword_verified_hit_at_k": false,
@@ -672,15 +674,15 @@
           "12,715"
         ],
         "retrieved_pages": [
+          42,
           34,
-          36,
           33,
-          35
+          28
         ],
-        "page_hit_at_k": true,
+        "page_hit_at_k": false,
         "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.25,
-        "top_result_page": 34,
+        "citation_page_relevance": 0.0,
+        "top_result_page": 42,
         "top_result_is_relevant": false
       },
       {
@@ -696,16 +698,16 @@
           "89.3 billion"
         ],
         "retrieved_pages": [
-          34,
+          29,
           35,
-          32,
+          22,
           62
         ],
         "page_hit_at_k": true,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.25,
-        "top_result_page": 34,
-        "top_result_is_relevant": false
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.5,
+        "top_result_page": 29,
+        "top_result_is_relevant": true
       },
       {
         "id": "cash_balance",
@@ -722,8 +724,8 @@
         "retrieved_pages": [
           36,
           34,
-          50,
-          33
+          52,
+          50
         ],
         "page_hit_at_k": true,
         "keyword_verified_hit_at_k": true,
@@ -743,16 +745,16 @@
           "13.7 billion"
         ],
         "retrieved_pages": [
-          36,
-          50,
-          33,
-          34
+          34,
+          39,
+          59,
+          33
         ],
         "page_hit_at_k": true,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.25,
-        "top_result_page": 36,
-        "top_result_is_relevant": false
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.5,
+        "top_result_page": 34,
+        "top_result_is_relevant": true
       },
       {
         "id": "geographic_segments",
@@ -766,13 +768,13 @@
         ],
         "retrieved_pages": [
           20,
-          76,
-          52,
-          5
+          5,
+          50,
+          39
         ],
-        "page_hit_at_k": false,
+        "page_hit_at_k": true,
         "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
+        "citation_page_relevance": 0.25,
         "top_result_page": 20,
         "top_result_is_relevant": false
       },
@@ -855,15 +857,15 @@
           "49,834"
         ],
         "retrieved_pages": [
+          42,
           34,
-          50,
-          59,
-          5
+          32,
+          20
         ],
         "page_hit_at_k": true,
         "keyword_verified_hit_at_k": true,
-        "citation_page_relevance": 0.25,
-        "top_result_page": 34,
+        "citation_page_relevance": 0.5,
+        "top_result_page": 42,
         "top_result_is_relevant": true
       },
       {
@@ -877,16 +879,16 @@
           "91,281"
         ],
         "retrieved_pages": [
+          47,
           34,
-          36,
-          59,
-          50
+          33,
+          28
         ],
-        "page_hit_at_k": false,
-        "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
-        "top_result_page": 34,
-        "top_result_is_relevant": false
+        "page_hit_at_k": true,
+        "keyword_verified_hit_at_k": true,
+        "citation_page_relevance": 0.25,
+        "top_result_page": 47,
+        "top_result_is_relevant": true
       },
       {
         "id": "effective_tax_rate",
@@ -923,13 +925,13 @@
         ],
         "retrieved_pages": [
           32,
-          36,
-          33,
-          52
+          26,
+          38,
+          25
         ],
-        "page_hit_at_k": false,
+        "page_hit_at_k": true,
         "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
+        "citation_page_relevance": 0.25,
         "top_result_page": 32,
         "top_result_is_relevant": false
       },
@@ -945,13 +947,13 @@
         ],
         "retrieved_pages": [
           32,
-          50,
-          48,
-          33
+          10,
+          27,
+          52
         ],
-        "page_hit_at_k": false,
+        "page_hit_at_k": true,
         "keyword_verified_hit_at_k": false,
-        "citation_page_relevance": 0.0,
+        "citation_page_relevance": 0.25,
         "top_result_page": 32,
         "top_result_is_relevant": false
       }
