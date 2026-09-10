@@ -1,173 +1,166 @@
-﻿# 智能投研助手
+# 智能投研助手
 
-一个面向学习和作品集展示的、可追溯投研工作流项目。项目从老师提供的“感知 → 建模 → 推理 → 决策 → 报告”思路迁移而来，但重新实现为独立工程，并补充了真实数据、RAG、风险控制和离线评估。
+**输入一个股票代码,几分钟内得到一份基于真实数据、证据可溯源、风险已披露的研究简报。**
 
-- **真实市场与基本面数据**：通过 `yfinance` 获取历史 OHLCV、收益、波动率、最大回撤、近期新闻，以及年度营收、净利润、自由现金流、滚动 PE / PB 与各指标数据日期；
-- **本地 RAG**：使用 Chroma 持久化文本、Markdown 和 PDF 资料；PDF 采用逐页解析，检索引用保留文件名和页码；
-- **混合检索**：默认使用无需下载模型的确定性哈希向量，并以字面 token 覆盖率做轻量重排；可选安装 SentenceTransformers 并设置 `RAG_EMBEDDING_MODE=semantic` 使用本地多语言语义嵌入；
-- **风险控制**：行情与财报/估值的可用性和时效检查、财报期末日期检查、引用/页码完整性检查、收益承诺拦截、免责声明；
-- **离线评估**：检查报告结构、引用、财报日期、PDF 页码覆盖率；对人工标注的预期证据片段可计算召回率。
+一个面向学习与作品集展示的可追溯投研工作流项目。核心理念:AI 生成投研内容最大的问题不是"写不出来",而是**不可信**——数字可能是编的、引用可能是假的、失败可能被掩盖。本项目用工程手段而非 prompt 约束来解决这个问题。
 
-> 仅用于学习和研究，不构成投资建议。Yahoo Finance / yfinance 数据可能延迟、缺失或被修订，所有结果必须自行复核。
+| | |
+|---|---|
+| 工作流编排 | LangGraph 七节点状态机,全程输出机器可读审计记录 |
+| 真实数据 | yfinance 实时行情 / 财报 / 估值 / 新闻,记录来源与抓取时间 |
+| 证据溯源 | 本地 RAG(Chroma),PDF 页码级引用,ticker 隔离检索 |
+| 防幻觉 | 受控 LLM 三道防线:槽位模板 → 引用校验 → 安全校验回退 |
+| 质量评估 | 20 题人工标注评测集,45+ 单元测试,黄金样本离线回归 |
 
-## 安装
+> 仅用于学习和研究,不构成投资建议。数据来自非官方接口,可能延迟、缺失或被修订,所有结果必须回到原始来源复核。
+
+---
+
+## 为什么做这个项目
+
+通用大模型直接生成投研内容,有三个绕不开的信任问题:
+
+1. **数字幻觉**——模型会把"净利润"的数值说成"经营现金流"(本项目实测拦截过的真实案例:10-K 第 36 页,净利润 112,010 与经营现金流 111,482 仅差零头,引用页和格式全对,事实映射却是错的);
+2. **引用不可溯**——"据说营收增长 X%"无法翻回原文核对;
+3. **失败被掩盖**——数据抓不到时,系统编一个数字出来,比"承认查不到"危险得多。
+
+本项目的回答是:**把"找资料"(RAG)、"用资料"(受控生成)、"兜底"(规则校验)分成三段,各司其职,谁也不能替代谁。** 任何一段失守,内容都进不了最终报告。
+
+## 架构:七节点可审计流水线
+
+```text
+用户输入 ticker
+      │
+      ▼
+① collect_real_data ── 实时抓取行情/财报/估值/新闻(yfinance),记录来源与时间
+      ▼                                   ┌─ 本地知识库(Chroma)
+② retrieve_evidence ── RAG 检索 + 混合重排 ┘  PDF 页码级引用,ticker 隔离
+      ▼
+③ model_market ────── 市场建模:波动率/最大回撤 → 趋势与风险等级初判
+      ▼
+④ reason_scenarios ── 情景推理:积极/基准/压力(纯规则,确定可复现)
+      ▼
+⑤ controlled_generation ─ 受控 LLM 叙述(槽位模板,数字由程序注入)
+      ▼
+⑥ generate_report ─── 组装 Markdown 报告 + JSON 审计文件
+      ▼
+⑦ validate_risks ──── 风险终审:不过则回退规则版,并披露原因
+```
+
+两种数据源分层呈现、互不竞争:实时行情陈述**事实**(进数据快照),本地研报提供**观点背景**(进证据区,带页码与时间戳),系统不替用户做买卖决策。
+
+### 受控 LLM 三道防线
+
+1. **槽位模板**:LLM 只输出叙述框架,如"经营活动现金流为 {operating_cash_flow} 百万美元"——数字、日期由程序从结构化快照注入,模型笔下没有数字;
+2. **引用存在性校验**:叙述中每个 `[Sx]` 必须真实存在于本次检索结果,编造引用直接拒绝;
+3. **生成后安全校验**:全文检查数字溯源、口径混淆(总营收≠服务收入、自由现金流≠经营现金流)、免责声明、违规表述;任何一项不过,整段 LLM 内容作废,回退规则版并向用户披露原因。
+
+### 失败显式披露原则
+
+- 数据抓取失败:重试后仍失败 → 报告标注"数据不可用 + 原因",其余环节照常走完,**绝不伪造数字**;
+- 该标的无本地资料:报告明示"该标的无本地研究资料,证据仅来自实时新闻",**绝不用其他公司的资料凑数**(ticker 隔离);
+- 扫描版 PDF 无文字层:跳过并说明,**不把"解析失败"伪装成"已解析"**。
+
+## 量化结果
+
+### 检索质量(Apple 2025 Form 10-K,20 题人工标注评测集)
+
+| 指标 | Hash 基线 | Semantic | Hash+术语映射(优化后) |
+|---|---:|---:|---:|
+| 页面 Recall@4 | 0.20 | **0.60** | 0.80 |
+| 关键词核验 Recall@4 | 0.20 | 0.30 | **0.80** |
+| Top-1 页面相关性 | 0.00 | 0.30 | 0.60 |
+
+评测集覆盖服务收入、研发费用、经营现金流、中美销售额、实际税率等 20 个问题,每题标注应命中页码与关键证据词。**"关键词核验"指标专门捕捉"页码碰巧命中、内容却不支持问题"的情况。**
+
+诚实记录的未决问题:5 题留出集上 Semantic 的关键词核验(0.80)反超 Hash+术语映射(0.40),与主集结论不一致。样本太小不足以裁决默认模式,**该问题作为评测边界保留,未通过挑选好看的单边结果来"解决"**。详见 [KNOWN_ISSUES.md](KNOWN_ISSUES.md)。
+
+### 受控 LLM 验收(2026-09-08,已冻结)
+
+| 题目 | 输出模式 | Safety |
+|---|---|---:|
+| services_revenue | 受控 LLM | 通过 |
+| r_and_d_expense | 受控 LLM | 通过 |
+| operating_cash_flow | 受控 LLM | 通过 |
+| china_sales | 受控 LLM | 通过 |
+| effective_tax_rate | 受控 LLM | 通过 |
+
+验收标准为 ≥3/5 受控 LLM 且 safety 通过,实际 **5/5**。此前轮次中,LLM 曾因复述数值被全部拒绝并回退规则版——门禁机制按设计工作。规则版报告始终保留为稳定回退路径。
+
+## 快速开始
 
 ```powershell
-cd D:\It\Test_Project\Investment_Assistant
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 可选：启用本地语义嵌入
+### 建立知识库
 
-默认 `hash` 模式不下载模型，适合稳定的离线演示。若希望使用多语言语义嵌入：
-
-```powershell
-pip install -r requirements-semantic.txt
-$env:RAG_EMBEDDING_MODE="semantic"
-# 可选：覆盖默认模型名
-$env:RAG_SEMANTIC_MODEL="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-```
-
-首次加载模型会下载权重。若依赖或模型不可用，系统会自动降级为哈希向量，并在审计记录的 `retrieval_status.fallback_reason` 中说明原因。
-
-## 建立知识库
-
-将 `.txt`、`.md` 或可提取文本的 `.pdf` 放进：
-
-```text
-data\knowledge_base
-```
-
-然后执行：
+将含文字层的 `.txt` / `.md` / `.pdf`(如公司年报)放入 `data\knowledge_base`,然后:
 
 ```powershell
 python -m investment_assistant.cli index
 ```
 
-PDF 页会逐页索引；扫描版 PDF 若没有文字层会被跳过而不会生成伪造内容。报告的来源列表会显示 PDF 文件名和页码。
+本地资料按文件名推断归属 ticker 并隔离检索;推断不出的标记 `unknown`。查询某标的时只检索该标的的资料,无资料则显式披露。
 
-## 生成研究简报
-
-```powershell
-python -m investment_assistant.cli research --ticker AAPL --topic "AI 基础设施" --horizon 中期
-```
-
-报告和机器可读审计 JSON 会写入 `data\reports`。JSON 同时保存行情、财报、估值、RAG 来源、检索配置和两套评估结果。
-
-## 离线质量检查
+### 生成研究简报
 
 ```powershell
-python -m investment_assistant.cli evaluate
+python -m investment_assistant.cli research --ticker AAPL --topic "服务业务、现金流与估值" --horizon 中期
 ```
 
-## 工作流
+支持美股(`AAPL`)、港股(`0700.HK`)、A股(`600519.SS`)。报告与审计 JSON 写入 `data\reports`。
+
+### 可选:语义嵌入
+
+```powershell
+pip install -r requirements-semantic.txt
+$env:RAG_EMBEDDING_MODE="semantic"
+```
+
+语义模型从本地缓存离线加载;缺失时显式报错,不静默降级伪装成语义结果。
+
+### 运行评测 / 回归 / Web 演示
+
+```powershell
+python -m investment_assistant.evaluation --top-k 4   # 双模式隔离评测
+python -m investment_assistant.golden_regression       # 黄金样本离线回归(无需网络)
+.\start_demo.bat                                        # FastAPI + Streamlit 一键演示
+```
+
+## 已知边界
+
+完整清单见 [KNOWN_ISSUES.md](KNOWN_ISSUES.md),要点:
+
+- **引用存在 ≠ 语义支持**:引用格式正确不代表该页内容支持该论断(KI-001),当前检索质量下受控叙述偏向保守的覆盖性陈述(KI-002);
+- **数据源非官方**:yfinance 可能延迟、缺失或被修订(KI-003);新闻需回到原始链接核验(KI-004);
+- **扫描版 PDF 不支持**:无文字层的 PDF 被跳过,未接 OCR,不伪造解析结果(KI-005);
+- **不输出交易指令、目标价或收益承诺**;受控 LLM 的默认模式选择(main/holdout 集结论不一致)作为开放问题保留。
+
+## 项目结构
 
 ```text
-真实数据采集（行情、财报、估值、新闻）
-  → PDF/文本 RAG 检索与重排
-  → 市场建模
-  → 情景推理
-  → 带来源和页码的研究简报
-  → 风险验证、报告评估、检索质量评估
+investment_assistant/
+├── workflow.py          # LangGraph 七节点工作流(核心)
+├── market_data.py       # yfinance 行情/财报/估值/新闻采集
+├── rag.py               # Chroma 向量库:PDF 逐页解析、ticker 隔离、混合重排
+├── llm_generation.py    # 受控 LLM:槽位模板、引用校验、数字溯源
+├── safety.py            # 风险校验与报告级安全规则
+├── evaluation.py        # 检索质量评测(R Recall/关键词核验/相关性)
+├── golden_regression.py # 黄金样本离线回归
+├── api.py / web_app.py / cli.py  # FastAPI / Streamlit / 命令行入口
+tests/                   # 45+ 单元测试
+data/                    # 知识库、评测集、报告产物、审计记录
 ```
 
-## 当前边界
+## 开发方式与致谢
 
-- 默认哈希向量保证离线可运行，但语义质量有限；启用可选的 SentenceTransformers 后，应使用人工标注集比较 `expected_source_recall`、页码覆盖率和人工相关性。
-- `pypdf` 仅能解析含文字层 PDF；扫描件需后续接入 OCR，不能被当作“已解析”。
-- 当前不输出交易指令、目标价或收益承诺；所有结论都应回到原始公告、年报或新闻链接复核。
+- 工作流思路迁移自老师的"感知 → 建模 → 推理 → 决策 → 报告"课程思想,重新实现为独立工程;
+- 架构决策、验收标准、质量把关与边界管理由本人主导,代码实现由 AI 辅助完成——每个冻结决策(评测阈值、回退策略、已知边界)都有对应的可复现产物。
 
-## Apple 2025 Form 10-K 检索评测基线
+## 免责声明
 
-评测集位于 `data\apple_10k_eval_set.json`，共 **20** 条人工标注问题，覆盖服务业务收入/增长/毛利率、研发费用、总销售额、净利润、经营现金流、资本开支、股份回购、现金余额、递延收入、地域分部、中美销售额、iPhone 收入、固定资产、长期债务、实际税率和收入确认。每条问题都标注了应命中的 PDF 页码和应出现的关键证据词。
-
-评测在 **2026-09-07** 对同一份 `Apple_2025_Form_10-K.pdf` 单独建库运行，Top-K 为 4；没有混入新闻或 Markdown 文档。`semantic` 模式使用默认 Hugging Face 缓存中的 `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`，以 `local_files_only=True` 离线加载；未设置 `HF_HOME` 或 `HF_ENDPOINT`，不会触发下载。
-
-| 指标 | Hash | Semantic |
-|---|---:|---:|
-| 页面 Recall@4 | 0.20 | **0.60** |
-| 关键词核验 Recall@4 | 0.20 | **0.30** |
-| 引用页面相关性@4 | 0.05 | **0.175** |
-| Top-1 页面相关性 | 0.00 | **0.30** |
-
-指标定义：
-
-- **页面 Recall@4**：Top-4 中至少有一个引用页命中人工标注目标页的比例。
-- **关键词核验 Recall@4**：命中目标页，且该页被召回的文本块同时包含该题预标注关键证据词的比例。此指标能发现“页码碰巧命中、内容却不支持问题”的情况。
-- **引用页面相关性@4**：每题 Top-4 中相关目标页所占比例的平均值。
-- **Top-1 页面相关性**：第一条引用页属于人工目标页的比例。
-
-结论：semantic 在四项指标上均优于 hash，但绝对值仍不够高，特别是关键词核验 Recall@4 仅为 0.30。这是当前项目明确暴露的检索质量缺陷，不能把“引用格式正确”当成“证据内容相关”。对比结果和每题召回页保存在：
-
-- `data\evaluations\apple_10k_retrieval_comparison.json`
-- `data\evaluations\apple_10k_retrieval_comparison.md`
-
-运行命令：
-
-```powershell
-python -m investment_assistant.evaluation --top-k 4
-```
-
-该命令会清空并重建 `data\evaluation_chroma\hash` 与 `data\evaluation_chroma\semantic`，保证两种模式都只评测 Apple 10-K。若默认缓存中不存在语义模型，semantic 会返回明确错误并停止，不会偷偷降级后伪装成语义结果。
-
-## Controlled LLM Slot-Template Acceptance (2026-09-08, Frozen)
-
-The `auto` mode uses a slot-template control to prevent the model from inventing or mixing numeric facts. The model may only return a narrative framework and whitelisted `{slot}` placeholders. The program injects prices, dates, and amounts from structured market and financial snapshots.
-
-The following controls remain mandatory:
-
-- A template cannot contain bare numbers, dates, unknown slots, or unknown `[Sx]` citations.
-- A template may use one or more question-relevant allowed slots, or a qualitative narrative with no numbers, but it must include valid citations.
-- After rendering, every numeric token in the controlled narrative must come from a program-injected slot value or original evidence text.
-- The total-revenue slot cannot be described as services revenue, and the free-cash-flow slot cannot be described as operating cash flow.
-- One API retry is allowed for a connection failure; after that, the report explicitly falls back to the rule-based version.
-
-The final run on **2026-09-08** used the frozen `semantic` retrieval configuration, the Apple 2025 Form 10-K, and the same five end-to-end cases:
-
-| Case | Auto result | Safety |
-|---|---|---:|
-| services_revenue | Controlled LLM | Passed |
-| r_and_d_expense | Controlled LLM | Passed |
-| operating_cash_flow | Controlled LLM | Passed |
-| china_sales | Controlled LLM | Passed |
-| effective_tax_rate | Controlled LLM | Passed |
-
-The controlled LLM success rate is **5/5**, meeting the acceptance threshold of **3/5**. Therefore, the **LLM version is accepted**. `auto` may emit a controlled LLM narrative only after slot, citation, numeric-provenance, and full-report safety checks pass. Any failed check must still show an explicit rule-based fallback. The rule-based report remains the stable fallback and is not removed.
-
-This feature is now frozen: no more prompt, slot, retrieval, or reranking changes will be made. Known presentation boundary: when RAG evidence does not directly cover a question, the controlled LLM may only state that evidence is insufficient and recommend verification. The frontend should prominently display the data snapshot, original evidence, and the `Controlled LLM` or `Rule-based fallback` mode label, rather than presenting the narrative as a complete factual answer by itself.
-
-Final evaluation artifacts:
-
-- `data\reports\llm_rule_comparison_20260908_110530\summary.md`
-- `data\reports\llm_rule_comparison_20260908_110530\summary.json`
-
-The project now moves to frontend development, centered on real-data snapshots, traceable evidence, risk disclosures, report mode, and audit results.
-
-## Web Demo
-
-The frozen research, retrieval, LLM, and safety modules are exposed through a minimal FastAPI and Streamlit demo. The web layer only calls `run_research` and reads saved report artifacts; it does not duplicate or alter research logic.
-
-On Windows, double-click `start_demo.bat`. It starts the local API and opens `http://127.0.0.1:8501` in a browser. In the page, enter a ticker, topic, and horizon, then click the generate button. The page shows the full report, mode and fallback reason, market and financial snapshots, evidence file/page/link details, risk flags, and saved historical reports.
-
-For manual startup:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-python -m uvicorn investment_assistant.api:app --host 127.0.0.1 --port 8000
-python -m streamlit run investment_assistant/web_app.py
-```
-
-## Golden Sample and Offline Regression
-
-The approved golden sample is stored in `data/golden/` and was copied from the post-fix AAPL report for topic `?????????????`. It is an offline baseline: no market, network, embedding, or LLM call is needed to validate it.
-
-Run:
-
-```powershell
-python -m investment_assistant.golden_regression
-```
-
-The regression verifies report safety, controlled-LLM mode, section 2 label `??????`, structured-snapshot source attribution, RAG citation attribution, and availability of the five required financial snapshot fields. The complete accepted-boundary register is maintained in `KNOWN_ISSUES.md`.
+本项目仅用于学习和研究,不构成任何投资建议。市场存在本金损失风险;历史价格、回报和新闻内容均不能预测未来表现。请在任何决策前核验原始来源,并咨询持牌专业人士。
