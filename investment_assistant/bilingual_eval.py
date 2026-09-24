@@ -75,9 +75,11 @@ def verify_materials(materials: dict[str, Any]) -> dict[str, Any]:
 
 
 def _failure_reason(case_result: dict[str, Any], case: dict[str, Any]) -> str:
-    """按优先级给出单一主因，便于归类统计；不做多标签稀释。"""
-    if case_result["cross_ticker_source_count_unscoped"]:
-        return "wrong_ticker_source"
+    """按优先级给出单一主因。
+
+    只看「按 ticker 限定」这一臂——它才是对齐线上行为的口径。不限定 ticker 的
+    跨标的污染是独立的对照指标，不能拿来顶替主因，否则会盖住"限定了也没召回"的真问题。
+    """
     if not case_result["page_hit_at_k"]:
         return "cross_language_miss" if case["question_lang"] != case["doc_lang"] else "candidate_miss"
     if not case_result["keyword_verified_hit_at_k"]:
@@ -242,8 +244,7 @@ def render_report(eval_set: dict[str, Any], results: dict[str, dict[str, Any]], 
     lines.extend(["## 4. 失败归因分布", "", "| 归因 | Hash | Semantic |", "|---|---:|---:|"])
     reason_labels = {
         "none": "命中（无失败）",
-        "wrong_ticker_source": "跨标的来源污染",
-        "cross_language_miss": "跨语言召回失败",
+        "cross_language_miss": "跨语言未召回",
         "candidate_miss": "同语言候选未召回",
         "chunk_or_value_boundary": "页命中但数值不在块内",
         "ranking": "已召回但排序未进 Top-1",
@@ -255,6 +256,16 @@ def render_report(eval_set: dict[str, Any], results: dict[str, dict[str, Any]], 
         hash_count = results["hash"].get("failure_reason_counts", {}).get(reason, 0)
         semantic_count = results["semantic"].get("failure_reason_counts", {}).get(reason, "未运行")
         lines.append(f"| {reason_labels.get(reason, reason)} | {hash_count} | {semantic_count} |")
+    lines.extend(["", "跨标的污染是**独立于主因**的对照指标（不限定 ticker 那一臂）：", "", "| 口径 | Hash | Semantic |", "|---|---:|---:|"])
+    for label, selector in [
+        ("出现跨标的来源的样本数", lambda item: item["cross_ticker_source_count_unscoped"] > 0),
+        ("Top-4 全部来自错误标的的样本数", lambda item: item["cross_ticker_source_count_unscoped"] >= 4),
+    ]:
+        hash_count = sum(1 for item in results["hash"].get("cases", []) if selector(item))
+        semantic_cases = results["semantic"].get("cases", [])
+        semantic_count = sum(1 for item in semantic_cases if selector(item)) if semantic_cases else "未运行"
+        lines.append(f"| {label}（共 32 条） | {hash_count} | {semantic_count} |")
+    lines.append("")
 
     lines.extend(["", "## 5. 失败样本明细", ""])
     for mode in MODES:
@@ -281,6 +292,20 @@ def render_report(eval_set: dict[str, Any], results: dict[str, dict[str, Any]], 
             "- 术语映射 `data/financial_term_map.json` 只覆盖 中文→英文，英→中/英→英 象限不触发扩展。",
             "- 既有 Apple 25 条评测（含 5 条 holdout）全部是 中→英 单象限；holdout 的 gold keyword 与术语映射表存在 1:1 重合，其提升幅度不能直接作为泛化证据。",
             "- pypdf 未安装 fontTools，CFF 字体编码解析受限，可能影响部分页面抽取质量，归为「原始资料」类风险。",
+            "- **语料规模与既有 Apple 基线不可直接横比**：Apple 基线只索引单份 80 页 PDF（AAPL 406 个块），R0 同时索引四份资料共 644 页（2029 个块）。",
+            "  语料扩大 5 倍而候选池仍为 48 条，是本次 Recall 显著低于 Apple 基线的已知混杂因素，不能解读为纯粹的能力退化。",
+            "",
+            "## 7. 下一步最小改进假设（待 R1 验证）",
+            "",
+            "1. **中文侧检索近乎失效**：中→中 象限 Hash / Semantic 均为 0/8，且不限定 ticker 时仍召不回中文页。",
+            "   假设：中文查询与中文表格文本之间缺少可用的字面锚点（术语 + 数值），现有向量与字面覆盖率都不够。",
+            "   最小验证：加一路**不依赖 embedding 的术语/数值锚点召回**，与向量候选融合，只测中→中 象限是否脱离 0。",
+            "2. **跨语言查询扩展只覆盖中→英**：`financial_term_map.json` 单向且条目与 Apple 历史 gold 关键词高度重合；",
+            "   在 MSFT / 0700.HK 这类新语料上，hash 下跨语言样本 16 条全部未召回。",
+            "   最小验证：把术语表拆成「通用财务术语」与「标的专属条目」两组，分别测泛化贡献。",
+            "3. **候选池 48 条对 2029 个块偏小**：先做候选池规模敏感性实验（48 / 100 / 200），确认是否为硬瓶颈，再决定是否改检索结构。",
+            "",
+            "> 以上三条都是「先做最小实验证伪」级别的假设，不构成 R1 的实施方案；R1 需另立对照评测与切流计划。",
         ]
     )
     return "\n".join(lines)
@@ -303,6 +328,33 @@ def run_evaluation(top_k: int = 4, eval_set_path: Path = EVAL_SET_PATH) -> dict[
     (RESULT_DIR / "bilingual_r0.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     (RESULT_DIR / "bilingual_r0.md").write_text(
         render_report(eval_set, results, material_report), encoding="utf-8"
+    )
+    return payload
+
+
+def reattribute_payload(
+    payload_path: Path = RESULT_DIR / "bilingual_r0.json",
+    eval_set_path: Path = EVAL_SET_PATH,
+) -> dict[str, Any]:
+    """只重算失败归因口径并重写报告，不重跑检索。
+
+    适用前提：指标（Recall/Top-1）未变，仅归因标签口径修正。检索结果本身保持原样。
+    """
+    payload = json.loads(payload_path.read_text(encoding="utf-8"))
+    cases_by_id = {case["id"]: case for case in load_eval_set(eval_set_path)["cases"]}
+    for result in payload["results"].values():
+        if "cases" not in result:
+            continue
+        for item in result["cases"]:
+            item["failure_reason"] = _failure_reason(item, cases_by_id[item["id"]])
+        reasons: dict[str, int] = {}
+        for item in result["cases"]:
+            reasons[item["failure_reason"]] = reasons.get(item["failure_reason"], 0) + 1
+        result["failure_reason_counts"] = reasons
+    payload_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    eval_set = load_eval_set(eval_set_path)
+    payload_path.parent.joinpath("bilingual_r0.md").write_text(
+        render_report(eval_set, payload["results"], payload["material_verification"]), encoding="utf-8"
     )
     return payload
 

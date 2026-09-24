@@ -1,0 +1,2699 @@
+{
+  "eval_set": "D:\\It\\Test_Project\\Investment_Assistant\\data\\bilingual_eval_set.json",
+  "top_k": 4,
+  "evaluated_at": "2026-09-24T16:14:04.941122+00:00",
+  "material_verification": {
+    "AAPL": {
+      "status": "match",
+      "expected_sha256": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "actual_sha256": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "page_authority": "official"
+    },
+    "MSFT": {
+      "status": "match",
+      "expected_sha256": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "actual_sha256": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "page_authority": "generated"
+    },
+    "600519.SS": {
+      "status": "match",
+      "expected_sha256": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "actual_sha256": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "page_authority": "official"
+    },
+    "0700.HK": {
+      "status": "match",
+      "expected_sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "actual_sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "page_authority": "official"
+    }
+  },
+  "material_drift": [],
+  "results": {
+    "hash": {
+      "mode": "hash",
+      "top_k": 4,
+      "evaluated_at": "2026-09-24T16:06:34.611227+00:00",
+      "status": {
+        "embedding_mode": "hash",
+        "semantic_model": null,
+        "fallback_reason": null,
+        "reranker_mode": "disabled",
+        "reranker_model": null,
+        "reranker_fallback_reason": null
+      },
+      "indexed_chunks": {
+        "AAPL": 406,
+        "MSFT": 533,
+        "600519.SS": 263,
+        "0700.HK": 827
+      },
+      "metrics": {
+        "case_count": 32,
+        "page_recall_at_k": 0.0938,
+        "keyword_verified_recall_at_k": 0.0938,
+        "top1_page_relevance": 0.0625,
+        "citation_page_relevance": 0.0312,
+        "cross_ticker_sources_per_case_unscoped": 2.0625
+      },
+      "by_quadrant": {
+        "zh-zh": {
+          "case_count": 8,
+          "page_recall_at_k": 0.0,
+          "keyword_verified_recall_at_k": 0.0,
+          "top1_page_relevance": 0.0,
+          "citation_page_relevance": 0.0,
+          "cross_ticker_sources_per_case_unscoped": 1.25
+        },
+        "en-en": {
+          "case_count": 8,
+          "page_recall_at_k": 0.375,
+          "keyword_verified_recall_at_k": 0.375,
+          "top1_page_relevance": 0.25,
+          "citation_page_relevance": 0.125,
+          "cross_ticker_sources_per_case_unscoped": 0.75
+        },
+        "zh-en": {
+          "case_count": 8,
+          "page_recall_at_k": 0.0,
+          "keyword_verified_recall_at_k": 0.0,
+          "top1_page_relevance": 0.0,
+          "citation_page_relevance": 0.0,
+          "cross_ticker_sources_per_case_unscoped": 2.25
+        },
+        "en-zh": {
+          "case_count": 8,
+          "page_recall_at_k": 0.0,
+          "keyword_verified_recall_at_k": 0.0,
+          "top1_page_relevance": 0.0,
+          "citation_page_relevance": 0.0,
+          "cross_ticker_sources_per_case_unscoped": 4.0
+        }
+      },
+      "failure_reason_counts": {
+        "candidate_miss": 13,
+        "none": 2,
+        "ranking": 1,
+        "cross_language_miss": 16
+      },
+      "cases": [
+        {
+          "id": "zhzh_moutai_revenue",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年营业收入是多少？",
+          "target_pages": [
+            6,
+            61
+          ],
+          "keywords": [
+            "营业收入",
+            "168,838,102,514.79"
+          ],
+          "retrieved_pages": [
+            1,
+            5,
+            125,
+            46
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 1,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_total_operating_revenue",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年营业总收入是多少？",
+          "target_pages": [
+            61
+          ],
+          "keywords": [
+            "营业总收入",
+            "172,054,171,890.91"
+          ],
+          "retrieved_pages": [
+            1,
+            5,
+            125,
+            46
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 1,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_net_profit",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年归属于母公司股东的净利润是多少？",
+          "target_pages": [
+            6,
+            62
+          ],
+          "keywords": [
+            "归属于母公司股东的净利润",
+            "82,320,067,101.68"
+          ],
+          "retrieved_pages": [
+            1,
+            5,
+            30,
+            46
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 1,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "MSFT",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_operating_cash_flow",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年经营活动产生的现金流量净额是多少？",
+          "target_pages": [
+            6,
+            115
+          ],
+          "keywords": [
+            "经营活动产生的现金流量净额",
+            "61,522,204,989.35"
+          ],
+          "retrieved_pages": [
+            1,
+            5,
+            31,
+            30
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 1,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "AAPL",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_eps",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年基本每股收益是多少？",
+          "target_pages": [
+            6,
+            63
+          ],
+          "keywords": [
+            "基本每股收益",
+            "65.66"
+          ],
+          "retrieved_pages": [
+            1,
+            5,
+            125,
+            46
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 1,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 1,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_roe",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年加权平均净资产收益率是多少？",
+          "target_pages": [
+            6
+          ],
+          "keywords": [
+            "加权平均净资产收益率",
+            "32.53"
+          ],
+          "retrieved_pages": [
+            1,
+            5,
+            125,
+            46
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 1,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_selling_expense",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年销售费用是多少？",
+          "target_pages": [
+            9,
+            61
+          ],
+          "keywords": [
+            "销售费用",
+            "7,253,499,600.68"
+          ],
+          "retrieved_pages": [
+            1,
+            5,
+            125,
+            46
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 1,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_inventory",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "截至 2025 年末贵州茅台的存货余额是多少？",
+          "target_pages": [
+            14,
+            57
+          ],
+          "keywords": [
+            "存货",
+            "61,427,421,796.18"
+          ],
+          "retrieved_pages": [
+            2,
+            122,
+            72,
+            30
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 2,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 1,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_aapl_total_assets",
+          "quadrant": "en-en",
+          "ticker": "AAPL",
+          "question": "What were Apple's total assets as of the end of fiscal 2025?",
+          "target_pages": [
+            34
+          ],
+          "keywords": [
+            "Total assets",
+            "359,241"
+          ],
+          "retrieved_pages": [
+            2,
+            22,
+            80,
+            42
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 2,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "MSFT",
+            "0700.HK",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 3,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_aapl_basic_eps",
+          "quadrant": "en-en",
+          "ticker": "AAPL",
+          "question": "What was Apple's basic earnings per share in fiscal 2025?",
+          "target_pages": [
+            39
+          ],
+          "keywords": [
+            "Basic earnings per share",
+            "7.49"
+          ],
+          "retrieved_pages": [
+            39,
+            32,
+            29,
+            47
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 39,
+          "top_result_is_relevant": true,
+          "retrieved_files": [
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "AAPL",
+            "0700.HK",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 1,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "none"
+        },
+        {
+          "id": "enen_aapl_wearables",
+          "quadrant": "en-en",
+          "ticker": "AAPL",
+          "question": "What were Apple's Wearables, Home and Accessories net sales in 2025?",
+          "target_pages": [
+            26,
+            39
+          ],
+          "keywords": [
+            "Wearables, Home and Accessories",
+            "35,686"
+          ],
+          "retrieved_pages": [
+            26,
+            39,
+            27,
+            4
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.5,
+          "top_result_page": 26,
+          "top_result_is_relevant": true,
+          "retrieved_files": [
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "AAPL",
+            "AAPL",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "none"
+        },
+        {
+          "id": "enen_msft_total_revenue",
+          "quadrant": "en-en",
+          "ticker": "MSFT",
+          "question": "What was Microsoft's total revenue in fiscal 2026?",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Total revenue",
+            "331,839"
+          ],
+          "retrieved_pages": [
+            127,
+            52,
+            125,
+            74
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 127,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "MSFT",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_msft_operating_income",
+          "quadrant": "en-en",
+          "ticker": "MSFT",
+          "question": "What was Microsoft's operating income in fiscal 2026?",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Operating income",
+            "155,237"
+          ],
+          "retrieved_pages": [
+            125,
+            52,
+            55,
+            54
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 125,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "MSFT",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_msft_gross_margin",
+          "quadrant": "en-en",
+          "ticker": "MSFT",
+          "question": "What was Microsoft's gross margin in fiscal 2026?",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Gross margin",
+            "225,465"
+          ],
+          "retrieved_pages": [
+            51,
+            127,
+            53,
+            115
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 51,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "0700.HK",
+            "AAPL",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 2,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_tencent_revenue",
+          "quadrant": "en-en",
+          "ticker": "0700.HK",
+          "question": "What were Tencent's revenues for the year ended 31 December 2025?",
+          "target_pages": [
+            4,
+            8
+          ],
+          "keywords": [
+            "Revenues",
+            "751,766"
+          ],
+          "retrieved_pages": [
+            5,
+            9,
+            200,
+            196
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 5,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_tencent_gross_profit",
+          "quadrant": "en-en",
+          "ticker": "0700.HK",
+          "question": "What was Tencent's gross profit for the year ended 31 December 2025?",
+          "target_pages": [
+            4,
+            8
+          ],
+          "keywords": [
+            "Gross profit",
+            "422,593"
+          ],
+          "retrieved_pages": [
+            5,
+            10,
+            8,
+            234
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 5,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "ranking"
+        },
+        {
+          "id": "zhen_msft_net_income",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软 2026 财年的净利润是多少？",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Net income",
+            "133,749"
+          ],
+          "retrieved_pages": [
+            77,
+            55,
+            66,
+            78
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 77,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "MSFT",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_msft_rnd_expense",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软 2026 财年的研发费用是多少？",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Research and development",
+            "35,562"
+          ],
+          "retrieved_pages": [
+            53,
+            73,
+            54,
+            33
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 53,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "AAPL",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 1,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_msft_total_assets",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软截至 2026 年 6 月 30 日的总资产是多少？",
+          "target_pages": [
+            64
+          ],
+          "keywords": [
+            "Total assets",
+            "758,376"
+          ],
+          "retrieved_pages": [
+            136,
+            123,
+            94,
+            115
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 136,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_msft_total_liabilities",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软截至 2026 年 6 月 30 日的负债总额是多少？",
+          "target_pages": [
+            65
+          ],
+          "keywords": [
+            "Total liabilities",
+            "315,989"
+          ],
+          "retrieved_pages": [
+            136,
+            123,
+            94,
+            115
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 136,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_msft_operating_cash_flow",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软 2026 财年经营活动产生的现金净额是多少？",
+          "target_pages": [
+            67
+          ],
+          "keywords": [
+            "Net cash from operations",
+            "182,935"
+          ],
+          "retrieved_pages": [
+            57,
+            113,
+            66,
+            107
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 57,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "0700.HK",
+            "AAPL",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 2,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_tencent_profit_for_the_year",
+          "quadrant": "zh-en",
+          "ticker": "0700.HK",
+          "question": "腾讯 2025 年度的年度盈利是多少？",
+          "target_pages": [
+            4,
+            8
+          ],
+          "keywords": [
+            "Profit for the year",
+            "229,801"
+          ],
+          "retrieved_pages": [
+            52,
+            57,
+            53,
+            49
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 52,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 2,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_tencent_profit_before_tax",
+          "quadrant": "zh-en",
+          "ticker": "0700.HK",
+          "question": "腾讯 2025 年度的除税前盈利是多少？",
+          "target_pages": [
+            4,
+            8
+          ],
+          "keywords": [
+            "Profit before income tax",
+            "277,249"
+          ],
+          "retrieved_pages": [
+            52,
+            57,
+            53,
+            49
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 52,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 2,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_tencent_selling_expense",
+          "quadrant": "zh-en",
+          "ticker": "0700.HK",
+          "question": "腾讯 2025 年的销售及市场推广开支是多少？",
+          "target_pages": [
+            8
+          ],
+          "keywords": [
+            "Selling and marketing expenses",
+            "41,727"
+          ],
+          "retrieved_pages": [
+            52,
+            53,
+            57,
+            49
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 52,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "0700.HK",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 3,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_total_assets",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What were Kweichow Moutai's total assets at the end of 2025?",
+          "target_pages": [
+            6
+          ],
+          "keywords": [
+            "总资产",
+            "303,834,844,021.44"
+          ],
+          "retrieved_pages": [
+            31,
+            30,
+            61,
+            53
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 31,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_equity",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What was Kweichow Moutai's equity attributable to shareholders at the end of 2025?",
+          "target_pages": [
+            6
+          ],
+          "keywords": [
+            "归属于上市公司股东的净资产",
+            "244,637,811,032.18"
+          ],
+          "retrieved_pages": [
+            31,
+            30,
+            129,
+            33
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 31,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_cash",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "How much cash on hand did Kweichow Moutai hold at the end of 2025?",
+          "target_pages": [
+            14,
+            56
+          ],
+          "keywords": [
+            "货币资金",
+            "51,690,610,946.50"
+          ],
+          "retrieved_pages": [
+            31,
+            30,
+            35,
+            53
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 31,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_contract_liability",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What was Kweichow Moutai's contract liability balance at the end of 2025?",
+          "target_pages": [
+            58
+          ],
+          "keywords": [
+            "合同负债",
+            "8,006,739,780.94"
+          ],
+          "retrieved_pages": [
+            30,
+            31,
+            129,
+            63
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 30,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_rnd_expense",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "How much did Kweichow Moutai spend on research and development in 2025?",
+          "target_pages": [
+            9,
+            61
+          ],
+          "keywords": [
+            "研发费用",
+            "190,112,246.58"
+          ],
+          "retrieved_pages": [
+            33,
+            30,
+            31,
+            97
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 33,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "MSFT",
+            "MSFT",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_admin_expense",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What were Kweichow Moutai's general and administrative expenses in 2025?",
+          "target_pages": [
+            9,
+            61
+          ],
+          "keywords": [
+            "管理费用",
+            "8,320,061,659.66"
+          ],
+          "retrieved_pages": [
+            24,
+            31,
+            30,
+            53
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 24,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "MSFT",
+            "0700.HK",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_cost_of_sales",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What was Kweichow Moutai's cost of sales in 2025?",
+          "target_pages": [
+            9,
+            61
+          ],
+          "keywords": [
+            "营业成本",
+            "14,892,277,570.91"
+          ],
+          "retrieved_pages": [
+            30,
+            53,
+            63,
+            31
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 30,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "AAPL",
+            "AAPL",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_liquor_gross_margin",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What was the gross margin of Kweichow Moutai's liquor business in 2025?",
+          "target_pages": [
+            10
+          ],
+          "keywords": [
+            "毛利率",
+            "91.23"
+          ],
+          "retrieved_pages": [
+            30,
+            31,
+            53,
+            63
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 30,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "0700.HK",
+            "AAPL",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        }
+      ]
+    },
+    "semantic": {
+      "mode": "semantic",
+      "top_k": 4,
+      "evaluated_at": "2026-09-24T16:14:04.941122+00:00",
+      "status": {
+        "embedding_mode": "semantic",
+        "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "fallback_reason": null,
+        "reranker_mode": "disabled",
+        "reranker_model": null,
+        "reranker_fallback_reason": null
+      },
+      "indexed_chunks": {
+        "AAPL": 406,
+        "MSFT": 533,
+        "600519.SS": 263,
+        "0700.HK": 827
+      },
+      "metrics": {
+        "case_count": 32,
+        "page_recall_at_k": 0.25,
+        "keyword_verified_recall_at_k": 0.2188,
+        "top1_page_relevance": 0.0625,
+        "citation_page_relevance": 0.0703,
+        "cross_ticker_sources_per_case_unscoped": 1.4688
+      },
+      "by_quadrant": {
+        "zh-zh": {
+          "case_count": 8,
+          "page_recall_at_k": 0.0,
+          "keyword_verified_recall_at_k": 0.0,
+          "top1_page_relevance": 0.0,
+          "citation_page_relevance": 0.0,
+          "cross_ticker_sources_per_case_unscoped": 0.625
+        },
+        "en-en": {
+          "case_count": 8,
+          "page_recall_at_k": 0.625,
+          "keyword_verified_recall_at_k": 0.5,
+          "top1_page_relevance": 0.25,
+          "citation_page_relevance": 0.1875,
+          "cross_ticker_sources_per_case_unscoped": 0.0
+        },
+        "zh-en": {
+          "case_count": 8,
+          "page_recall_at_k": 0.25,
+          "keyword_verified_recall_at_k": 0.25,
+          "top1_page_relevance": 0.0,
+          "citation_page_relevance": 0.0625,
+          "cross_ticker_sources_per_case_unscoped": 1.75
+        },
+        "en-zh": {
+          "case_count": 8,
+          "page_recall_at_k": 0.125,
+          "keyword_verified_recall_at_k": 0.125,
+          "top1_page_relevance": 0.0,
+          "citation_page_relevance": 0.0312,
+          "cross_ticker_sources_per_case_unscoped": 3.5
+        }
+      },
+      "failure_reason_counts": {
+        "candidate_miss": 11,
+        "none": 2,
+        "chunk_or_value_boundary": 1,
+        "ranking": 5,
+        "cross_language_miss": 13
+      },
+      "cases": [
+        {
+          "id": "zhzh_moutai_revenue",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年营业收入是多少？",
+          "target_pages": [
+            6,
+            61
+          ],
+          "keywords": [
+            "营业收入",
+            "168,838,102,514.79"
+          ],
+          "retrieved_pages": [
+            54,
+            1,
+            26,
+            12
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 54,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_total_operating_revenue",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年营业总收入是多少？",
+          "target_pages": [
+            61
+          ],
+          "keywords": [
+            "营业总收入",
+            "172,054,171,890.91"
+          ],
+          "retrieved_pages": [
+            54,
+            1,
+            26,
+            12
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 54,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_net_profit",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年归属于母公司股东的净利润是多少？",
+          "target_pages": [
+            6,
+            62
+          ],
+          "keywords": [
+            "归属于母公司股东的净利润",
+            "82,320,067,101.68"
+          ],
+          "retrieved_pages": [
+            70,
+            69,
+            54,
+            107
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 70,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 1,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_operating_cash_flow",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年经营活动产生的现金流量净额是多少？",
+          "target_pages": [
+            6,
+            115
+          ],
+          "keywords": [
+            "经营活动产生的现金流量净额",
+            "61,522,204,989.35"
+          ],
+          "retrieved_pages": [
+            10,
+            116,
+            67,
+            66
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 10,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "MSFT",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_eps",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年基本每股收益是多少？",
+          "target_pages": [
+            6,
+            63
+          ],
+          "keywords": [
+            "基本每股收益",
+            "65.66"
+          ],
+          "retrieved_pages": [
+            70,
+            54,
+            107,
+            69
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 70,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_roe",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年加权平均净资产收益率是多少？",
+          "target_pages": [
+            6
+          ],
+          "keywords": [
+            "加权平均净资产收益率",
+            "32.53"
+          ],
+          "retrieved_pages": [
+            70,
+            69,
+            68,
+            71
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 70,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_selling_expense",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "贵州茅台 2025 年销售费用是多少？",
+          "target_pages": [
+            9,
+            61
+          ],
+          "keywords": [
+            "销售费用",
+            "7,253,499,600.68"
+          ],
+          "retrieved_pages": [
+            40,
+            1,
+            128,
+            70
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 40,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "zhzh_moutai_inventory",
+          "quadrant": "zh-zh",
+          "ticker": "600519.SS",
+          "question": "截至 2025 年末贵州茅台的存货余额是多少？",
+          "target_pages": [
+            14,
+            57
+          ],
+          "keywords": [
+            "存货",
+            "61,427,421,796.18"
+          ],
+          "retrieved_pages": [
+            20,
+            122,
+            70,
+            68
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 20,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_aapl_total_assets",
+          "quadrant": "en-en",
+          "ticker": "AAPL",
+          "question": "What were Apple's total assets as of the end of fiscal 2025?",
+          "target_pages": [
+            34
+          ],
+          "keywords": [
+            "Total assets",
+            "359,241"
+          ],
+          "retrieved_pages": [
+            34,
+            52,
+            80,
+            33
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 34,
+          "top_result_is_relevant": true,
+          "retrieved_files": [
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "AAPL",
+            "AAPL",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "none"
+        },
+        {
+          "id": "enen_aapl_basic_eps",
+          "quadrant": "en-en",
+          "ticker": "AAPL",
+          "question": "What was Apple's basic earnings per share in fiscal 2025?",
+          "target_pages": [
+            39
+          ],
+          "keywords": [
+            "Basic earnings per share",
+            "7.49"
+          ],
+          "retrieved_pages": [
+            32,
+            24,
+            62,
+            39
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 32,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "AAPL",
+            "AAPL",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "chunk_or_value_boundary"
+        },
+        {
+          "id": "enen_aapl_wearables",
+          "quadrant": "en-en",
+          "ticker": "AAPL",
+          "question": "What were Apple's Wearables, Home and Accessories net sales in 2025?",
+          "target_pages": [
+            26,
+            39
+          ],
+          "keywords": [
+            "Wearables, Home and Accessories",
+            "35,686"
+          ],
+          "retrieved_pages": [
+            26,
+            39,
+            32,
+            4
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.5,
+          "top_result_page": 26,
+          "top_result_is_relevant": true,
+          "retrieved_files": [
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf",
+            "Apple_2025_Form_10-K.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "AAPL",
+            "AAPL",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "none"
+        },
+        {
+          "id": "enen_msft_total_revenue",
+          "quadrant": "en-en",
+          "ticker": "MSFT",
+          "question": "What was Microsoft's total revenue in fiscal 2026?",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Total revenue",
+            "331,839"
+          ],
+          "retrieved_pages": [
+            127,
+            126,
+            112,
+            52
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 127,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "MSFT",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_msft_operating_income",
+          "quadrant": "en-en",
+          "ticker": "MSFT",
+          "question": "What was Microsoft's operating income in fiscal 2026?",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Operating income",
+            "155,237"
+          ],
+          "retrieved_pages": [
+            52,
+            125,
+            127,
+            49
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 52,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "MSFT",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_msft_gross_margin",
+          "quadrant": "en-en",
+          "ticker": "MSFT",
+          "question": "What was Microsoft's gross margin in fiscal 2026?",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Gross margin",
+            "225,465"
+          ],
+          "retrieved_pages": [
+            53,
+            49,
+            127,
+            45
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 53,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "MSFT",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "candidate_miss"
+        },
+        {
+          "id": "enen_tencent_revenue",
+          "quadrant": "en-en",
+          "ticker": "0700.HK",
+          "question": "What were Tencent's revenues for the year ended 31 December 2025?",
+          "target_pages": [
+            4,
+            8
+          ],
+          "keywords": [
+            "Revenues",
+            "751,766"
+          ],
+          "retrieved_pages": [
+            196,
+            272,
+            5,
+            8
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 196,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "ranking"
+        },
+        {
+          "id": "enen_tencent_gross_profit",
+          "quadrant": "en-en",
+          "ticker": "0700.HK",
+          "question": "What was Tencent's gross profit for the year ended 31 December 2025?",
+          "target_pages": [
+            4,
+            8
+          ],
+          "keywords": [
+            "Gross profit",
+            "422,593"
+          ],
+          "retrieved_pages": [
+            5,
+            130,
+            272,
+            4
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 5,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "ranking"
+        },
+        {
+          "id": "zhen_msft_net_income",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软 2026 财年的净利润是多少？",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Net income",
+            "133,749"
+          ],
+          "retrieved_pages": [
+            78,
+            118,
+            54,
+            110
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 78,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 3,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_msft_rnd_expense",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软 2026 财年的研发费用是多少？",
+          "target_pages": [
+            62
+          ],
+          "keywords": [
+            "Research and development",
+            "35,562"
+          ],
+          "retrieved_pages": [
+            54,
+            53,
+            73,
+            33
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 54,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "MSFT",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 1,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_msft_total_assets",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软截至 2026 年 6 月 30 日的总资产是多少？",
+          "target_pages": [
+            64
+          ],
+          "keywords": [
+            "Total assets",
+            "758,376"
+          ],
+          "retrieved_pages": [
+            136,
+            123,
+            118,
+            127
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 136,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 2,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_msft_total_liabilities",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软截至 2026 年 6 月 30 日的负债总额是多少？",
+          "target_pages": [
+            65
+          ],
+          "keywords": [
+            "Total liabilities",
+            "315,989"
+          ],
+          "retrieved_pages": [
+            127,
+            118,
+            48,
+            136
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 127,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "600519.SS",
+            "600519.SS",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 2,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_msft_operating_cash_flow",
+          "quadrant": "zh-en",
+          "ticker": "MSFT",
+          "question": "微软 2026 财年经营活动产生的现金净额是多少？",
+          "target_pages": [
+            67
+          ],
+          "keywords": [
+            "Net cash from operations",
+            "182,935"
+          ],
+          "retrieved_pages": [
+            57,
+            66,
+            60,
+            125
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 57,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+            "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "MSFT",
+            "MSFT"
+          ],
+          "cross_ticker_source_count_unscoped": 2,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_tencent_profit_for_the_year",
+          "quadrant": "zh-en",
+          "ticker": "0700.HK",
+          "question": "腾讯 2025 年度的年度盈利是多少？",
+          "target_pages": [
+            4,
+            8
+          ],
+          "keywords": [
+            "Profit for the year",
+            "229,801"
+          ],
+          "retrieved_pages": [
+            14,
+            12,
+            8,
+            16
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 14,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 1,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "ranking"
+        },
+        {
+          "id": "zhen_tencent_profit_before_tax",
+          "quadrant": "zh-en",
+          "ticker": "0700.HK",
+          "question": "腾讯 2025 年度的除税前盈利是多少？",
+          "target_pages": [
+            4,
+            8
+          ],
+          "keywords": [
+            "Profit before income tax",
+            "277,249"
+          ],
+          "retrieved_pages": [
+            205,
+            11,
+            131,
+            237
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 205,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "AAPL",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 2,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "zhen_tencent_selling_expense",
+          "quadrant": "zh-en",
+          "ticker": "0700.HK",
+          "question": "腾讯 2025 年的销售及市场推广开支是多少？",
+          "target_pages": [
+            8
+          ],
+          "keywords": [
+            "Selling and marketing expenses",
+            "41,727"
+          ],
+          "retrieved_pages": [
+            12,
+            8,
+            16,
+            15
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 12,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf",
+            "0700HK_annual_report_2025.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "AAPL",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 1,
+          "unscoped_page_hit_at_k": true,
+          "failure_reason": "ranking"
+        },
+        {
+          "id": "enzh_moutai_total_assets",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What were Kweichow Moutai's total assets at the end of 2025?",
+          "target_pages": [
+            6
+          ],
+          "keywords": [
+            "总资产",
+            "303,834,844,021.44"
+          ],
+          "retrieved_pages": [
+            68,
+            70,
+            14,
+            69
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 68,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_equity",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What was Kweichow Moutai's equity attributable to shareholders at the end of 2025?",
+          "target_pages": [
+            6
+          ],
+          "keywords": [
+            "归属于上市公司股东的净资产",
+            "244,637,811,032.18"
+          ],
+          "retrieved_pages": [
+            68,
+            69,
+            70,
+            47
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 68,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_cash",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "How much cash on hand did Kweichow Moutai hold at the end of 2025?",
+          "target_pages": [
+            14,
+            56
+          ],
+          "keywords": [
+            "货币资金",
+            "51,690,610,946.50"
+          ],
+          "retrieved_pages": [
+            116,
+            114,
+            56,
+            85
+          ],
+          "page_hit_at_k": true,
+          "keyword_verified_hit_at_k": true,
+          "citation_page_relevance": 0.25,
+          "top_result_page": 116,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "ranking"
+        },
+        {
+          "id": "enzh_moutai_contract_liability",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What was Kweichow Moutai's contract liability balance at the end of 2025?",
+          "target_pages": [
+            58
+          ],
+          "keywords": [
+            "合同负债",
+            "8,006,739,780.94"
+          ],
+          "retrieved_pages": [
+            68,
+            70,
+            138,
+            108
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 68,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "0700.HK",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_rnd_expense",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "How much did Kweichow Moutai spend on research and development in 2025?",
+          "target_pages": [
+            9,
+            61
+          ],
+          "keywords": [
+            "研发费用",
+            "190,112,246.58"
+          ],
+          "retrieved_pages": [
+            20,
+            13,
+            73,
+            106
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 20,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "0700.HK",
+            "0700.HK",
+            "MSFT",
+            "AAPL"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_admin_expense",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What were Kweichow Moutai's general and administrative expenses in 2025?",
+          "target_pages": [
+            9,
+            61
+          ],
+          "keywords": [
+            "管理费用",
+            "8,320,061,659.66"
+          ],
+          "retrieved_pages": [
+            106,
+            14,
+            26,
+            108
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 106,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "MSFT",
+            "0700.HK",
+            "AAPL",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_cost_of_sales",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What was Kweichow Moutai's cost of sales in 2025?",
+          "target_pages": [
+            9,
+            61
+          ],
+          "keywords": [
+            "营业成本",
+            "14,892,277,570.91"
+          ],
+          "retrieved_pages": [
+            118,
+            12,
+            68,
+            106
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 118,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "AAPL",
+            "AAPL",
+            "AAPL",
+            "0700.HK"
+          ],
+          "cross_ticker_source_count_unscoped": 4,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        },
+        {
+          "id": "enzh_moutai_liquor_gross_margin",
+          "quadrant": "en-zh",
+          "ticker": "600519.SS",
+          "question": "What was the gross margin of Kweichow Moutai's liquor business in 2025?",
+          "target_pages": [
+            10
+          ],
+          "keywords": [
+            "毛利率",
+            "91.23"
+          ],
+          "retrieved_pages": [
+            16,
+            120,
+            1,
+            15
+          ],
+          "page_hit_at_k": false,
+          "keyword_verified_hit_at_k": false,
+          "citation_page_relevance": 0.0,
+          "top_result_page": 16,
+          "top_result_is_relevant": false,
+          "retrieved_files": [
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf",
+            "600519_2025_annual_report.pdf"
+          ],
+          "unscoped_tickers": [
+            "600519.SS",
+            "600519.SS",
+            "600519.SS",
+            "600519.SS"
+          ],
+          "cross_ticker_source_count_unscoped": 0,
+          "unscoped_page_hit_at_k": false,
+          "failure_reason": "cross_language_miss"
+        }
+      ]
+    }
+  }
+}

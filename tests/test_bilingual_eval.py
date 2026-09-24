@@ -63,14 +63,18 @@ def test_top_k_is_frozen_at_four(eval_set):
         bilingual_eval.run_mode("hash", eval_set, top_k=8)
 
 
-def test_failure_reason_priority_puts_cross_ticker_first():
-    base = {
-        "cross_ticker_source_count_unscoped": 2,
-        "page_hit_at_k": False,
-        "keyword_verified_hit_at_k": False,
-        "top_result_is_relevant": False,
+def test_failure_reason_uses_scoped_arm_not_unscoped_pollution():
+    """跨标的污染来自对照臂，不能顶替主因，否则会盖住"限定 ticker 也没召回"的真问题。"""
+    scoped_hit_with_unscoped_pollution = {
+        "cross_ticker_source_count_unscoped": 4,
+        "page_hit_at_k": True,
+        "keyword_verified_hit_at_k": True,
+        "top_result_is_relevant": True,
     }
-    assert bilingual_eval._failure_reason(base, {"question_lang": "zh", "doc_lang": "zh"}) == "wrong_ticker_source"
+    assert (
+        bilingual_eval._failure_reason(scoped_hit_with_unscoped_pollution, {"question_lang": "en", "doc_lang": "zh"})
+        == "none"
+    )
 
 
 def test_failure_reason_distinguishes_cross_language_and_same_language_miss():
