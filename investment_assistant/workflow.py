@@ -1,4 +1,4 @@
-﻿"""由 LangGraph 编排的可追溯投研工作流。"""
+"""由 LangGraph 编排的可追溯投研工作流。"""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from langgraph.graph import END, START, StateGraph
 
 from .llm_generation import generate_controlled_narrative
 from .market_data import fetch_financial_snapshot, fetch_market_snapshot, fetch_recent_news
+from .news_filter import filter_news_records
 from .rag import LocalResearchRAG
 from .safety import REQUIRED_DISCLAIMER, assess_risk, evaluate_retrieval, validate_report
 
@@ -22,6 +23,8 @@ class ResearchState(TypedDict, total=False):
     market_snapshot: dict[str, Any]
     financial_snapshot: dict[str, Any]
     sources: list[dict[str, Any]]
+    raw_news: list[dict[str, Any]]
+    filtered_news_available: bool
     market_model: dict[str, Any]
     scenarios: list[dict[str, str]]
     llm_result: dict[str, Any]
@@ -37,11 +40,19 @@ class ResearchState(TypedDict, total=False):
 def collect_real_data(state: ResearchState) -> ResearchState:
     snapshot = fetch_market_snapshot(state["ticker"])
     financial_snapshot = fetch_financial_snapshot(state["ticker"])
-    news = fetch_recent_news(state["ticker"])
+    raw_news = fetch_recent_news(state["ticker"])
+    filtered_news, audited_news = filter_news_records(raw_news, state["ticker"])
     rag = LocalResearchRAG()
     rag.index_local_documents()
-    rag.index_news(news)
-    return {"market_snapshot": snapshot, "financial_snapshot": financial_snapshot, "created_at": datetime.now(UTC).isoformat()}
+    rag.clear_news(state["ticker"])
+    rag.index_news(filtered_news)
+    return {
+        "market_snapshot": snapshot,
+        "financial_snapshot": financial_snapshot,
+        "raw_news": audited_news,
+        "filtered_news_available": bool(filtered_news),
+        "created_at": datetime.now(UTC).isoformat(),
+    }
 
 
 def retrieve_evidence(state: ResearchState) -> ResearchState:
@@ -133,9 +144,18 @@ def generate_report(state: ResearchState) -> ResearchState:
     source_lines = []
     if not state.get("local_material_available", True):
         source_lines.append(f"- 该标的无本地研究资料：{state['ticker']}；以下证据仅来自实时新闻或其他可用公开来源。")
+    if not state.get("filtered_news_available", True):
+        source_lines.append("- \u672a\u68c0\u7d22\u5230\u4e0e\u8be5\u6807\u7684\u76f4\u63a5\u76f8\u5173\u7684\u65b0\u95fb\u3002")
     for item in sources:
         metadata = item["metadata"]
-        source_lines.append(f"- [{item['citation']}] {metadata.get('title') or metadata.get('file_name') or metadata.get('source', '未命名来源')}；来源：{metadata.get('source', '未提供')}；发布日期：{metadata.get('published_at', '未提供')}；页码：{metadata.get('page') or '不适用'}；链接：{metadata.get('url', '未提供') or '未提供'}")
+        page = metadata.get("page") or "\u4e0d\u9002\u7528"
+        if metadata.get("source_type") == "pdf" and metadata.get("page_authority") == "generated":
+            page = f"{page}\uff08\u672c\u5730\u8f6c\u6362\u9875\u7801\uff0c\u975e\u5b98\u65b9\u5206\u9875\uff09"
+        source_lines.append(
+            f"- [{item['citation']}] {metadata.get('title') or metadata.get('file_name') or metadata.get('source', '\u672a\u547d\u540d\u6765\u6e90')}\uff1b"
+            f"\u6765\u6e90\uff1a{metadata.get('source', '\u672a\u63d0\u4f9b')}\uff1b\u53d1\u5e03\u65e5\u671f\uff1a{metadata.get('published_at', '\u672a\u63d0\u4f9b')}\uff1b"
+            f"\u9875\u7801\uff1a{page}\uff1b\u94fe\u63a5\uff1a{metadata.get('url', '\u672a\u63d0\u4f9b') or '\u672a\u63d0\u4f9b'}"
+        )
     if not source_lines:
         source_lines.append(f"- 该标的无本地研究资料：{state['ticker']}；本报告证据仅来自实时新闻或其他可用公开来源。")
 

@@ -5,6 +5,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 KNOWLEDGE_DIR = DATA_DIR / "knowledge_base"
 CHROMA_DIR = DATA_DIR / "chroma"
 REPORT_DIR = DATA_DIR / "reports"
+JOB_DIR = DATA_DIR / "jobs"
 
-for directory in (KNOWLEDGE_DIR, CHROMA_DIR, REPORT_DIR):
+for directory in (KNOWLEDGE_DIR, CHROMA_DIR, REPORT_DIR, JOB_DIR):
     directory.mkdir(parents=True, exist_ok=True)

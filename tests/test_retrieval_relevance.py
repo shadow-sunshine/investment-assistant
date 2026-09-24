@@ -68,3 +68,48 @@ def test_report_discloses_missing_local_material_and_excludes_other_ticker_docum
     assert "\u8be5\u6807\u7684\u65e0\u672c\u5730\u7814\u7a76\u8d44\u6599\uff1a600519.SS" in report
     assert "Apple_2025_Form_10-K.pdf" not in report
 
+
+
+
+def test_report_discloses_when_no_direct_news_passes_filter():
+    from investment_assistant.workflow import generate_report
+    state = {
+        "ticker": "600519.SS", "topic": "\u73b0\u91d1\u6d41", "horizon": "\u4e2d\u671f", "created_at": "2026-09-10T00:00:00+00:00",
+        "market_snapshot": {"data_available": False}, "financial_snapshot": {"data_available": False},
+        "market_model": {"state": "\u6570\u636e\u4e0d\u53ef\u7528", "risk_level": "\u672a\u77e5"}, "sources": [], "scenarios": [],
+        "llm_result": {"used": False, "reason": "\u6d4b\u8bd5"}, "local_material_available": False, "filtered_news_available": False,
+    }
+    assert "\u672a\u68c0\u7d22\u5230\u4e0e\u8be5\u6807\u7684\u76f4\u63a5\u76f8\u5173\u7684\u65b0\u95fb\u3002" in generate_report(state)["report"]
+
+
+
+def _report_state_with_pdf_source(metadata):
+    return {
+        "ticker": "MSFT", "topic": "\u73b0\u91d1\u6d41", "horizon": "\u4e2d\u671f", "created_at": "2026-09-11T00:00:00+00:00",
+        "market_snapshot": {"data_available": False}, "financial_snapshot": {"data_available": False},
+        "market_model": {"state": "\u6570\u636e\u4e0d\u53ef\u7528", "risk_level": "\u672a\u77e5"},
+        "sources": [{"citation": "S1", "metadata": metadata}], "scenarios": [],
+        "llm_result": {"used": False, "reason": "\u6d4b\u8bd5"}, "local_material_available": True,
+        "filtered_news_available": True,
+    }
+
+
+def test_generated_pdf_page_is_labelled_as_local_conversion():
+    from investment_assistant.workflow import generate_report
+    report = generate_report(_report_state_with_pdf_source({
+        "source_type": "pdf", "file_name": "MSFT_SEC_10-K.pdf", "source": "SEC EDGAR",
+        "page": "66", "page_authority": "generated", "material_kind": "official_html_converted_to_pdf",
+        "published_at": "\u672a\u63d0\u4f9b", "url": "",
+    }))["report"]
+    assert "\u9875\u7801\uff1a66\uff08\u672c\u5730\u8f6c\u6362\u9875\u7801\uff0c\u975e\u5b98\u65b9\u5206\u9875\uff09" in report
+
+
+def test_official_pdf_page_keeps_official_page_display():
+    from investment_assistant.workflow import generate_report
+    report = generate_report(_report_state_with_pdf_source({
+        "source_type": "pdf", "file_name": "Apple_2025_Form_10-K.pdf", "source": "\u672c\u5730 PDF \u7814\u7a76\u8d44\u6599",
+        "page": "39", "page_authority": "official", "material_kind": "official_pdf",
+        "published_at": "\u672a\u63d0\u4f9b", "url": "",
+    }))["report"]
+    assert "\u9875\u7801\uff1a39\uff1b" in report
+    assert "\u672c\u5730\u8f6c\u6362\u9875\u7801" not in report

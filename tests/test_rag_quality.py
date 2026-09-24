@@ -127,3 +127,23 @@ def test_cross_encoder_unavailable_records_explicit_fallback(monkeypatch, tmp_pa
 
     assert status["reranker_mode"] == "hybrid_fallback"
     assert "Cross-Encoder" in status["reranker_fallback_reason"]
+
+
+
+def test_manifest_generated_pdf_metadata_is_indexed(tmp_path: Path, monkeypatch):
+    import json
+    from investment_assistant import rag as rag_module
+
+    pdf_path = tmp_path / "MSFT_SEC_10-K_2026-06-30_official-html.pdf"
+    pdf_path.write_bytes(b"placeholder")
+    manifest_path = tmp_path / "materials_manifest.json"
+    manifest_path.write_text(json.dumps({"MSFT": {"file_name": pdf_path.name, "material_kind": "official_html_converted_to_pdf"}}), encoding="utf-8")
+    monkeypatch.setattr(rag_module, "MATERIALS_MANIFEST_PATH", manifest_path)
+    monkeypatch.setattr(rag_module, "PdfReader", lambda _: FakeReader())
+    rag = LocalResearchRAG(path=tmp_path / "chroma")
+
+    rag.index_pdf(pdf_path)
+    source = rag.search("\u81ea\u7531\u73b0\u91d1\u6d41", limit=1)[0]
+
+    assert source["metadata"]["material_kind"] == "official_html_converted_to_pdf"
+    assert source["metadata"]["page_authority"] == "generated"

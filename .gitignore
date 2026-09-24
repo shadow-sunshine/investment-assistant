@@ -1,4 +1,4 @@
-﻿.venv/
+.venv/
 __pycache__/
 .pytest_cache/
 *.pyc
@@ -16,3 +16,7 @@ data/reports/*
 !data/reports/llm_rule_comparison_20260908_110530/
 
 tmp_*
+
+# Officially downloaded materials are reproducible from the retained manifest
+data/knowledge_base/*.pdf
+!data/knowledge_base/.gitkeep

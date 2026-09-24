@@ -1,4 +1,4 @@
-﻿"""真实行情、财报、估值与新闻采集。"""
+"""真实行情、财报、估值与新闻采集。"""
 
 from __future__ import annotations
 
@@ -140,8 +140,8 @@ def fetch_financial_snapshot(ticker: str) -> dict[str, Any]:
         }
 
 
-def fetch_recent_news(ticker: str, limit: int = 5) -> list[dict[str, str]]:
-    """获取近期新闻，并保留发布/抓取时间与原始链接。"""
+def fetch_recent_news(ticker: str, limit: int = 15) -> list[dict[str, str]]:
+    """Fetch up to fifteen recent Yahoo news items with title, summary and source fields."""
     fetched_at = datetime.now(UTC).isoformat()
     normalized_ticker = ticker.upper().strip()
     try:
@@ -152,14 +152,16 @@ def fetch_recent_news(ticker: str, limit: int = 5) -> list[dict[str, str]]:
     records: list[dict[str, str]] = []
     for index, item in enumerate(raw_news[:limit], start=1):
         content = item.get("content", item)
-        title = content.get("title") or item.get("title") or "未命名新闻"
+        title = content.get("title") or item.get("title") or "\u672a\u547d\u540d\u65b0\u95fb"
+        summary = content.get("summary") or item.get("summary") or item.get("description") or ""
         url = content.get("canonicalUrl", {}).get("url") or content.get("clickThroughUrl", {}).get("url") or item.get("link") or ""
         provider = content.get("provider", {}).get("displayName") or item.get("publisher") or "Yahoo Finance"
         publish_time = content.get("pubDate") or str(item.get("providerPublishTime") or "")
         records.append({
             "id": f"news-{normalized_ticker}-{index}",
             "title": str(title),
-            "text": f"{title}\n来源：{provider}\n发布日期：{publish_time}\n链接：{url}",
+            "summary": str(summary),
+            "text": f"{title}\n\u6458\u8981\uff1a{summary}\n\u6765\u6e90\uff1a{provider}\n\u53d1\u5e03\u65e5\u671f\uff1a{publish_time}\n\u94fe\u63a5\uff1a{url}",
             "source": str(provider),
             "url": str(url),
             "published_at": str(publish_time),

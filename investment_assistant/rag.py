@@ -26,6 +26,7 @@ SEMANTIC_COLLECTION_NAME = "investment_research_sources_semantic_v2"
 HASH_EMBEDDING_DIMENSION = 384
 SEMANTIC_MODEL_NAME = os.getenv("RAG_SEMANTIC_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 TERM_MAP_PATH = DATA_DIR / "financial_term_map.json"
+MATERIALS_MANIFEST_PATH = DATA_DIR / "materials_manifest.json"
 CROSS_ENCODER_MODEL_NAME = os.getenv("RAG_RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
 CROSS_ENCODER_CANDIDATE_LIMIT = 30
 
@@ -56,6 +57,20 @@ def expand_financial_query(query: str) -> str:
     return query if not unique_variants else f"{query} {' '.join(unique_variants)}"
 
 
+def _pdf_material_metadata(file_path: Path, ticker: str) -> dict[str, str]:
+    """Return manifest provenance for downloaded material; unlisted PDFs remain official-pagination sources."""
+    material_kind = "official_pdf"
+    try:
+        manifest = json.loads(MATERIALS_MANIFEST_PATH.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        manifest = {}
+    entry = manifest.get(ticker) if isinstance(manifest, dict) else None
+    if isinstance(entry, dict) and entry.get("file_name") == file_path.name:
+        material_kind = str(entry.get("material_kind") or material_kind)
+    page_authority = "generated" if material_kind == "official_html_converted_to_pdf" else "official"
+    return {"material_kind": material_kind, "page_authority": page_authority}
+
+
 def _stable_id(prefix: str, text: str) -> str:
     digest = hashlib.sha256(text.encode("utf-8")).hexdigest()[:20]
     return f"{prefix}-{digest}"
@@ -64,9 +79,12 @@ def _stable_id(prefix: str, text: str) -> str:
 TICKER_FILENAME_ALIASES = {
     "aapl": "AAPL",
     "apple": "AAPL",
+    "msft": "MSFT",
+    "microsoft": "MSFT",
 }
 KNOWN_TICKER_CODES = {
     "600519": "600519.SS",
+    "0700": "0700.HK",
 }
 
 
@@ -218,6 +236,7 @@ class LocalResearchRAG:
     def index_pdf(self, file_path: Path) -> int:
         """逐页抽取 PDF 文本，将页码与文件名归属 ticker 写入元数据。"""
         ticker = infer_ticker_from_filename(file_path)
+        material_metadata = _pdf_material_metadata(file_path, ticker)
         try:
             reader = PdfReader(str(file_path))
             if reader.is_encrypted:
@@ -243,6 +262,7 @@ class LocalResearchRAG:
                         "published_at": "未提供",
                         "url": "",
                         "ticker": ticker,
+                        **material_metadata,
                     },
                     source_id=_stable_id("pdf", f"{file_path.resolve()}:{page_number}:{page_text}"),
                 )
@@ -275,6 +295,22 @@ class LocalResearchRAG:
                 source_id=_stable_id("file", str(file_path.resolve()) + text),
             )
         return count
+
+    def clear_news(self, ticker: str) -> int:
+        """Delete only previously indexed news for one ticker before indexing the filtered current batch."""
+        normalized_ticker = ticker.upper().strip()
+        records = self.collection.get(where={"ticker": normalized_ticker}, include=["metadatas"])
+        ids = records.get("ids", [])
+        metadatas = records.get("metadatas", [])
+        news_ids = [
+            record_id
+            for record_id, metadata in zip(ids, metadatas)
+            if str((metadata or {}).get("source_type") or "").lower() == "news"
+        ]
+        if news_ids:
+            self.collection.delete(ids=news_ids)
+        return len(news_ids)
+
 
     def index_news(self, records: list[dict[str, str]]) -> int:
         count = 0

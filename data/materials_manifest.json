@@ -1,0 +1,62 @@
+{
+  "MSFT": {
+    "ticker": "MSFT",
+    "source": "SEC EDGAR",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/msft-20260630.htm",
+    "downloaded_at": "2026-09-11T01:28:03.140672+00:00",
+    "filing_form": "10-K",
+    "filing_date": "2026-07-29",
+    "report_date": "2026-06-30",
+    "primary_document": "msft-20260630.htm",
+    "material_kind": "official_html_converted_to_pdf",
+    "conversion_note": "SEC archive has no PDF rendition; generated a searchable local PDF directly from the official SEC HTML filing.",
+    "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+    "validation": {
+      "file_size_bytes": 297878,
+      "page_count": 139,
+      "text_page_count": 139,
+      "sha256": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109"
+    }
+  },
+  "600519.SS": {
+    "ticker": "600519.SS",
+    "source": "巨潮资讯",
+    "source_url": "http://static.cninfo.com.cn/finalpage/2026-04-17/1225114741.PDF",
+    "downloaded_at": "2026-09-11T02:05:48.949046+00:00",
+    "filing_form": "annual_report",
+    "filing_date": "1776355200000",
+    "report_date": "2025",
+    "material_kind": "official_pdf",
+    "page_authority": "official",
+    "file_name": "600519_2025_annual_report.pdf",
+    "validation": {
+      "file_size_bytes": 1082847,
+      "page_count": 143,
+      "text_page_count": 143,
+      "sha256": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288"
+    },
+    "org_id": "gssh0600519",
+    "announcement_title": "贵州茅台2025年年度报告",
+    "column": "sse"
+  },
+  "0700.HK": {
+    "ticker": "0700.HK",
+    "source": "披露易",
+    "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0409/2026040901231.pdf",
+    "downloaded_at": "2026-09-11T02:08:02.360037+00:00",
+    "filing_form": "annual_report",
+    "filing_date": "09/04/2026 17:21",
+    "report_date": "2025",
+    "material_kind": "official_pdf",
+    "page_authority": "official",
+    "file_name": "0700HK_annual_report_2025.pdf",
+    "validation": {
+      "file_size_bytes": 3999857,
+      "page_count": 282,
+      "text_page_count": 282,
+      "sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98"
+    },
+    "stock_id": "7609",
+    "announcement_title": "ANNUAL REPORT 2025"
+  }
+}

@@ -1,4 +1,4 @@
-﻿"""命令行入口。"""
+"""命令行入口。"""
 
 from __future__ import annotations
 
@@ -7,9 +7,20 @@ import json
 from datetime import datetime
 
 from .config import REPORT_DIR
+from .fetch_materials import MaterialFetchError, fetch_materials
 from .rag import LocalResearchRAG
 from .safety import validate_report
 from .workflow import audit_json, run_research
+
+
+def command_fetch(ticker: str) -> int:
+    try:
+        result = fetch_materials(ticker)
+    except MaterialFetchError as exc:
+        print(f"\u6750\u6599\u6293\u53d6\u5931\u8d25\uff1a{exc}")
+        return 2
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0
 
 
 def command_index() -> int:
@@ -71,6 +82,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="可追溯智能投研助手")
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("index", help="索引 data/knowledge_base 下的本地文本和 PDF 资料")
+    fetch = subparsers.add_parser("fetch", help="\u4ece\u5bf9\u5e94\u5b98\u65b9\u4fe1\u6e90\u4e0b\u8f7d\u5e76\u7d22\u5f15\u6700\u65b0\u5e74\u62a5 PDF")
+    fetch.add_argument("--ticker", required=True, help="\u80a1\u7968\u4ee3\u7801\uff0c\u4f8b\u5982 MSFT\u3001600519.SS \u6216 0700.HK")
     research = subparsers.add_parser("research", help="获取真实数据、检索证据并生成研究简报")
     research.add_argument("--ticker", required=True, help="Yahoo Finance ticker，例如 AAPL 或 0700.HK")
     research.add_argument("--topic", required=True, help="研究主题")
@@ -80,6 +93,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.command == "index":
         return command_index()
+    if args.command == "fetch":
+        return command_fetch(args.ticker)
     if args.command == "research":
         return command_research(args.ticker, args.topic, args.horizon, args.report_mode)
     return command_evaluate()
