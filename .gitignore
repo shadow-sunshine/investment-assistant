@@ -7,6 +7,8 @@ __pycache__/
 data/chroma/
 data/evaluation_chroma/
 data/models/
+data/jobs/
+.workbuddy/
 data/api_stderr.log
 data/api_stdout.log
 
@@ -20,3 +22,17 @@ tmp_*
 # Officially downloaded materials are reproducible from the retained manifest
 data/knowledge_base/*.pdf
 !data/knowledge_base/.gitkeep
+
+# R6/R7 的身份归属、人工审核、审计与用户记忆不得随源码提交。
+data/review_records/
+data/publish_state/
+data/audit_log/
+data/watchlists.json
+data/research_memories.json
+
+# 本机评测缓存、日志和编辑器/Agent 会话记录不公开。
+.codebuddy/
+*.log
+data/evaluations/r3_chroma_tmp/
+scripts/_*.txt
+full-test-*.log

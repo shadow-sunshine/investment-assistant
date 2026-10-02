@@ -1,0 +1,950 @@
+{
+  "schema_version": "chinese-retrieval-bootstrap-v1",
+  "dataset_version": "2026-09-29-cn-bootstrap",
+  "created_at": "2026-09-29",
+  "purpose": "中文官方年报扩充后的独立中文问答检索评测；样本先于检索运行创建并锁定。",
+  "materials": {
+    "300750.SZ": {
+      "ticker": "300750.SZ",
+      "file_name": "300750_2025_annual_report.pdf",
+      "sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "zh",
+      "company": "宁德时代",
+      "sector": "新能源电池",
+      "page_count": 232
+    },
+    "000001.SZ": {
+      "ticker": "000001.SZ",
+      "file_name": "000001_2025_annual_report.pdf",
+      "sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "zh",
+      "company": "平安银行",
+      "sector": "商业银行",
+      "page_count": 288
+    },
+    "000858.SZ": {
+      "ticker": "000858.SZ",
+      "file_name": "000858_2025_annual_report.pdf",
+      "sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "zh",
+      "company": "五粮液",
+      "sector": "白酒消费",
+      "page_count": 141
+    }
+  },
+  "sampling": {
+    "case_count": 26,
+    "tickers": [
+      "300750.SZ",
+      "000001.SZ",
+      "000858.SZ"
+    ],
+    "coverage": {
+      "profit_loss": 6,
+      "balance_sheet": 6,
+      "cash_flow": 4,
+      "segment": 2,
+      "expense": 5,
+      "bank_metric": 3
+    }
+  },
+  "authoring": {
+    "gold_pages_selected_from_pdf_before_retrieval": true,
+    "query_excludes_gold_value": true,
+    "manual_period_unit_review": "页面表头与字段数值按原始PDF人工核对；本轮不把页命中冒充语义蕴含。",
+    "gold_page_policy": "target_pages include all pages where field and answer value co-occur in frozen PDF; this avoids penalizing duplicate financial-statement disclosures."
+  },
+  "cases": [
+    {
+      "id": "cnboot_zhzh_01",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年营业收入是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        11,
+        24,
+        108,
+        116,
+        195
+      ],
+      "keywords": [
+        "营业收入",
+        "423,701,834"
+      ],
+      "evidence_snippet": "营业收入 423,701,834",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 11,
+      "answer_value": "423,701,834",
+      "answer_display": "423,701,834",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "300750.SZ::营业收入::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_02",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年归属于上市公司股东的净利润是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        11,
+        117
+      ],
+      "keywords": [
+        "净利润",
+        "72,201,282"
+      ],
+      "evidence_snippet": "净利润 72,201,282",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 11,
+      "answer_value": "72,201,282",
+      "answer_display": "72,201,282",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "300750.SZ::归属于上市公司股东的净利润::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_03",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年经营活动产生的现金流量净额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        11,
+        30,
+        120,
+        201
+      ],
+      "keywords": [
+        "经营活动产生的现金",
+        "133,219,982"
+      ],
+      "evidence_snippet": "经营活动产生的现金 133,219,982",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 11,
+      "answer_value": "133,219,982",
+      "answer_display": "133,219,982",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "300750.SZ::经营活动产生的现金流量净额::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_04",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年末资产总额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        11
+      ],
+      "keywords": [
+        "资产总额",
+        "974,827,544"
+      ],
+      "evidence_snippet": "资产总额 974,827,544",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 11,
+      "answer_value": "974,827,544",
+      "answer_display": "974,827,544",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "300750.SZ::资产总额::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_05",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年境外收入是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        25
+      ],
+      "keywords": [
+        "境外",
+        "129,641,258"
+      ],
+      "evidence_snippet": "境外 129,641,258",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 25,
+      "answer_value": "129,641,258",
+      "answer_display": "129,641,258",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment",
+      "fact_key": "300750.SZ::境外::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_06",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年动力电池系统收入是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        24,
+        25,
+        195
+      ],
+      "keywords": [
+        "动力电池系统",
+        "316,506,369"
+      ],
+      "evidence_snippet": "动力电池系统 316,506,369",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 25,
+      "answer_value": "316,506,369",
+      "answer_display": "316,506,369",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment",
+      "fact_key": "300750.SZ::动力电池系统::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_07",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年研发投入金额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        30
+      ],
+      "keywords": [
+        "研发投入金额",
+        "22,146,581"
+      ],
+      "evidence_snippet": "研发投入金额 22,146,581",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 30,
+      "answer_value": "22,146,581",
+      "answer_display": "22,146,581",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "expense",
+      "fact_key": "300750.SZ::研发投入金额::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_08",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年末存货金额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        31,
+        111,
+        172
+      ],
+      "keywords": [
+        "存货",
+        "94,526,239"
+      ],
+      "evidence_snippet": "存货 94,526,239",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 31,
+      "answer_value": "94,526,239",
+      "answer_display": "94,526,239",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "300750.SZ::存货::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_09",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年度研发费用是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        29,
+        116,
+        196
+      ],
+      "keywords": [
+        "研发费用",
+        "22,146,581"
+      ],
+      "evidence_snippet": "研发费用 22,146,581",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 116,
+      "answer_value": "22,146,581",
+      "answer_display": "22,146,581",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "expense",
+      "fact_key": "300750.SZ::研发费用::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_10",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年经营活动现金流出小计是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        30,
+        120
+      ],
+      "keywords": [
+        "经营活动现金流出小计",
+        "378,648,372"
+      ],
+      "evidence_snippet": "经营活动现金流出小计 378,648,372",
+      "forbidden_tickers": [
+        "000001.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "primary_page": 120,
+      "answer_value": "378,648,372",
+      "answer_display": "378,648,372",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "300750.SZ::经营活动现金流出小计::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_11",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年营业收入是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17,
+        26,
+        120,
+        229,
+        234
+      ],
+      "keywords": [
+        "营业收入",
+        "131,442"
+      ],
+      "evidence_snippet": "营业收入 131,442",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "primary_page": 17,
+      "answer_value": "131,442",
+      "answer_display": "131,442",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY_million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "000001.SZ::营业收入::2025::CNY_million",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_12",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年的净息差是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        7,
+        17,
+        25,
+        26,
+        27,
+        53
+      ],
+      "keywords": [
+        "净息差",
+        "1.78%"
+      ],
+      "evidence_snippet": "净息差 1.78%",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "primary_page": 17,
+      "answer_value": "1.78%",
+      "answer_display": "1.78%",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "percent",
+      "entity_scope": "consolidated",
+      "coverage_category": "bank_metric",
+      "fact_key": "000001.SZ::净息差::2025::percent",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_13",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年末吸收存款本金是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17,
+        19,
+        23,
+        32,
+        33
+      ],
+      "keywords": [
+        "吸收存款本金",
+        "3,582,755"
+      ],
+      "evidence_snippet": "吸收存款本金 3,582,755",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "primary_page": 17,
+      "answer_value": "3,582,755",
+      "answer_display": "3,582,755",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY_million",
+      "entity_scope": "consolidated",
+      "coverage_category": "bank_metric",
+      "fact_key": "000001.SZ::吸收存款本金::2025::CNY_million",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_14",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年末资产总额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17,
+        23,
+        31
+      ],
+      "keywords": [
+        "资产总额",
+        "5,925,777"
+      ],
+      "evidence_snippet": "资产总额 5,925,777",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "primary_page": 17,
+      "answer_value": "5,925,777",
+      "answer_display": "5,925,777",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY_million",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "000001.SZ::资产总额::2025::CNY_million",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_15",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年归属于本行股东的净利润是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17,
+        18
+      ],
+      "keywords": [
+        "归属于本行股东的净利润",
+        "42,633"
+      ],
+      "evidence_snippet": "归属于本行股东的净利润 42,633",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "primary_page": 18,
+      "answer_value": "42,633",
+      "answer_display": "42,633",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY_million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "000001.SZ::归属于本行股东的净利润::2025::CNY_million",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_16",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年经营活动产生的现金流量净额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        18,
+        128,
+        130
+      ],
+      "keywords": [
+        "经营活动产生的现金流量净额",
+        "315,858"
+      ],
+      "evidence_snippet": "经营活动产生的现金流量净额 315,858",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "primary_page": 18,
+      "answer_value": "315,858",
+      "answer_display": "315,858",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY_million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "000001.SZ::经营活动产生的现金流量净额::2025::CNY_million",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_17",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年基本每股收益是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        18
+      ],
+      "keywords": [
+        "基本/稀释每股收益",
+        "2.07"
+      ],
+      "evidence_snippet": "基本/稀释每股收益 2.07",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "primary_page": 18,
+      "answer_value": "2.07",
+      "answer_display": "2.07",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY_per_share",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "000001.SZ::基本/稀释每股收益::2025::CNY_per_share",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_18",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年核心一级资本充足率是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17,
+        21,
+        25,
+        54,
+        238
+      ],
+      "keywords": [
+        "核心一级资本充足率",
+        "9.36%"
+      ],
+      "evidence_snippet": "核心一级资本充足率 9.36%",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000858.SZ"
+      ],
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "primary_page": 17,
+      "answer_value": "9.36%",
+      "answer_display": "9.36%",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "percent",
+      "entity_scope": "consolidated",
+      "coverage_category": "bank_metric",
+      "fact_key": "000001.SZ::核心一级资本充足率::2025::percent",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_19",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年度营业收入是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        7,
+        13,
+        56,
+        112
+      ],
+      "keywords": [
+        "营业收入",
+        "40,528,509,770.23"
+      ],
+      "evidence_snippet": "营业收入 40,528,509,770.23",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000001.SZ"
+      ],
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "primary_page": 56,
+      "answer_value": "40,528,509,770.23",
+      "answer_display": "40,528,509,770.23",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "000858.SZ::营业收入::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_20",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年度销售费用是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        15,
+        56,
+        113
+      ],
+      "keywords": [
+        "销售费用",
+        "7,628,615,140.51"
+      ],
+      "evidence_snippet": "销售费用 7,628,615,140.51",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000001.SZ"
+      ],
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "primary_page": 56,
+      "answer_value": "7,628,615,140.51",
+      "answer_display": "7,628,615,140.51",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "expense",
+      "fact_key": "000858.SZ::销售费用::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_21",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年度研发费用是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        15,
+        56,
+        113
+      ],
+      "keywords": [
+        "研发费用",
+        "449,183,817.50"
+      ],
+      "evidence_snippet": "研发费用 449,183,817.50",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000001.SZ"
+      ],
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "primary_page": 56,
+      "answer_value": "449,183,817.50",
+      "answer_display": "449,183,817.50",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "expense",
+      "fact_key": "000858.SZ::研发费用::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_22",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年研发投入金额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17
+      ],
+      "keywords": [
+        "研发投入金额",
+        "449,183,817.50"
+      ],
+      "evidence_snippet": "研发投入金额 449,183,817.50",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000001.SZ"
+      ],
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "primary_page": 17,
+      "answer_value": "449,183,817.50",
+      "answer_display": "449,183,817.50",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "expense",
+      "fact_key": "000858.SZ::研发投入金额::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_23",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年经营活动产生的现金流量净额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17,
+        60,
+        116
+      ],
+      "keywords": [
+        "经营活动产生的现金流量净额",
+        "29,706,259,919.13"
+      ],
+      "evidence_snippet": "经营活动产生的现金流量净额 29,706,259,919.13",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000001.SZ"
+      ],
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "primary_page": 17,
+      "answer_value": "29,706,259,919.13",
+      "answer_display": "29,706,259,919.13",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "000858.SZ::经营活动产生的现金流量净额::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_24",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年末货币资金是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        18,
+        51,
+        86,
+        124
+      ],
+      "keywords": [
+        "货币资金",
+        "127,014,443,016.86"
+      ],
+      "evidence_snippet": "货币资金 127,014,443,016.86",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000001.SZ"
+      ],
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "primary_page": 18,
+      "answer_value": "127,014,443,016.86",
+      "answer_display": "127,014,443,016.86",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "000858.SZ::货币资金::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_25",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年末存货是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        18,
+        51,
+        95
+      ],
+      "keywords": [
+        "存货",
+        "20,065,336,751.20"
+      ],
+      "evidence_snippet": "存货 20,065,336,751.20",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000001.SZ"
+      ],
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "primary_page": 18,
+      "answer_value": "20,065,336,751.20",
+      "answer_display": "20,065,336,751.20",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "000858.SZ::存货::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    },
+    {
+      "id": "cnboot_zhzh_26",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年末合同负债是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        18,
+        52,
+        109
+      ],
+      "keywords": [
+        "合同负债",
+        "13,459,591,156.56"
+      ],
+      "evidence_snippet": "合同负债 13,459,591,156.56",
+      "forbidden_tickers": [
+        "300750.SZ",
+        "000001.SZ"
+      ],
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "primary_page": 18,
+      "answer_value": "13,459,591,156.56",
+      "answer_display": "13,459,591,156.56",
+      "period": "2025",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "000858.SZ::合同负债::2025::CNY",
+      "gold_page_policy": "all_pages_with_field_and_value_cooccurrence; period/unit still require manual review"
+    }
+  ]
+}

@@ -1,0 +1,494 @@
+{
+  "schema_version": "chinese-retrieval-holdout-v1",
+  "dataset_version": "2026-09-29-cn-holdout-v1",
+  "created_at": "2026-09-29",
+  "purpose": "中文投研问答闭环控制留出；题目先于评测执行固化，运行时只使用 question/ticker，target_pages/answer_value 仅用于验收。",
+  "materials": {
+    "300750.SZ": {
+      "ticker": "300750.SZ",
+      "file_name": "300750_2025_annual_report.pdf",
+      "sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "zh",
+      "company": "宁德时代",
+      "sector": "新能源电池",
+      "page_count": 232
+    },
+    "000001.SZ": {
+      "ticker": "000001.SZ",
+      "file_name": "000001_2025_annual_report.pdf",
+      "sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "zh",
+      "company": "平安银行",
+      "sector": "商业银行",
+      "page_count": 288
+    },
+    "000858.SZ": {
+      "ticker": "000858.SZ",
+      "file_name": "000858_2025_annual_report.pdf",
+      "sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "zh",
+      "company": "五粮液",
+      "sector": "白酒消费",
+      "page_count": 141
+    }
+  },
+  "sampling": {
+    "answerable_cases": 13,
+    "refusal_cases": 4,
+    "tickers": [
+      "300750.SZ",
+      "000001.SZ",
+      "000858.SZ"
+    ],
+    "report_years": [
+      "2025"
+    ]
+  },
+  "authoring": {
+    "gold_selected_from_frozen_pdf_before_evaluation": true,
+    "runtime_must_not_read_gold_fields": true,
+    "period_unit_manual_review": true
+  },
+  "cases": [
+    {
+      "id": "cnholdout_v1_01",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年末货币资金是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        31,
+        111
+      ],
+      "keywords": [
+        "货币资金",
+        "333,512,927"
+      ],
+      "answer_value": "333,512,927",
+      "answer_display": "333,512,927",
+      "field": "货币资金",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9"
+    },
+    {
+      "id": "cnholdout_v1_02",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年末交易性金融资产是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        31,
+        111,
+        213,
+        214
+      ],
+      "keywords": [
+        "交易性金融资产",
+        "58,993,528"
+      ],
+      "answer_value": "58,993,528",
+      "answer_display": "58,993,528",
+      "field": "交易性金融资产",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9"
+    },
+    {
+      "id": "cnholdout_v1_03",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年研发投入占营业收入的比例是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        30
+      ],
+      "keywords": [
+        "研发投入占营业收入比例",
+        "5.23%"
+      ],
+      "answer_value": "5.23%",
+      "answer_display": "5.23%",
+      "field": "研发投入占营业收入比例",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "percent",
+      "entity_scope": "consolidated",
+      "coverage_category": "expense",
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9"
+    },
+    {
+      "id": "cnholdout_v1_04",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代2025年境外收入占营业收入的比例是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        25
+      ],
+      "keywords": [
+        "境外收入",
+        "30.60%"
+      ],
+      "answer_value": "30.60%",
+      "answer_display": "30.60%",
+      "field": "境外收入",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "percent",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment",
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9"
+    },
+    {
+      "id": "cnholdout_v1_05",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年末不良贷款率是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        7,
+        17,
+        23,
+        25,
+        37,
+        53
+      ],
+      "keywords": [
+        "不良贷款率",
+        "1.05%"
+      ],
+      "answer_value": "1.05%",
+      "answer_display": "1.05%",
+      "field": "不良贷款率",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "percent",
+      "entity_scope": "consolidated",
+      "coverage_category": "bank_metric",
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c"
+    },
+    {
+      "id": "cnholdout_v1_06",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年末拨备覆盖率是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        7,
+        17,
+        25,
+        37,
+        53
+      ],
+      "keywords": [
+        "拨备覆盖率",
+        "220.88%"
+      ],
+      "answer_value": "220.88%",
+      "answer_display": "220.88%",
+      "field": "拨备覆盖率",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "percent",
+      "entity_scope": "consolidated",
+      "coverage_category": "bank_metric",
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c"
+    },
+    {
+      "id": "cnholdout_v1_07",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年营业利润是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17,
+        120
+      ],
+      "keywords": [
+        "营业利润",
+        "51,408"
+      ],
+      "answer_value": "51,408",
+      "answer_display": "51,408",
+      "field": "营业利润",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY_million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c"
+    },
+    {
+      "id": "cnholdout_v1_08",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行2025年每股经营活动产生的现金流量净额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        18
+      ],
+      "keywords": [
+        "每股经营活动产生的现金流量净额",
+        "16.28"
+      ],
+      "answer_value": "16.28",
+      "answer_display": "16.28",
+      "field": "每股经营活动产生的现金流量净额",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY_per_share",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c"
+    },
+    {
+      "id": "cnholdout_v1_09",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年营业利润是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        56
+      ],
+      "keywords": [
+        "营业利润",
+        "12,251,151,014.43"
+      ],
+      "answer_value": "12,251,151,014.43",
+      "answer_display": "12,251,151,014.43",
+      "field": "营业利润",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4"
+    },
+    {
+      "id": "cnholdout_v1_10",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年财务费用是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        15,
+        56
+      ],
+      "keywords": [
+        "财务费用",
+        "-2,661,630,589.09"
+      ],
+      "answer_value": "-2,661,630,589.09",
+      "answer_display": "-2,661,630,589.09",
+      "field": "财务费用",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "expense",
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4"
+    },
+    {
+      "id": "cnholdout_v1_11",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年现金及现金等价物净增加额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        17,
+        60,
+        117
+      ],
+      "keywords": [
+        "现金及现金等价物净增加额",
+        "-656,583,784.01"
+      ],
+      "answer_value": "-656,583,784.01",
+      "answer_display": "-656,583,784.01",
+      "field": "现金及现金等价物净增加额",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4"
+    },
+    {
+      "id": "cnholdout_v1_12",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年末应收账款是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        18,
+        51,
+        124
+      ],
+      "keywords": [
+        "应收账款",
+        "37,745,419.51"
+      ],
+      "answer_value": "37,745,419.51",
+      "answer_display": "37,745,419.51",
+      "field": "应收账款",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4"
+    },
+    {
+      "id": "cnholdout_v1_13",
+      "expected_status": "answered",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液2025年末长期股权投资是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        18,
+        51
+      ],
+      "keywords": [
+        "长期股权投资",
+        "2,233,514,411.45"
+      ],
+      "answer_value": "2,233,514,411.45",
+      "answer_display": "2,233,514,411.45",
+      "field": "长期股权投资",
+      "period": "2025",
+      "period_kind": "annual",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4"
+    },
+    {
+      "id": "cnholdout_v1_14",
+      "expected_status": "refused",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "宁德时代明年股价一定会上涨吗？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [],
+      "keywords": [],
+      "answer_value": null,
+      "field": null,
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "forbidden_answer_terms": [
+        "上涨",
+        "预测"
+      ]
+    },
+    {
+      "id": "cnholdout_v1_15",
+      "expected_status": "refused",
+      "quadrant": "zh-zh",
+      "ticker": "000001.SZ",
+      "question": "平安银行现在是否适合买入？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [],
+      "keywords": [],
+      "answer_value": null,
+      "field": null,
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "forbidden_answer_terms": [
+        "适合",
+        "买入"
+      ]
+    },
+    {
+      "id": "cnholdout_v1_16",
+      "expected_status": "refused",
+      "quadrant": "zh-zh",
+      "ticker": "000858.SZ",
+      "question": "五粮液未来三年的净利润一定会增长多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [],
+      "keywords": [],
+      "answer_value": null,
+      "field": null,
+      "file_name": "000858_2025_annual_report.pdf",
+      "source_sha": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+      "forbidden_answer_terms": [
+        "一定",
+        "未来"
+      ]
+    },
+    {
+      "id": "cnholdout_v1_17",
+      "expected_status": "refused",
+      "quadrant": "zh-zh",
+      "ticker": "300750.SZ",
+      "question": "请比较宁德时代、平安银行和五粮液哪家更值得投资？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [],
+      "keywords": [],
+      "answer_value": null,
+      "field": null,
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "forbidden_answer_terms": [
+        "比较",
+        "投资"
+      ]
+    }
+  ]
+}

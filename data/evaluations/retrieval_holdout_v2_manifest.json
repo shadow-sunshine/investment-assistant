@@ -1,0 +1,272 @@
+{
+  "schema_version": "retrieval-holdout-v2-manifest-v1",
+  "created_at": "2026-09-28",
+  "locked": true,
+  "freeze_policy": "先完成 PDF 金标验证，随后锁定数据原始字节 SHA；后续不得依据检索结果改题、改金标或改页码。若确需勘误，应另建新版本而不覆盖本交付。",
+  "dataset_path": "data/retrieval_holdout_v2.json",
+  "dataset_sha256": "a4657d3cc87c232884f0bb66c8848be250f16399ef09af1557048d6e18d93eda",
+  "dataset_size_bytes": 192163,
+  "test_path": "tests/test_retrieval_holdout_v2.py",
+  "test_sha256": "e134a23992892ab8e349aadbff0b9c7d9ee067e902c5691ce0745a57a2e3e015",
+  "case_count": 64,
+  "quadrant_counts": {
+    "zh-zh": 16,
+    "en-en": 16,
+    "zh-en": 16,
+    "en-zh": 16
+  },
+  "ticker_counts": {
+    "600519.SS": 32,
+    "AAPL": 11,
+    "MSFT": 11,
+    "0700.HK": 10
+  },
+  "coverage": {
+    "zh-zh": {
+      "case_count": 16,
+      "tickers": {
+        "600519.SS": 16
+      },
+      "categories": {
+        "balance_sheet": 4,
+        "profit_loss": 4,
+        "cash_flow": 4,
+        "segment_expense_notes": 4
+      },
+      "primary_pdf_pages": [
+        "600519.SS:10",
+        "600519.SS:108",
+        "600519.SS:11",
+        "600519.SS:111",
+        "600519.SS:57",
+        "600519.SS:58",
+        "600519.SS:61",
+        "600519.SS:62",
+        "600519.SS:64",
+        "600519.SS:65",
+        "600519.SS:66"
+      ]
+    },
+    "en-en": {
+      "case_count": 16,
+      "tickers": {
+        "AAPL": 6,
+        "MSFT": 5,
+        "0700.HK": 5
+      },
+      "categories": {
+        "balance_sheet": 3,
+        "profit_loss": 3,
+        "cash_flow": 4,
+        "segment_expense_notes": 6
+      },
+      "primary_pdf_pages": [
+        "0700.HK:130",
+        "0700.HK:134",
+        "0700.HK:139",
+        "0700.HK:265",
+        "AAPL:25",
+        "AAPL:32",
+        "AAPL:34",
+        "AAPL:36",
+        "AAPL:39",
+        "MSFT:113",
+        "MSFT:124",
+        "MSFT:62",
+        "MSFT:64",
+        "MSFT:68"
+      ]
+    },
+    "zh-en": {
+      "case_count": 16,
+      "tickers": {
+        "AAPL": 5,
+        "MSFT": 6,
+        "0700.HK": 5
+      },
+      "categories": {
+        "balance_sheet": 3,
+        "profit_loss": 3,
+        "cash_flow": 4,
+        "segment_expense_notes": 6
+      },
+      "primary_pdf_pages": [
+        "0700.HK:130",
+        "0700.HK:132",
+        "0700.HK:140",
+        "0700.HK:199",
+        "0700.HK:265",
+        "AAPL:25",
+        "AAPL:32",
+        "AAPL:34",
+        "AAPL:36",
+        "AAPL:46",
+        "MSFT:112",
+        "MSFT:62",
+        "MSFT:65",
+        "MSFT:68",
+        "MSFT:94"
+      ]
+    },
+    "en-zh": {
+      "case_count": 16,
+      "tickers": {
+        "600519.SS": 16
+      },
+      "categories": {
+        "balance_sheet": 4,
+        "profit_loss": 4,
+        "cash_flow": 4,
+        "segment_expense_notes": 4
+      },
+      "primary_pdf_pages": [
+        "600519.SS:10",
+        "600519.SS:108",
+        "600519.SS:109",
+        "600519.SS:111",
+        "600519.SS:57",
+        "600519.SS:58",
+        "600519.SS:61",
+        "600519.SS:62",
+        "600519.SS:65",
+        "600519.SS:66"
+      ]
+    }
+  },
+  "accepted_page_bindings": 113,
+  "primary_page_bindings": 64,
+  "distinct_primary_ticker_pages": 33,
+  "excluded_same_number_page_bindings": 2,
+  "materials": {
+    "AAPL": {
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "sha256": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "report_date": "2025-09",
+      "page_authority": "official",
+      "doc_lang": "en",
+      "manifest_listed": false,
+      "note": "未收录于 materials_manifest.json（早于 fetch_materials.py 入库），sha256 于本样本集构建时计算并留存",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "page_count": 80
+    },
+    "MSFT": {
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "sha256": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "report_date": "2026-06-30",
+      "page_authority": "generated",
+      "doc_lang": "en",
+      "manifest_listed": true,
+      "note": "SEC 无 PDF 版本，由官方 HTML 本地转换；页码为本地转换页码，非官方分页；首页含 XBRL 标签噪音",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "page_count": 139
+    },
+    "600519.SS": {
+      "file_name": "600519_2025_annual_report.pdf",
+      "sha256": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "zh",
+      "manifest_listed": true,
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "page_count": 143
+    },
+    "0700.HK": {
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "en",
+      "manifest_listed": true,
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "page_count": 282
+    }
+  },
+  "legacy_exclusion_inputs": [
+    {
+      "path": "data/bilingual_eval_set.json",
+      "sha256": "8a367299a49abe836c21738c792f55e890e9c2b7cf5fcb3f0891442eb657acf5",
+      "case_count": 32
+    },
+    {
+      "path": "data/r3_holdout_eval_set_v3.json",
+      "sha256": "8da7a9c10b473c17984c954790c1c94b875d75c77eee1303f34267751665a85a",
+      "case_count": 32
+    }
+  ],
+  "novelty_audit": {
+    "legacy_questions_read": 64,
+    "normalized_duplicate_questions": 0,
+    "ticker_page_normalized_keyword_duplicates": 0,
+    "same_ticker_gold_number_reuse": 0,
+    "cross_quadrant_fact_reuse": 0,
+    "semantic_duplicate_review": "人工排除旧题的相同指标/期间事实，不因移页、改语言或改口径名词而复用旧事实。",
+    "normalization": "NFKC + casefold + 仅保留字母和数字；同时做同 ticker 数字复用补充筛查。"
+  },
+  "author_isolation": {
+    "role": "独立评测数据作者",
+    "retriever_runs": 0,
+    "project_python_modules_imported": [],
+    "implementation_files_read": [],
+    "strategy_vocabulary_read": false,
+    "retrieval_results_files_read": [],
+    "retrieval_results_used": false,
+    "historical_metrics_exposure": "初始化通用记忆查找意外显示了历史 R0/R1 汇总指标；随后立即停止查找，没有使用指标选题，也没有读取新检索策略或优化结果文件。不能宣称完全未见任何历史指标。",
+    "authoring_evidence_sources": [
+      "data/knowledge_base/Apple_2025_Form_10-K.pdf",
+      "data/knowledge_base/MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "data/knowledge_base/600519_2025_annual_report.pdf",
+      "data/knowledge_base/0700HK_annual_report_2025.pdf"
+    ]
+  },
+  "validation_before_freeze": {
+    "status": "passed",
+    "interpreter": "D:/It/Test_Project/Investment_Assistant/.venv/Scripts/python.exe",
+    "command": "python.exe -B -m pytest tests/test_retrieval_holdout_v2.py --noconftest -p no:cacheprovider -q -k \"not dataset_and_authoring_inputs_are_sha_locked\"",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+      "PYTHONIOENCODING": "utf-8"
+    },
+    "passed": 80,
+    "deselected": 1,
+    "duration_seconds": 12.65,
+    "checks": [
+      "四份冻结 PDF 的 SHA、文件名、语言及页数",
+      "64 题主证据逐字存在、标签和真实数值存在、正负号/括号匹配",
+      "113 个可接受页证据及跨页表头逐字存在；同值异事实另行说明",
+      "全文精确数值候选页均被纳入可接受页或明确排除页",
+      "两份旧题集的同问句、ticker/page/keyword、同 ticker 数字去重及内部跨语言去重",
+      "四象限规模、财务主题分层和英文多标的平衡",
+      "原文/来源/数值/正负号/单位/期间元数据/页码/标签变异均被拒绝",
+      "验证模块不导入项目检索或业务模块"
+    ],
+    "automated_period_column_validation": false,
+    "manual_period_unit_review": "逐条按报表/附注的期间与单位表头及明细列进行文本复核；保留原文凭据。仅检查表头存在不等于自动证明期间列归属或语义蕴含。"
+  },
+  "post_freeze_verification": {
+    "command": "python.exe -B -m pytest tests/test_retrieval_holdout_v2.py --noconftest -p no:cacheprovider -q",
+    "expected_test_count": 81,
+    "result_location": "本次交付最终回复；不为记录后续结果改写已锁定 manifest。"
+  },
+  "limitations": [
+    "四份冻结 PDF 中中文材料只有贵州茅台 600519.SS，因此 zh-zh/en-zh 不是中文多标的测试；不引入第五份材料补量。",
+    "英文材料每象限覆盖 AAPL/MSFT/0700.HK；两个英文材料象限合计 11/11/10，并非三个标的严格等量。",
+    "64 条为真实可构造且已证据核对的规模，不声称它是这四份报告可构造题量的上限。",
+    "页码是物理 PDF 页；微软为冻结的官方 HTML 本地转换 PDF，页码非官方原文页；部分表格跨页需结合已记录的前页表头。",
+    "所有披露内容的正确性以冻结 PDF 为边界；未联网核验披露真实性或更正公告。",
+    "这是财务数值事实检索评测，不测试开放式分析、投资建议、实时市场数据或多文档推理。",
+    "完整零指标暴露的盲作者条件未完全满足：初始化记忆查找意外显示历史 R0/R1 汇总指标，此事已披露；未读取新策略/优化结果、未据指标选题。"
+  ],
+  "handoff": "交主助手盲测；作者不执行检索。question 为查询正文，keywords/answer_value/evidence_snippet/target_pages 为离线金标，不能拼入查询或用于构造新检索策略。",
+  "write_scope": {
+    "new_files_only": [
+      "data/retrieval_holdout_v2.json",
+      "tests/test_retrieval_holdout_v2.py",
+      "data/evaluations/retrieval_holdout_v2_manifest.json"
+    ],
+    "old_files_overwritten": false,
+    "git_commit_created": false,
+    "cleanup_performed": false
+  },
+  "manifest_sha_policy": "manifest 原始字节 SHA 在最终交付回复中给出，避免自引用哈希。"
+}

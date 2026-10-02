@@ -29,16 +29,19 @@ def test_generate_list_and_get_report(monkeypatch, tmp_path):
     client = TestClient(api.app)
 
     created = client.post("/api/reports", json={"ticker": "aapl", "topic": "\u6d4b\u8bd5\u4e3b\u9898", "horizon": "\u4e2d\u671f"})
-    assert created.status_code == 200
-    assert created.json()["mode"]["label"] == "\u53d7\u63a7 LLM \u7248"
+    assert created.status_code == 409
+    assert created.json()["detail"]["delivery"]["release_status"] == "needs_review"
+    assert "report" not in created.json()["detail"]
 
     listed = client.get("/api/reports")
     assert listed.status_code == 200
     assert len(listed.json()) == 1
 
-    fetched = client.get(f"/api/reports/{created.json()['id']}")
-    assert fetched.status_code == 200
-    assert fetched.json()["sources"][0]["metadata"]["page"] == 1
+    report_id = listed.json()[0]["id"]
+    fetched = client.get(f"/api/reports/{report_id}")
+    assert fetched.status_code == 409
+    assert fetched.json()["detail"]["delivery"]["release_status"] == "needs_review"
+    assert "report" not in fetched.json()["detail"]
 
 
 def test_get_missing_report_returns_404(monkeypatch, tmp_path):
@@ -122,6 +125,7 @@ def test_upstream_ticker_validation_error_keeps_valid_request_on_workflow_path(m
 
     response = TestClient(api.app).post("/api/reports", json={"ticker": "AAPL", "topic": "\u6d4b\u8bd5\u4e3b\u9898", "horizon": "\u4e2d\u671f"})
 
-    assert response.status_code == 200
+    assert response.status_code == 409
+    assert response.json()["detail"]["delivery"]["release_status"] == "needs_review"
     assert calls["workflow"] == 1
     assert len(list(tmp_path.glob("*.md"))) == 1

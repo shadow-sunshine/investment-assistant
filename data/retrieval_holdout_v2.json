@@ -1,0 +1,4170 @@
+{
+  "schema_version": "r0-bilingual-v1",
+  "dataset_version": "retrieval-holdout-v2",
+  "created_at": "2026-09-28",
+  "purpose": "独立 PDF 原文事实作者创建的四象限新盲测；先定位原文/数值/表头，再写自然语言题目；不运行、调用或导入检索器，不以策略或结果生成金标。",
+  "quadrant_definition": {
+    "zh-zh": "中文提问 / 中文材料",
+    "en-en": "英文提问 / 英文材料",
+    "zh-en": "中文提问 / 英文材料",
+    "en-zh": "英文提问 / 中文材料"
+  },
+  "materials": {
+    "AAPL": {
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "sha256": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "report_date": "2025-09",
+      "page_authority": "official",
+      "doc_lang": "en",
+      "manifest_listed": false,
+      "note": "未收录于 materials_manifest.json（早于 fetch_materials.py 入库），sha256 于本样本集构建时计算并留存",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "page_count": 80
+    },
+    "MSFT": {
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "sha256": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "report_date": "2026-06-30",
+      "page_authority": "generated",
+      "doc_lang": "en",
+      "manifest_listed": true,
+      "note": "SEC 无 PDF 版本，由官方 HTML 本地转换；页码为本地转换页码，非官方分页；首页含 XBRL 标签噪音",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "page_count": 139
+    },
+    "600519.SS": {
+      "file_name": "600519_2025_annual_report.pdf",
+      "sha256": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "zh",
+      "manifest_listed": true,
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "page_count": 143
+    },
+    "0700.HK": {
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "report_date": "2025",
+      "page_authority": "official",
+      "doc_lang": "en",
+      "manifest_listed": true,
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "page_count": 282
+    }
+  },
+  "sampling": {
+    "target_scale": 64,
+    "achieved_scale": 64,
+    "per_quadrant": 16,
+    "coverage": {
+      "zh-zh": {
+        "case_count": 16,
+        "tickers": {
+          "600519.SS": 16
+        },
+        "categories": {
+          "balance_sheet": 4,
+          "profit_loss": 4,
+          "cash_flow": 4,
+          "segment_expense_notes": 4
+        },
+        "primary_pdf_pages": [
+          "600519.SS:10",
+          "600519.SS:108",
+          "600519.SS:11",
+          "600519.SS:111",
+          "600519.SS:57",
+          "600519.SS:58",
+          "600519.SS:61",
+          "600519.SS:62",
+          "600519.SS:64",
+          "600519.SS:65",
+          "600519.SS:66"
+        ]
+      },
+      "en-en": {
+        "case_count": 16,
+        "tickers": {
+          "AAPL": 6,
+          "MSFT": 5,
+          "0700.HK": 5
+        },
+        "categories": {
+          "balance_sheet": 3,
+          "profit_loss": 3,
+          "cash_flow": 4,
+          "segment_expense_notes": 6
+        },
+        "primary_pdf_pages": [
+          "0700.HK:130",
+          "0700.HK:134",
+          "0700.HK:139",
+          "0700.HK:265",
+          "AAPL:25",
+          "AAPL:32",
+          "AAPL:34",
+          "AAPL:36",
+          "AAPL:39",
+          "MSFT:113",
+          "MSFT:124",
+          "MSFT:62",
+          "MSFT:64",
+          "MSFT:68"
+        ]
+      },
+      "zh-en": {
+        "case_count": 16,
+        "tickers": {
+          "AAPL": 5,
+          "MSFT": 6,
+          "0700.HK": 5
+        },
+        "categories": {
+          "balance_sheet": 3,
+          "profit_loss": 3,
+          "cash_flow": 4,
+          "segment_expense_notes": 6
+        },
+        "primary_pdf_pages": [
+          "0700.HK:130",
+          "0700.HK:132",
+          "0700.HK:140",
+          "0700.HK:199",
+          "0700.HK:265",
+          "AAPL:25",
+          "AAPL:32",
+          "AAPL:34",
+          "AAPL:36",
+          "AAPL:46",
+          "MSFT:112",
+          "MSFT:62",
+          "MSFT:65",
+          "MSFT:68",
+          "MSFT:94"
+        ]
+      },
+      "en-zh": {
+        "case_count": 16,
+        "tickers": {
+          "600519.SS": 16
+        },
+        "categories": {
+          "balance_sheet": 4,
+          "profit_loss": 4,
+          "cash_flow": 4,
+          "segment_expense_notes": 4
+        },
+        "primary_pdf_pages": [
+          "600519.SS:10",
+          "600519.SS:108",
+          "600519.SS:109",
+          "600519.SS:111",
+          "600519.SS:57",
+          "600519.SS:58",
+          "600519.SS:61",
+          "600519.SS:62",
+          "600519.SS:65",
+          "600519.SS:66"
+        ]
+      }
+    },
+    "method": "按四类财务主题分层、人工基于原文选取新事实；不是随机抽样或全报告事实普查。除指标标签外使用适量自然意译，不注入答案数字或目标页。",
+    "legacy_exclusion_files": [
+      "data/bilingual_eval_set.json",
+      "data/r3_holdout_eval_set_v3.json"
+    ],
+    "legacy_question_count": 64,
+    "duplicate_policy": "NFKC 后仅保留字母及数字统一大小写；拒绝相同问句、相同 ticker/page/normalized keyword，以及同 ticker 的重复金标数字；人工排除语义相同的事实，不允许跨象限换语言复用。",
+    "acceptable_page_policy": "以当前 PDF 的 1-based 物理页为准；扫描同一精确数值在全文的出现位置，再人工检查同一指标、期间、单位、实体及口径；列出全部已确认可接受页及同值但不同事实排除页。不把仅有相同标签的页当金标，也不要求唯一页。",
+    "precision_policy": "接受与原金标精度一致的原文；未把只有四舍五入的十亿/万元叙述当作等精度金标。精确数值扫描不自动穷举改写、非无损单位转换或跨文档页。",
+    "period_unit_policy": "按 PDF 文本的报表/附注表头与明细行人工核对，保留所用表头证据；机器验证只证明原文片段、数值与身份，明确不做期间列和语义蕴含自动验证。",
+    "limitations": [
+      "四份冻结 PDF 中中文材料只有贵州茅台 600519.SS，因此 zh-zh/en-zh 不是中文多标的测试；不引入第五份材料补量。",
+      "英文材料每象限覆盖 AAPL/MSFT/0700.HK；两个英文材料象限合计 11/11/10，并非三个标的严格等量。",
+      "64 条为真实可构造且已证据核对的规模，不声称它是这四份报告可构造题量的上限。",
+      "页码是物理 PDF 页；微软为冻结的官方 HTML 本地转换 PDF，页码非官方原文页；部分表格跨页需结合已记录的前页表头。",
+      "所有披露内容的正确性以冻结 PDF 为边界；未联网核验披露真实性或更正公告。",
+      "这是财务数值事实检索评测，不测试开放式分析、投资建议、实时市场数据或多文档推理。"
+    ]
+  },
+  "author_isolation": {
+    "role": "独立评测数据作者",
+    "retriever_runs": 0,
+    "project_python_modules_imported": [],
+    "implementation_files_read": [],
+    "strategy_vocabulary_read": false,
+    "retrieval_results_files_read": [],
+    "retrieval_results_used": false,
+    "historical_metrics_exposure": "初始化通用记忆查找意外显示了历史 R0/R1 汇总指标；随后立即停止查找，没有使用指标选题，也没有读取新检索策略或优化结果文件。不能宣称完全未见任何历史指标。",
+    "authoring_evidence_sources": [
+      "data/knowledge_base/Apple_2025_Form_10-K.pdf",
+      "data/knowledge_base/MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "data/knowledge_base/600519_2025_annual_report.pdf",
+      "data/knowledge_base/0700HK_annual_report_2025.pdf"
+    ]
+  },
+  "cases": [
+    {
+      "id": "hv2_zhzh_01",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "2025 年末，贵州茅台合并报表中的应收款项融资余额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        8,
+        14,
+        57,
+        87,
+        123
+      ],
+      "keywords": [
+        "应收款项融资",
+        "4,457,064,160.16"
+      ],
+      "evidence_snippet": "应收款项融资 6 4,457,064,160.16",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 57,
+      "answer_value": "4,457,064,160.16",
+      "answer_display": "4,457,064,160.16",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "600519.SS::应收款项融资::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 56,
+          "evidence_snippet": "合并资产负债表\n2025 年 12 月 31 日\n编制单位：贵州茅台酒股份有限公司\n单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n"
+        },
+        "unit_evidence": {
+          "page": 56,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n流动资产：\n货币资金 1 51,69"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 8,
+          "evidence_snippet": "位：元 币种：人民币\n项目名称 期初余额 期末余额 当期变动 对当期利润的影响\n金额\n交易性金融资产 248,513,280.00 -248,513,280.00 265,351.99\n应收款项融资 4,457,064,160.16 4,457,064,160.16 -19,841,855.81\n其他非流动金融资产 4,028,978,995.56 4,105,141,593.22 76,162,597.66 76,162,597.66\n其他债权投",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 14,
+          "evidence_snippet": "茅台集团\n财务有限公司债务工具投资到期收回\n应收票据 1,984,407,967.50 0.66 -100.00\n主要是公司全资子公司贵州茅台酱香\n酒营销有限公司应收银行承兑汇票到\n期\n应收款项融资 4,457,064,160.16 1.47 不适用\n主要是公司全资子公司贵州茅台酱香\n酒营销有限公司拟贴现的银行承兑汇\n票\n应收账款 2,609,048.49 0.001 18,974,192.75 0.01 -86.25 主要是公司控股子公司贵州茅台",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 57,
+          "evidence_snippet": "应收款项融资 6 4,457,064,160.16",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 87,
+          "evidence_snippet": "计 2,606,610.78 2,606,610.78 91.62\n6、 应收款项融资\n(1).应收款项融资分类列示\n√适用 □不适用\n单位：元 币种：人民币\n项目 期末余额 期初余额\n银行承兑汇票 4,457,064,160.16\n合计 4,457,064,160.16\n(2).期末公司已质押的应收款项融资\n□适用 √不适用\n(3).期末公司已背书或贴现且在资产负债表日尚未到期的应收款项融资\n√适用 □不适用\n单位：元 币种：人民币\n项目 期末终",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 123,
+          "evidence_snippet": "593.22 4,105,141,593.22\n（3）衍生金融资产\n（二）其他债权投资 3,496,539,016.41 3,496,539,016.41\n（三）其他权益工具投资\n（四）应收款项融资 4,457,064,160.16 4,457,064,160.16\n持续以公允价值计量的资产\n总额 3,496,539,016.41 8,562,205,753.38 12,058,744,769.79\n2、 持续和非持续第一层次公允价值计量项目市价的",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_02",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年末发放贷款和垫款的账面价值是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        14,
+        57,
+        93
+      ],
+      "keywords": [
+        "发放贷款和垫款",
+        "1,553,536,744.78"
+      ],
+      "evidence_snippet": "发放贷款和垫款 13 1,553,536,744.78 2,381,228,475.45",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 57,
+      "answer_value": "1,553,536,744.78",
+      "answer_display": "1,553,536,744.78",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "600519.SS::发放贷款和垫款::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 56,
+          "evidence_snippet": "合并资产负债表\n2025 年 12 月 31 日\n编制单位：贵州茅台酒股份有限公司\n单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n"
+        },
+        "unit_evidence": {
+          "page": 56,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n流动资产：\n货币资金 1 51,69"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 14,
+          "evidence_snippet": "26,871,114,612.71 8.84 1,210,959,803.42 0.41 2,118.99\n主要是公司控股子公司贵州茅台集团\n财务有限公司部分债权投资将于一年\n内到期\n发放贷款和垫款 1,553,536,744.78 0.51 2,381,228,475.45 0.80 -34.76 主要是公司控股子公司贵州茅台集团\n财务有限公司收回买方信贷\n其他债权投资 3,496,539,016.41 1.15 不适用 主要是公司控股子公司贵州",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 57,
+          "evidence_snippet": "发放贷款和垫款 13 1,553,536,744.78 2,381,228,475.45",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 93,
+          "evidence_snippet": "其他 216,273.14 691,841.99\n合计 51,027,010.56 160,176,582.69\n13、 发放贷款和垫款\n单位：元 币种：人民币\n项目 期末数 期初数\n发放贷款及垫款 1,553,536,744.78 2,381,228,475.45\n项目 期末数 期初数\n贷款及垫款总额 1,600,681,593.67 2,449,756,362.00\n减：贷款减值准备 47,144,848.89 68,527,886.55\n发放",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_03",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "截至 2025 年底，贵州茅台合并口径的应付账款有多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        58,
+        102
+      ],
+      "keywords": [
+        "应付账款",
+        "4,007,309,049.87"
+      ],
+      "evidence_snippet": "应付账款 28 4,007,309,049.87 3,514,969,230.31",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 58,
+      "answer_value": "4,007,309,049.87",
+      "answer_display": "4,007,309,049.87",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "600519.SS::应付账款::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 56,
+          "evidence_snippet": "合并资产负债表\n2025 年 12 月 31 日\n编制单位：贵州茅台酒股份有限公司\n单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n"
+        },
+        "unit_evidence": {
+          "page": 56,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n流动资产：\n货币资金 1 51,69"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 58,
+          "evidence_snippet": "应付账款 28 4,007,309,049.87 3,514,969,230.31",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 102,
+          "evidence_snippet": "403,523,670.43 17,403,523,670.43 / /\n28、 应付账款\n(1).应付账款列示\n√适用 □不适用\n单位：元 币种：人民币\n项目 期末余额 期初余额\n应付货款及服务费 4,007,309,049.87 3,514,969,230.31\n合计 4,007,309,049.87 3,514,969,230.31\n29、 合同负债\n(1).合同负债情况\n√适用 □不适用\n单位：元 币种：人民币\n项目 期末余额 期初余额\n预",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_04",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年末确认了多少递延所得税资产？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        57,
+        101
+      ],
+      "keywords": [
+        "递延所得税资产",
+        "6,602,469,151.22"
+      ],
+      "evidence_snippet": "递延所得税资产 25 6,602,469,151.22 5,520,006,868.83",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 57,
+      "answer_value": "6,602,469,151.22",
+      "answer_display": "6,602,469,151.22",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "600519.SS::递延所得税资产::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 56,
+          "evidence_snippet": "合并资产负债表\n2025 年 12 月 31 日\n编制单位：贵州茅台酒股份有限公司\n单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n"
+        },
+        "unit_evidence": {
+          "page": 56,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n流动资产：\n货币资金 1 51,69"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 57,
+          "evidence_snippet": "递延所得税资产 25 6,602,469,151.22 5,520,006,868.83",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 101,
+          "evidence_snippet": ",864,971.93\n其他 2,724,423,960.96 681,105,990.26 3,204,609,594.27 801,152,398.56\n合计 26,409,876,604.84 6,602,469,151.22 22,080,027,475.30 5,520,006,868.83\n(2).未经抵销的递延所得税负债\n√适用 □不适用\n单位：元 币种：人民币\n项目\n期末余额 期初余额\n应纳税暂时性差异 递延所得税\n负债 应纳税暂时",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_05",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年合并利润表中，计入营业总收入的利息收入是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        61,
+        108
+      ],
+      "keywords": [
+        "利息收入",
+        "3,216,069,376.12"
+      ],
+      "evidence_snippet": "利息收入 45 3,216,069,376.12 3,244,917,681.91",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 61,
+      "answer_value": "3,216,069,376.12",
+      "answer_display": "3,216,069,376.12",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "600519.SS::利息收入::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "合并利润表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n一、营业总收入 172,054,171,890.91 174,144,0"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 61,
+          "evidence_snippet": "利息收入 45 3,216,069,376.12 3,244,917,681.91",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 108,
+          "evidence_snippet": "年度确认收入\n(5).重大合同变更或重大交易价格调整\n□适用 √不适用\n45、 利息收入、利息支出、手续费及佣金收入及手续费及佣金支出\n单位：元 币种：人民币\n项目 本期发生额 上期发生额\n利息收入 3,216,069,376.12 3,244,917,681.91\n手续费及佣金收入\n利息支出 175,775,959.12 105,127,802.03\n手续费及佣金支出 103,597.22 94,078.17\n46、 税金及附加\n√适用 □不适用",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_06",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年的营业总成本合计是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        61
+      ],
+      "keywords": [
+        "营业总成本",
+        "57,370,818,034.33"
+      ],
+      "evidence_snippet": "营业总成本 57,370,818,034.33 54,523,971,452.57",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 61,
+      "answer_value": "57,370,818,034.33",
+      "answer_display": "57,370,818,034.33",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "600519.SS::营业总成本::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "合并利润表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n一、营业总收入 172,054,171,890.91 174,144,0"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 61,
+          "evidence_snippet": "营业总成本 57,370,818,034.33 54,523,971,452.57",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_07",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "按合并利润表，贵州茅台 2025 年实现了多少营业利润？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "营业利润",
+        "114,808,950,164.24"
+      ],
+      "evidence_snippet": "营业利润（亏损以“－”号填列） 114,808,950,164.24 119,688,579,453.23",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 62,
+      "answer_value": "114,808,950,164.24",
+      "answer_display": "114,808,950,164.24",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "600519.SS::营业利润::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "合并利润表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n一、营业总收入 172,054,171,890.91 174,144,0"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 62,
+          "evidence_snippet": "营业利润（亏损以“－”号填列） 114,808,950,164.24 119,688,579,453.23",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_08",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年净利润中归少数股东的部分是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "少数股东损益",
+        "2,990,257,731.99"
+      ],
+      "evidence_snippet": "少数股东损益（净亏损以“-”\n号填列） 2,990,257,731.99 3,106,581,604.28",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 62,
+      "answer_value": "2,990,257,731.99",
+      "answer_display": "2,990,257,731.99",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "600519.SS::少数股东损益::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "合并利润表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n一、营业总收入 172,054,171,890.91 174,144,0"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 62,
+          "evidence_snippet": "少数股东损益（净亏损以“-”\n号填列） 2,990,257,731.99 3,106,581,604.28",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_09",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年销售商品、提供劳务实际收到多少现金？请按合并口径回答。",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        64
+      ],
+      "keywords": [
+        "销售商品、提供劳务收到的现金",
+        "183,990,403,487.80"
+      ],
+      "evidence_snippet": "销售商品、提供劳务收到的现\n金 183,990,403,487.80 182,645,203,339.89",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 64,
+      "answer_value": "183,990,403,487.80",
+      "answer_display": "183,990,403,487.80",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "600519.SS::销售商品提供劳务收到的现金::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "合并现金流量表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n一、经营活动产生的现金流量：\n销售商品、提供劳务收到的现\n金 183,990"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 64,
+          "evidence_snippet": "销售商品、提供劳务收到的现\n金 183,990,403,487.80 182,645,203,339.89",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_10",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "2025 年贵州茅台收回投资带来的现金流入是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        13,
+        65
+      ],
+      "keywords": [
+        "收回投资收到的现金",
+        "33,455,136,000.00"
+      ],
+      "evidence_snippet": "收回投资收到的现金 60(2) 33,455,136,000.00 8,550,000,000.00",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 65,
+      "answer_value": "33,455,136,000.00",
+      "answer_display": "33,455,136,000.00",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "600519.SS::收回投资收到的现金::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "合并现金流量表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n一、经营活动产生的现金流量：\n销售商品、提供劳务收到的现\n金 183,990"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 13,
+          "evidence_snippet": "增加额 -900,000,000.00 -400,000,000.00 不适用\n支付利息、手续费及佣金的现金 141,082,631.31 97,061,751.28 45.35\n收回投资收到的现金 33,455,136,000.00 8,550,000,000.00 291.29\n处置固定资产、无形资产和其他长期资\n产收回的现金净额 155,949.50 715,708.44 -78.21\n收到其他与投资活动有关的现金 24,750,303.39 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 65,
+          "evidence_snippet": "收回投资收到的现金 60(2) 33,455,136,000.00 8,550,000,000.00",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_11",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年购建固定资产、无形资产等长期资产支付了多少现金？请用合并报表口径。",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        13,
+        65
+      ],
+      "keywords": [
+        "购建固定资产、无形资产和其他长期资产支付的现金",
+        "3,127,594,916.41"
+      ],
+      "evidence_snippet": "购建固定资产、无形资产和其\n他长期资产支付的现金 3,127,594,916.41 4,678,712,053.56",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 65,
+      "answer_value": "3,127,594,916.41",
+      "answer_display": "3,127,594,916.41",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "600519.SS::购建固定资产无形资产和其他长期资产支付的现金::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "合并现金流量表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n一、经营活动产生的现金流量：\n销售商品、提供劳务收到的现\n金 183,990"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 13,
+          "evidence_snippet": ",949.50 715,708.44 -78.21\n收到其他与投资活动有关的现金 24,750,303.39 5,532,536.42 347.36\n购建固定资产、无形资产和其他长期资\n产支付的现金 3,127,594,916.41 4,678,712,053.56 -33.15\n投资支付的现金 62,097,000,000.00 5,745,136,000.00 980.86\n支付其他与筹资活动有关的现金 6,185,347,863.42 116",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 65,
+          "evidence_snippet": "购建固定资产、无形资产和其\n他长期资产支付的现金 3,127,594,916.41 4,678,712,053.56",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_12",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "按合并现金流量表，贵州茅台 2025 年末的现金及现金等价物余额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        66,
+        116
+      ],
+      "keywords": [
+        "期末现金及现金等价物余额",
+        "126,425,609,447.72"
+      ],
+      "evidence_snippet": "期末现金及现金等价物余额 126,425,609,447.72 169,970,089,257.83",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 66,
+      "answer_value": "126,425,609,447.72",
+      "answer_display": "126,425,609,447.72",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "600519.SS::期末现金及现金等价物余额::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "合并现金流量表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n一、经营活动产生的现金流量：\n销售商品、提供劳务收到的现\n金 183,990"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 66,
+          "evidence_snippet": "期末现金及现金等价物余额 126,425,609,447.72 169,970,089,257.83",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 116,
+          "evidence_snippet": "80,000.00 5,672,140,000.00\n其中：三个月内到期的债券投资\n买入返售金融资产 8,472,980,000.00 5,672,140,000.00\n三、期末现金及现金等价物余额 126,425,609,447.72 169,970,089,257.83\n其中：母公司或集团内子公司使用\n受限制的现金和现金等价物\n(5).使用范围受限但仍作为现金和现金等价物列示的情况\n□适用 √不适用\n(6).不属于现金及现金等价物的货币资金\n√适用",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_13",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年其他系列酒产品带来的营业收入是多少？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        10,
+        18,
+        107
+      ],
+      "keywords": [
+        "其他系列酒",
+        "22,274,678,707.16"
+      ],
+      "evidence_snippet": "其他系列酒 22,274,678,707.16 5,321,142,314.05 76.11 -9.76 7.11 减少 3.76 个百",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 10,
+      "answer_value": "22,274,678,707.16",
+      "answer_display": "22,274,678,707.16",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "600519.SS::其他系列酒::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 10,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n10 / 143\n财务费用变动原因说明：主要是本期商业银行存款利率下降、规模及结构变化。\n经营活动产生的现金流量净额变动原因说明：主要是本期公司控股子公司贵州茅台集团财务有限\n公"
+        },
+        "unit_evidence": {
+          "page": 10,
+          "evidence_snippet": "单位：元 币种：人民币\n主营业务分行业情况\n分行业 营业收入 营业成本 毛利率（%） 营业收入比上\n年增减（%）\n营业成本比上\n年增减（%）"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 10,
+          "evidence_snippet": "其他系列酒 22,274,678,707.16 5,321,142,314.05 76.11 -9.76 7.11 减少 3.76 个百",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 18,
+          "evidence_snippet": " 营业成本 同比（%） 毛利率\n（%） 同比（%）\n按产品档次\n茅台酒 146,499,906,480.49 0.39 9,484,757,825.54 9.50 93.53 -0.53\n其他系列酒 22,274,678,707.16 -9.76 5,321,142,314.05 7.11 76.11 -3.76\n小计 168,774,585,187.65 -1.08 14,805,900,139.59 8.63 91.23 -0.78\n按销售渠道\n",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 107,
+          "evidence_snippet": "营业成本的分解信息\n√适用 □不适用\n单位：元 币种：人民币\n合同分类 合计\n营业收入 营业成本\n商品类型\n茅台酒 146,499,906,480.49 9,484,757,825.54\n其他系列酒 22,274,678,707.16 5,321,142,314.05\n其他业务 63,517,327.14 86,377,431.32\n按经营地区分类\n国内 163,979,986,160.04 14,489,319,958.16\n国外 4,858,11",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_14",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年酒类成本构成中，直接材料花了多少钱？",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        11
+      ],
+      "keywords": [
+        "直接材料",
+        "7,607,858,939.76"
+      ],
+      "evidence_snippet": "直接材料 7,607,858,939.76 51.38 6,895,320,421.92 50.59 10.33",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 11,
+      "answer_value": "7,607,858,939.76",
+      "answer_display": "7,607,858,939.76",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "600519.SS::直接材料::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 11,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n11 / 143\n(4). 成本分析表\n单位：元 币种：人民币\n分行业情况\n分行业 成本构成项\n目 本期金额 本期占总成\n本比例(%) 上年同期金额\n上年同期占\n总成本比例\n(%"
+        },
+        "unit_evidence": {
+          "page": 11,
+          "evidence_snippet": "单位：元 币种：人民币\n分行业情况\n分行业 成本构成项\n目 本期金额 本期占总成\n本比例(%) 上年同期金额\n上年同期占\n总成本比例\n(%)"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 11,
+          "evidence_snippet": "直接材料 7,607,858,939.76 51.38 6,895,320,421.92 50.59 10.33",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_15",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年销售费用里的广告宣传费是多少？不是现金流量表中的支付额。",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        108
+      ],
+      "keywords": [
+        "广告宣传费",
+        "1,828,728,796.18"
+      ],
+      "evidence_snippet": "广告宣传费 1,828,728,796.18 1,335,427,201.68",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 108,
+      "answer_value": "1,828,728,796.18",
+      "answer_display": "1,828,728,796.18",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "600519.SS::广告宣传费::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 108,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n108 / 143\n(4).分摊至剩余履约义务的说明\n√适用 □不适用\n本报告期末已签订合同、但尚未履行或尚未履行完毕的履约义务所对应的收入金额为\n8,006,739,780.9"
+        },
+        "unit_evidence": {
+          "page": 108,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 本期发生额 上期发生额\n利息收入 3,216,069,376.12 3,244,917,681.91\n手续费及"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 108,
+          "evidence_snippet": "广告宣传费 1,828,728,796.18 1,335,427,201.68",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhzh_16",
+      "quadrant": "zh-zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年所得税费用明细中的递延所得税费用是多少？请保留正负号。",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "target_pages": [
+        111
+      ],
+      "keywords": [
+        "递延所得税费用",
+        "-1,107,356,722.05"
+      ],
+      "evidence_snippet": "递延所得税费用 -1,107,356,722.05 -849,694,742.54",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 111,
+      "answer_value": "-1,107,356,722.05",
+      "answer_display": "-1,107,356,722.05",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "600519.SS::递延所得税费用::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 111,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n111 / 143\n55、 资产处置收益\n√适用 □不适用\n单位：元 币种：人民币\n项目 本期发生额 上期发生额\n固定资产处置利得或损失 11,354.65 83,259.79\n"
+        },
+        "unit_evidence": {
+          "page": 111,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 本期发生额 上期发生额\n固定资产处置利得或损失 11,354.65 83,259.79\n使用权资产处置利得或损"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 111,
+          "evidence_snippet": "递延所得税费用 -1,107,356,722.05 -849,694,742.54",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_01",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What was the carrying amount of Kweichow Moutai's other non-current financial assets on its consolidated balance sheet at year-end 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        8,
+        19,
+        41,
+        57,
+        95,
+        96,
+        123
+      ],
+      "keywords": [
+        "其他非流动金融资产",
+        "4,105,141,593.22"
+      ],
+      "evidence_snippet": "其他非流动金融资产 17 4,105,141,593.22 4,028,978,995.56",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 57,
+      "answer_value": "4,105,141,593.22",
+      "answer_display": "4,105,141,593.22",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "600519.SS::其他非流动金融资产::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 56,
+          "evidence_snippet": "合并资产负债表\n2025 年 12 月 31 日\n编制单位：贵州茅台酒股份有限公司\n单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n"
+        },
+        "unit_evidence": {
+          "page": 56,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n流动资产：\n货币资金 1 51,69"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 8,
+          "evidence_snippet": "80.00 265,351.99\n应收款项融资 4,457,064,160.16 4,457,064,160.16 -19,841,855.81\n其他非流动金融资产 4,028,978,995.56 4,105,141,593.22 76,162,597.66 76,162,597.66\n其他债权投资 3,496,539,016.41 3,496,539,016.41 8,316,130.29\n合计 4,277,492,275.56 12,058,",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 19,
+          "evidence_snippet": " 3,929,067,150.00 702,911,294.28 33,064,416.41 3,496,539,016.41\n私募基金 4,028,978,995.56 76,162,597.66 4,105,141,593.22\n合计 4,277,492,275.56 76,427,949.65 -11,459,887.71 3,929,067,150.00 702,911,294.28 33,064,416.41 7,601,680,609.",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 41,
+          "evidence_snippet": "产业发展基\n金合伙企业（有限合伙） 2,020,186,963.01 59,060,844.43 2,079,247,807.44\n合计 4,028,978,995.56 76,162,597.66 4,105,141,593.22\n3、 临时公告未披露的事项\n□适用 √不适用\n(四)关联债权债务往来\n1、 已在临时公告披露且后续实施无进展或变化的事项\n□适用 √不适用",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 57,
+          "evidence_snippet": "其他非流动金融资产 17 4,105,141,593.22 4,028,978,995.56",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 95,
+          "evidence_snippet": "\n(2).长期股权投资的减值测试情况\n□适用 √不适用\n17、 其他非流动金融资产\n√适用 □不适用\n单位：元 币种：人民币\n项目 期末余额 期初余额\n以公允价值计量且其变动计入当期损\n益的金融资产 4,105,141,593.22 4,028,978,995.56\n其中：权益工具投资 4,105,141,593.22 4,028,978,995.56\n合计 4,105,141,593.22 4,028,978,995.56",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 96,
+          "evidence_snippet": "合伙） 2,025,893,785.78 2,008,792,032.55\n茅台金石（贵州）产业发展基金合伙企业（有限合伙） 2,079,247,807.44 2,020,186,963.01\n合计 4,105,141,593.22 4,028,978,995.56\n18、 投资性房地产\n投资性房地产计量模式\n(1).采用成本计量模式的投资性房地产\n单位：元 币种：人民币\n项目 房屋、建筑物 土地使用权 在建工程 合计\n一、账面原值\n1.期初余额 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 123,
+          "evidence_snippet": " □不适用\n单位：元 币种：人民币\n项目\n期末公允价值\n第一层次公允\n价值计量\n第二层次公允价值\n计量\n第三层次公允价值\n计量 合计\n一、持续的公允价值计量\n（一）交易性金融资产其他\n非流动金融资产 4,105,141,593.22 4,105,141,593.22\n1.以公允价值计量且变动计\n入当期损益的金融资产 4,105,141,593.22 4,105,141,593.22\n（1）债务工具投资\n（2）权益工具投资 4,105,141,593",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [
+        {
+          "page": 59,
+          "reason": "母公司资产负债表；金额相同但不是题目要求的合并口径。",
+          "evidence_snippet": "2,720,777.52\n非流动资产：\n债权投资\n其他债权投资\n长期应收款\n长期股权投资 3 1,757,717,461.22 1,610,535,587.55\n其他权益工具投资\n其他非流动金融资产 4,105,141,593.22 4,028,978,995.56\n投资性房地产 10,330,819.85 15,234,907.71\n固定资产 22,091,749,459.36 21,442,589,371.19\n在建工程 2,431,674,6"
+        }
+      ],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_02",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "How much did Kweichow Moutai report in intangible assets on its consolidated balance sheet at the end of 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        57,
+        100
+      ],
+      "keywords": [
+        "无形资产",
+        "8,685,618,688.56"
+      ],
+      "evidence_snippet": "无形资产 22 8,685,618,688.56 8,850,205,831.00",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 57,
+      "answer_value": "8,685,618,688.56",
+      "answer_display": "8,685,618,688.56",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "600519.SS::无形资产::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 56,
+          "evidence_snippet": "合并资产负债表\n2025 年 12 月 31 日\n编制单位：贵州茅台酒股份有限公司\n单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n"
+        },
+        "unit_evidence": {
+          "page": 56,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n流动资产：\n货币资金 1 51,69"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 57,
+          "evidence_snippet": "无形资产 22 8,685,618,688.56 8,850,205,831.00",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 100,
+          "evidence_snippet": "\n三、减值准备\n1.期初余额\n2.本期增加金额\n（1）计提\n3.本期减少金额\n（1）处置\n4.期末余额\n四、账面价值\n1.期末账面价值 8,331,374,051.46 354,244,637.10 8,685,618,688.56\n2.期初账面价值 8,519,294,720.59 330,911,110.41 8,850,205,831.00\n本期末通过公司内部研发形成的无形资产占无形资产余额的比例是3.76%\n(2).确认为无形资产的数据资源",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_03",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What employee compensation remained payable by Kweichow Moutai at year-end 2025, on a consolidated basis?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        58,
+        103
+      ],
+      "keywords": [
+        "应付职工薪酬",
+        "5,523,447,166.50"
+      ],
+      "evidence_snippet": "应付职工薪酬 31 5,523,447,166.50 5,824,371,399.07",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 58,
+      "answer_value": "5,523,447,166.50",
+      "answer_display": "5,523,447,166.50",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "600519.SS::应付职工薪酬::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 56,
+          "evidence_snippet": "合并资产负债表\n2025 年 12 月 31 日\n编制单位：贵州茅台酒股份有限公司\n单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n"
+        },
+        "unit_evidence": {
+          "page": 56,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n流动资产：\n货币资金 1 51,69"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 58,
+          "evidence_snippet": "应付职工薪酬 31 5,523,447,166.50 5,824,371,399.07",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 103,
+          "evidence_snippet": "010.42 31,289,654.12 54,184.32\n四、一年内到期的其他福利\n合计 5,824,371,399.07 15,213,535,076.52 15,514,459,309.09 5,523,447,166.50\n(2).短期薪酬列示\n√适用 □不适用\n单位：元 币种:人民币\n项目 期初余额 本期增加 本期减少 期末余额\n一、工资、奖金、津贴和补贴 5,680,082,736.47 10,556,640,004.55 10,76",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_04",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What was Kweichow Moutai's non-current lease liability balance at the end of 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        14,
+        58,
+        105
+      ],
+      "keywords": [
+        "租赁负债",
+        "189,504,942.77"
+      ],
+      "evidence_snippet": "租赁负债 36 189,504,942.77 313,906,415.76",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 58,
+      "answer_value": "189,504,942.77",
+      "answer_display": "189,504,942.77",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "600519.SS::租赁负债::2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 56,
+          "evidence_snippet": "合并资产负债表\n2025 年 12 月 31 日\n编制单位：贵州茅台酒股份有限公司\n单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n"
+        },
+        "unit_evidence": {
+          "page": 56,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年 12 月 31 日 2024 年 12 月 31 日\n流动资产：\n货币资金 1 51,69"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 14,
+          "evidence_snippet": "00\n主要是公司控股子公司贵州茅台酒销\n售有限公司部分租赁资产终止租赁\n一年内到期的非\n流动负债 44,206,237.05 0.01 111,951,112.20 0.04 -60.51\n租赁负债 189,504,942.77 0.06 313,906,415.76 0.11 -39.63\n资本公积 1,577,095.18 0.001 1,374,964,415.72 0.46 -99.89 主要是本期公司回购股票注销调整股\n本溢价\n库存股",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 58,
+          "evidence_snippet": "租赁负债 36 189,504,942.77 313,906,415.76",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 105,
+          "evidence_snippet": "222,693,799.51\n合计 994,959,710.24 1,222,693,799.51\n36、 租赁负债\n√适用 □不适用\n单位：元 币种：人民币\n项目 期末余额 期初余额\n长期租赁负债 189,504,942.77 313,906,415.76\n合计 189,504,942.77 313,906,415.76\n37、 股本\n√适用 □不适用\n单位：元 币种：人民币\n期初余额\n本次变动增减（+、-）\n期末余额发行\n新股\n送\n股\n公积",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_05",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "How much did Kweichow Moutai recognise in taxes and surcharges, excluding income tax, in 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        61,
+        108
+      ],
+      "keywords": [
+        "税金及附加",
+        "27,354,227,684.88"
+      ],
+      "evidence_snippet": "税金及附加 46 27,354,227,684.88 26,926,161,474.99",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 61,
+      "answer_value": "27,354,227,684.88",
+      "answer_display": "27,354,227,684.88",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "600519.SS::税金及附加::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "合并利润表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n一、营业总收入 172,054,171,890.91 174,144,0"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 61,
+          "evidence_snippet": "税金及附加 46 27,354,227,684.88 26,926,161,474.99",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 108,
+          "evidence_snippet": "26.87\n印花税 161,508,700.97 170,845,116.75\n环境保护税 221,661.41 245,602.04\n其他 5,165,526.36 5,130,284.41\n合计 27,354,227,684.88 26,926,161,474.99\n47、 销售费用\n√适用 □不适用\n单位：元 币种：人民币\n项目 本期发生额 上期发生额\n广告宣传费 1,828,728,796.18 1,335,427,201.68\n市场推广及服",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_06",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What non-operating income did Kweichow Moutai recognise in its consolidated income statement for 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        62,
+        111
+      ],
+      "keywords": [
+        "营业外收入",
+        "74,947,039.70"
+      ],
+      "evidence_snippet": "营业外收入 56 74,947,039.70 70,936,575.97",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 62,
+      "answer_value": "74,947,039.70",
+      "answer_display": "74,947,039.70",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "600519.SS::营业外收入::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "合并利润表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n一、营业总收入 172,054,171,890.91 174,144,0"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 62,
+          "evidence_snippet": "营业外收入 56 74,947,039.70 70,936,575.97",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 111,
+          "evidence_snippet": "政府补助\n罚款及赔款利得 69,136,646.69 63,971,462.96 69,136,646.69\n其他 5,711,690.34 6,119,764.34 5,711,690.34\n合计 74,947,039.70 70,936,575.97 74,947,039.70\n57、 营业外支出\n√适用 □不适用\n单位：元 币种：人民币\n项目 本期发生额 上期发生额 计入当期非经常性损益\n的金额\n非流动资产处置损失合计 5,589,91",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_07",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What were Kweichow Moutai's non-operating expenses for 2025 on a consolidated basis?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        62,
+        111
+      ],
+      "keywords": [
+        "营业外支出",
+        "128,635,598.86"
+      ],
+      "evidence_snippet": "营业外支出 57 128,635,598.86 120,937,834.74",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 62,
+      "answer_value": "128,635,598.86",
+      "answer_display": "128,635,598.86",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "600519.SS::营业外支出::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "合并利润表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n一、营业总收入 172,054,171,890.91 174,144,0"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 62,
+          "evidence_snippet": "营业外支出 57 128,635,598.86 120,937,834.74",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 111,
+          "evidence_snippet": "外捐赠 121,441,700.00 100,437,930.44 121,441,700.00\n罚款支出\n其他 1,603,984.72 12,367,221.76 1,603,984.72\n合计 128,635,598.86 120,937,834.74 128,635,598.86\n58、 所得税费用\n(1).所得税费用表\n√适用 □不适用\n单位：元 币种：人民币\n项目 本期发生额 上期发生额\n当期所得税费用 30,552,293,493",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_08",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What other operating income did Kweichow Moutai report separately from revenue in its consolidated income statement for 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        61,
+        110
+      ],
+      "keywords": [
+        "其他收益",
+        "28,531,529.30"
+      ],
+      "evidence_snippet": "其他收益 51 28,531,529.30 21,229,466.81",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 61,
+      "answer_value": "28,531,529.30",
+      "answer_display": "28,531,529.30",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "600519.SS::其他收益::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "合并利润表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025 年度 2024 年度\n一、营业总收入 172,054,171,890.91 174,144,0"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 61,
+          "evidence_snippet": "其他收益 51 28,531,529.30 21,229,466.81",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 110,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n110 / 143\n其他 7,138,800.00 2,395,600.72\n合计 28,531,529.30 21,229,466.81\n52、 投资收益\n√适用 □不适用\n单位：元 币种：人民币\n项目 本期发生额 上期发生额\n权益法核算的长期股权投资收益 181,873.67\n处置长期股权投资产生的投资收益\n交易性金融资产在",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_09",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "How much cash did Kweichow Moutai pay to and on behalf of employees in 2025, according to its consolidated cash flow statement?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        65
+      ],
+      "keywords": [
+        "支付给职工及为职工支付的现金",
+        "15,473,458,699.70"
+      ],
+      "evidence_snippet": "支付给职工及为职工支付的\n现金 15,473,458,699.70 15,352,541,000.17",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 65,
+      "answer_value": "15,473,458,699.70",
+      "answer_display": "15,473,458,699.70",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "600519.SS::支付给职工及为职工支付的现金::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "合并现金流量表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n一、经营活动产生的现金流量：\n销售商品、提供劳务收到的现\n金 183,990"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 65,
+          "evidence_snippet": "支付给职工及为职工支付的\n现金 15,473,458,699.70 15,352,541,000.17",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_10",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "How much cash did Kweichow Moutai pay for taxes and fees during 2025 on a consolidated basis?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        65
+      ],
+      "keywords": [
+        "支付的各项税费",
+        "77,430,597,986.28"
+      ],
+      "evidence_snippet": "支付的各项税费 77,430,597,986.28 77,055,621,533.11",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 65,
+      "answer_value": "77,430,597,986.28",
+      "answer_display": "77,430,597,986.28",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "600519.SS::支付的各项税费::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "合并现金流量表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n一、经营活动产生的现金流量：\n销售商品、提供劳务收到的现\n金 183,990"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 65,
+          "evidence_snippet": "支付的各项税费 77,430,597,986.28 77,055,621,533.11",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_11",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What was Kweichow Moutai's cash outlay for investments in 2025, excluding purchases of fixed and intangible assets?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        13,
+        65
+      ],
+      "keywords": [
+        "投资支付的现金",
+        "62,097,000,000.00"
+      ],
+      "evidence_snippet": "投资支付的现金 60(2) 62,097,000,000.00 5,745,136,000.00",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 65,
+      "answer_value": "62,097,000,000.00",
+      "answer_display": "62,097,000,000.00",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "600519.SS::投资支付的现金::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "合并现金流量表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n一、经营活动产生的现金流量：\n销售商品、提供劳务收到的现\n金 183,990"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 13,
+          "evidence_snippet": "03.39 5,532,536.42 347.36\n购建固定资产、无形资产和其他长期资\n产支付的现金 3,127,594,916.41 4,678,712,053.56 -33.15\n投资支付的现金 62,097,000,000.00 5,745,136,000.00 980.86\n支付其他与筹资活动有关的现金 6,185,347,863.42 116,478,781.87 5,210.28\n汇率变动对现金及现金等价物的影响 2,295,358.30",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 65,
+          "evidence_snippet": "投资支付的现金 60(2) 62,097,000,000.00 5,745,136,000.00",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_12",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "How much cash did Kweichow Moutai use to distribute dividends or profits and pay interest in 2025, on a consolidated basis?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        66
+      ],
+      "keywords": [
+        "分配股利、利润或偿付利息支付的现金",
+        "67,241,733,345.45"
+      ],
+      "evidence_snippet": "分配股利、利润或偿付利息支\n付的现金 67,241,733,345.45 70,951,027,702.94",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 66,
+      "answer_value": "67,241,733,345.45",
+      "answer_display": "67,241,733,345.45",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "600519.SS::分配股利利润或偿付利息支付的现金::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "合并现金流量表\n2025 年 1—12 月\n单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 附注 2025年度 2024年度\n一、经营活动产生的现金流量：\n销售商品、提供劳务收到的现\n金 183,990"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 66,
+          "evidence_snippet": "分配股利、利润或偿付利息支\n付的现金 67,241,733,345.45 70,951,027,702.94",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [
+        {
+          "page": 68,
+          "reason": "合并权益变动表的利润分配/对所有者分配额；不是现金支付事实。",
+          "evidence_snippet": "-6,120,578,572.09\n（三）利润分配 8,530,534,196.57 -73,202,333,474.52 -64,671,799,277.95 -2,569,934,067.50 -67,241,733,345.45\n1．提取盈余公积 8,530,534,196.57 -8,530,534,196.57\n2．提取一般风险准备\n3．对所有者（或股东）\n的分配 -64,671,799,277.95 -64,671,799,277.95 "
+        }
+      ],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_13",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "How much revenue came from Kweichow Moutai's direct-sales channel in 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        10,
+        18
+      ],
+      "keywords": [
+        "直销",
+        "84,543,031,854.63"
+      ],
+      "evidence_snippet": "直销 84,543,031,854.63 4,579,568,698.41 94.58 12.96 31.07 减少 0.75 个百",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 10,
+      "answer_value": "84,543,031,854.63",
+      "answer_display": "84,543,031,854.63",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "600519.SS::直销::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 10,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n10 / 143\n财务费用变动原因说明：主要是本期商业银行存款利率下降、规模及结构变化。\n经营活动产生的现金流量净额变动原因说明：主要是本期公司控股子公司贵州茅台集团财务有限\n公"
+        },
+        "unit_evidence": {
+          "page": 10,
+          "evidence_snippet": "单位：元 币种：人民币\n主营业务分行业情况\n分行业 营业收入 营业成本 毛利率（%） 营业收入比上\n年增减（%）\n营业成本比上\n年增减（%）"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 10,
+          "evidence_snippet": "直销 84,543,031,854.63 4,579,568,698.41 94.58 12.96 31.07 减少 0.75 个百",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 18,
+          "evidence_snippet": "0,139.59 8.63 91.23 -0.78\n按销售渠道\n批发代理 84,231,553,333.02 -12.05 10,226,331,441.18 0.89 87.86 -1.56\n直销 84,543,031,854.63 12.96 4,579,568,698.41 31.07 94.58 -0.75\n小计 168,774,585,187.65 -1.08 14,805,900,139.59 8.63 91.23 -0.78\n按地区分部",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_14",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What urban maintenance and construction tax expense did Kweichow Moutai recognise in 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        108
+      ],
+      "keywords": [
+        "城市维护建设税",
+        "2,959,588,304.88"
+      ],
+      "evidence_snippet": "城市维护建设税 2,959,588,304.88 2,922,754,987.86",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 108,
+      "answer_value": "2,959,588,304.88",
+      "answer_display": "2,959,588,304.88",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "600519.SS::城市维护建设税::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 108,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n108 / 143\n(4).分摊至剩余履约义务的说明\n√适用 □不适用\n本报告期末已签订合同、但尚未履行或尚未履行完毕的履约义务所对应的收入金额为\n8,006,739,780.9"
+        },
+        "unit_evidence": {
+          "page": 108,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 本期发生额 上期发生额\n利息收入 3,216,069,376.12 3,244,917,681.91\n手续费及"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 108,
+          "evidence_snippet": "城市维护建设税 2,959,588,304.88 2,922,754,987.86",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_15",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "How much did Kweichow Moutai recognise in trademark licensing fees within administrative expenses for 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        109,
+        127
+      ],
+      "keywords": [
+        "商标许可使用费",
+        "2,480,898,552.03"
+      ],
+      "evidence_snippet": "商标许可使用费 2,480,898,552.03 2,466,052,249.25",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 109,
+      "answer_value": "2,480,898,552.03",
+      "answer_display": "2,480,898,552.03",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "600519.SS::商标许可使用费::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 109,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n109 / 143\n单位：元 币种：人民币\n项目 本期发生额 上期发生额\n职工薪酬费用 2,804,105,074.93 3,697,487,910.65\n商标许可使用费 2,4"
+        },
+        "unit_evidence": {
+          "page": 109,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 本期发生额 上期发生额\n职工薪酬费用 2,804,105,074.93 3,697,487,910.65\n商标"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 109,
+          "evidence_snippet": "商标许可使用费 2,480,898,552.03 2,466,052,249.25",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 127,
+          "evidence_snippet": "购销商品、提供和接受劳务的关联交易\n采购商品/接受劳务情况表\n√适用 □不适用\n单位：元 币种：人民币\n关联方 关联交易内容 本期发生额 上期发生额\n中国贵州茅台酒厂（集团）有限责任公司 商标使用权 2,480,898,552.03 2,466,052,249.25\n贵州茅台酒厂（集团）物流有限责任公司 货物运输服务 269,083,492.65 242,909,426.03\n珠海经济特区龙狮瓶盖有限公司 购买商品 358,017,678.79 3",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enzh_16",
+      "quadrant": "en-zh",
+      "ticker": "600519.SS",
+      "question": "What amount of external donations did Kweichow Moutai include in non-operating expenses for 2025?",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "target_pages": [
+        111
+      ],
+      "keywords": [
+        "对外捐赠",
+        "121,441,700.00"
+      ],
+      "evidence_snippet": "对外捐赠 121,441,700.00 100,437,930.44 121,441,700.00",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ],
+      "file_name": "600519_2025_annual_report.pdf",
+      "source_sha": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "primary_page": 111,
+      "answer_value": "121,441,700.00",
+      "answer_display": "121,441,700.00",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "600519.SS::对外捐赠::2025-01-01/2025-12-31::CNY",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 111,
+          "evidence_snippet": "贵州茅台酒股份有限公司2025 年年度报告\n111 / 143\n55、 资产处置收益\n√适用 □不适用\n单位：元 币种：人民币\n项目 本期发生额 上期发生额\n固定资产处置利得或损失 11,354.65 83,259.79\n"
+        },
+        "unit_evidence": {
+          "page": 111,
+          "evidence_snippet": "单位：元 币种：人民币\n项目 本期发生额 上期发生额\n固定资产处置利得或损失 11,354.65 83,259.79\n使用权资产处置利得或损"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 111,
+          "evidence_snippet": "对外捐赠 121,441,700.00 100,437,930.44 121,441,700.00",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_01",
+      "quadrant": "en-en",
+      "ticker": "AAPL",
+      "question": "What was Apple's net accounts receivable balance at the end of fiscal 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        34
+      ],
+      "keywords": [
+        "Accounts receivable, net",
+        "39,777"
+      ],
+      "evidence_snippet": "Accounts receivable, net  39,777  33,410 ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 34,
+      "answer_value": "39,777",
+      "answer_display": "39,777",
+      "period": "2025-09-27",
+      "period_kind": "as_of",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "AAPL::accountsreceivablenet::2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 34,
+          "evidence_snippet": "CONSOLIDATED BALANCE SHEETS\n(In millions, except number of shares, which are reflected in thousands, and par value)\nSeptember 27,\n2025\nSeptember 28,\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 34,
+          "evidence_snippet": "Apple Inc.\nCONSOLIDATED BALANCE SHEETS\n(In millions, except number of shares, which are reflected in thousands, and par value)\nSeptember 27"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 34,
+          "evidence_snippet": "Accounts receivable, net  39,777  33,410 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_02",
+      "quadrant": "en-en",
+      "ticker": "AAPL",
+      "question": "How much did Apple spend on selling, general and administrative expenses in fiscal 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        27,
+        32
+      ],
+      "keywords": [
+        "Selling, general and administrative",
+        "27,601"
+      ],
+      "evidence_snippet": "Selling, general and administrative  27,601  26,097  24,932 ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 32,
+      "answer_value": "27,601",
+      "answer_display": "27,601",
+      "period": "FY2025 ended 2025-09-27",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "AAPL::sellinggeneralandadministrative::FY2025 ended 2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 32,
+          "evidence_snippet": "CONSOLIDATED STATEMENTS OF OPERATIONS\n(In millions, except number of shares, which are reflected in thousands, and per-share amounts)\nYears ended\nSeptember 27,\n2025\nSeptember 28,\n2024\nSeptember 30,\n2023\n"
+        },
+        "unit_evidence": {
+          "page": 32,
+          "evidence_snippet": ".\nCONSOLIDATED STATEMENTS OF OPERATIONS\n(In millions, except number of shares, which are reflected in thousands, and per-share amounts)\nYear"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 27,
+          "evidence_snippet": "370  5 % $ 29,915 \nPercentage of total net sales  8%  8%  8% \nSelling, general and administrative $ 27,601  6 % $ 26,097  5 % $ 24,932 \nPercentage of total net sales  7%  7%  7% \nTotal operating expenses $ 62,151  8 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 32,
+          "evidence_snippet": "Selling, general and administrative  27,601  26,097  24,932 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_03",
+      "quadrant": "en-en",
+      "ticker": "AAPL",
+      "question": "How much cash did Apple use to buy back common stock in fiscal 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        36
+      ],
+      "keywords": [
+        "Repurchases of common stock",
+        "(90,711)"
+      ],
+      "evidence_snippet": "Repurchases of common stock  (90,711)  (94,949)  (77,550) ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 36,
+      "answer_value": "(90,711)",
+      "answer_display": "(90,711)",
+      "period": "FY2025 ended 2025-09-27",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "AAPL::repurchasesofcommonstock::FY2025 ended 2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 36,
+          "evidence_snippet": "CONSOLIDATED STATEMENTS OF CASH FLOWS\n(In millions)\nYears ended\nSeptember 27,\n2025\nSeptember 28,\n2024\nSeptember 30,\n2023\n"
+        },
+        "unit_evidence": {
+          "page": 36,
+          "evidence_snippet": ".\nCONSOLIDATED STATEMENTS OF CASH FLOWS\n(In millions)\nYears ended\nSeptember 27,\n2025\nSeptember 28,\n2024\nSeptember 30,\n2023\nCash, cash equiva"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 36,
+          "evidence_snippet": "Repurchases of common stock  (90,711)  (94,949)  (77,550) ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_04",
+      "quadrant": "en-en",
+      "ticker": "AAPL",
+      "question": "What was Apple's net cash payment for income taxes in fiscal 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        36
+      ],
+      "keywords": [
+        "Cash paid for income taxes, net",
+        "43,369"
+      ],
+      "evidence_snippet": "Cash paid for income taxes, net $ 43,369 $ 26,102 $ 18,679 ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 36,
+      "answer_value": "43,369",
+      "answer_display": "43,369",
+      "period": "FY2025 ended 2025-09-27",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "AAPL::cashpaidforincometaxesnet::FY2025 ended 2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 36,
+          "evidence_snippet": "CONSOLIDATED STATEMENTS OF CASH FLOWS\n(In millions)\nYears ended\nSeptember 27,\n2025\nSeptember 28,\n2024\nSeptember 30,\n2023\n"
+        },
+        "unit_evidence": {
+          "page": 36,
+          "evidence_snippet": ".\nCONSOLIDATED STATEMENTS OF CASH FLOWS\n(In millions)\nYears ended\nSeptember 27,\n2025\nSeptember 28,\n2024\nSeptember 30,\n2023\nCash, cash equiva"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 36,
+          "evidence_snippet": "Cash paid for income taxes, net $ 43,369 $ 26,102 $ 18,679 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_05",
+      "quadrant": "en-en",
+      "ticker": "AAPL",
+      "question": "What were the net sales of Apple's Europe segment in fiscal 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        25,
+        50
+      ],
+      "keywords": [
+        "Europe",
+        "111,032"
+      ],
+      "evidence_snippet": "Europe  111,032  10 %  101,328  7 %  94,294 ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 25,
+      "answer_value": "111,032",
+      "answer_display": "111,032",
+      "period": "FY2025 ended 2025-09-27",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "AAPL::europe::FY2025 ended 2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 25,
+          "evidence_snippet": "The following table shows net sales by reportable segment for 2025, 2024 and 2023 (dollars in millions):\n2025 Change 2024 Change 2023\n"
+        },
+        "unit_evidence": {
+          "page": 25,
+          "evidence_snippet": "ortable segment for 2025, 2024 and 2023 (dollars in millions):\n2025 Change 2024 Change 2023\nAmericas $ 178,353  7 % $ 167,045  3 % $ 162,560"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 25,
+          "evidence_snippet": "Europe  111,032  10 %  101,328  7 %  94,294 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 50,
+          "evidence_snippet": "2025\nAmericas Europe\nGreater\nChina Japan\nRest of\nAsia Pacific Corporate Total\nNet sales $ 178,353 $ 111,032 $ 64,377 $ 28,703 $ 33,696 $ — $ 416,161 \nCost of sales  (95,699)  (58,617)  (35,141)  (13,779)  (17,724)  — ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_06",
+      "quadrant": "en-en",
+      "ticker": "AAPL",
+      "question": "What was Apple's total deferred revenue balance at the end of fiscal 2025, including current and non-current amounts?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        39
+      ],
+      "keywords": [
+        "total deferred revenue",
+        "13.7",
+        "billion"
+      ],
+      "evidence_snippet": "As of September 27, 2025 and September 28, 2024, the Company had total deferred revenue of $13.7 billion and $12.8 billion, \nrespectively. ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 39,
+      "answer_value": "13.7",
+      "answer_display": "13.7",
+      "period": "2025-09-27",
+      "period_kind": "as_of",
+      "unit": "USD billion",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "AAPL::totaldeferredrevenue::2025-09-27::USD billion",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 39,
+          "evidence_snippet": "As of September 27, 2025 and September 28, 2024, the Company had total deferred revenue of $13.7 billion and $12.8 billion, \nrespectively. "
+        },
+        "unit_evidence": {
+          "page": 39,
+          "evidence_snippet": "As of September 27, 2025 and September 28, 2024, the Company had total deferred revenue of $13.7 billion and $12.8 billion, \nrespectively. "
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 39,
+          "evidence_snippet": "As of September 27, 2025 and September 28, 2024, the Company had total deferred revenue of $13.7 billion and $12.8 billion, \nrespectively. ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_01",
+      "quadrant": "zh-en",
+      "ticker": "AAPL",
+      "question": "苹果 2025 财年末尚未偿还的商业票据余额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        34
+      ],
+      "keywords": [
+        "Commercial paper",
+        "7,979"
+      ],
+      "evidence_snippet": "Commercial paper  7,979  9,967 ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 34,
+      "answer_value": "7,979",
+      "answer_display": "7,979",
+      "period": "2025-09-27",
+      "period_kind": "as_of",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "AAPL::commercialpaper::2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 34,
+          "evidence_snippet": "CONSOLIDATED BALANCE SHEETS\n(In millions, except number of shares, which are reflected in thousands, and par value)\nSeptember 27,\n2025\nSeptember 28,\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 34,
+          "evidence_snippet": "Apple Inc.\nCONSOLIDATED BALANCE SHEETS\n(In millions, except number of shares, which are reflected in thousands, and par value)\nSeptember 27"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 34,
+          "evidence_snippet": "Commercial paper  7,979  9,967 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_02",
+      "quadrant": "zh-en",
+      "ticker": "AAPL",
+      "question": "苹果 2025 财年服务业务对应的销售成本是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Services",
+        "26,844",
+        "Cost of sales"
+      ],
+      "evidence_snippet": "Cost of sales:\n   Products  194,116  185,233  189,282 \n   Services  26,844  25,119  24,855 ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 32,
+      "answer_value": "26,844",
+      "answer_display": "26,844",
+      "period": "FY2025 ended 2025-09-27",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "AAPL::services::FY2025 ended 2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 32,
+          "evidence_snippet": "CONSOLIDATED STATEMENTS OF OPERATIONS\n(In millions, except number of shares, which are reflected in thousands, and per-share amounts)\nYears ended\nSeptember 27,\n2025\nSeptember 28,\n2024\nSeptember 30,\n2023\n"
+        },
+        "unit_evidence": {
+          "page": 32,
+          "evidence_snippet": ".\nCONSOLIDATED STATEMENTS OF OPERATIONS\n(In millions, except number of shares, which are reflected in thousands, and per-share amounts)\nYear"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 32,
+          "evidence_snippet": "Cost of sales:\n   Products  194,116  185,233  189,282 \n   Services  26,844  25,119  24,855 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_03",
+      "quadrant": "zh-en",
+      "ticker": "AAPL",
+      "question": "苹果 2025 财年为购置物业、厂房和设备支付了多少现金？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        36
+      ],
+      "keywords": [
+        "Payments for acquisition of property, plant and equipment",
+        "(12,715)"
+      ],
+      "evidence_snippet": "Payments for acquisition of property, plant and equipment  (12,715)  (9,447)  (10,959) ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 36,
+      "answer_value": "(12,715)",
+      "answer_display": "(12,715)",
+      "period": "FY2025 ended 2025-09-27",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "AAPL::paymentsforacquisitionofpropertyplantandequipment::FY2025 ended 2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 36,
+          "evidence_snippet": "CONSOLIDATED STATEMENTS OF CASH FLOWS\n(In millions)\nYears ended\nSeptember 27,\n2025\nSeptember 28,\n2024\nSeptember 30,\n2023\n"
+        },
+        "unit_evidence": {
+          "page": 36,
+          "evidence_snippet": ".\nCONSOLIDATED STATEMENTS OF CASH FLOWS\n(In millions)\nYears ended\nSeptember 27,\n2025\nSeptember 28,\n2024\nSeptember 30,\n2023\nCash, cash equiva"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 36,
+          "evidence_snippet": "Payments for acquisition of property, plant and equipment  (12,715)  (9,447)  (10,959) ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_04",
+      "quadrant": "zh-en",
+      "ticker": "AAPL",
+      "question": "苹果 2025 财年大中华区贡献了多少净销售额？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        25,
+        50,
+        51
+      ],
+      "keywords": [
+        "Greater China",
+        "64,377"
+      ],
+      "evidence_snippet": "Greater China  64,377  (4) %  66,952  (8) %  72,559 ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 25,
+      "answer_value": "64,377",
+      "answer_display": "64,377",
+      "period": "FY2025 ended 2025-09-27",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "AAPL::greaterchina::FY2025 ended 2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 25,
+          "evidence_snippet": "The following table shows net sales by reportable segment for 2025, 2024 and 2023 (dollars in millions):\n2025 Change 2024 Change 2023\n"
+        },
+        "unit_evidence": {
+          "page": 25,
+          "evidence_snippet": "ortable segment for 2025, 2024 and 2023 (dollars in millions):\n2025 Change 2024 Change 2023\nAmericas $ 178,353  7 % $ 167,045  3 % $ 162,560"
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 25,
+          "evidence_snippet": "Greater China  64,377  (4) %  66,952  (8) %  72,559 ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 50,
+          "evidence_snippet": "cas Europe\nGreater\nChina Japan\nRest of\nAsia Pacific Corporate Total\nNet sales $ 178,353 $ 111,032 $ 64,377 $ 28,703 $ 33,696 $ — $ 416,161 \nCost of sales  (95,699)  (58,617)  (35,141)  (13,779)  (17,724)  —  (220,960",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 51,
+          "evidence_snippet": "g countries (in millions):\n2025 2024 2023\nNet sales:\nU.S. $ 151,790 $ 142,196 $ 138,573 \nChina (1)  64,377  66,952  72,559 \nOther countries  199,994  181,887  172,153 \nTotal net sales $ 416,161 $ 391,035 $ 383,285 \n2",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_05",
+      "quadrant": "zh-en",
+      "ticker": "AAPL",
+      "question": "截至 2025 财年末，苹果尚未开始的租赁涉及多少固定付款义务？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        46
+      ],
+      "keywords": [
+        "fixed payment obligations under additional leases",
+        "523"
+      ],
+      "evidence_snippet": "As of September 27, 2025 , the Company had $523 million of fixed payment obligations under additional leases, primarily for \ncorporate facilities and retail space, that had not yet commenced. ",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "source_sha": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "primary_page": 46,
+      "answer_value": "523",
+      "answer_display": "523",
+      "period": "2025-09-27",
+      "period_kind": "as_of",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "AAPL::fixedpaymentobligationsunderadditionalleases::2025-09-27::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 46,
+          "evidence_snippet": "As of September 27, 2025 , the Company had $523 million of fixed payment obligations under additional leases, primarily for \ncorporate facilities and retail space, that had not yet commenced. "
+        },
+        "unit_evidence": {
+          "page": 46,
+          "evidence_snippet": "As of September 27, 2025 , the Company had $523 million of fixed payment obligations under additional leases, primarily for \ncorporate facilities and retail space, that had not yet commenced. "
+        },
+        "column_interpretation": "2025 财年列或明确截至 2025-09-27 的叙述；地域表按所询地域列读取。"
+      },
+      "page_evidence": [
+        {
+          "page": 46,
+          "evidence_snippet": "As of September 27, 2025 , the Company had $523 million of fixed payment obligations under additional leases, primarily for \ncorporate facilities and retail space, that had not yet commenced. ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_07",
+      "quadrant": "en-en",
+      "ticker": "MSFT",
+      "question": "What was Microsoft's net property and equipment balance at 30 June 2026?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        64,
+        94
+      ],
+      "keywords": [
+        "Property and equipment, net of accumulated depreciation",
+        "313,076"
+      ],
+      "evidence_snippet": "Property and equipment, net of accumulated depreciation of\n$\n118,691\nand $\n93,653\n313,076",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 64,
+      "answer_value": "313,076",
+      "answer_display": "313,076",
+      "period": "2026-06-30",
+      "period_kind": "as_of",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "MSFT::propertyandequipmentnetofaccumulateddepreciation::2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "BALANCE\nSHEETS\n(In millions)\nJune 30,\n2026\n2025\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "notes.\n51\nPART II\nItem 8\nBALANCE\nSHEETS\n(In millions)\nJune 30,\n2026\n2025\nAssets\nCurrent assets:\nCash and cash equivalents\n$\n20,935\n$\n30,242\n"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 64,
+          "evidence_snippet": "Property and equipment, net of accumulated depreciation of\n$\n118,691\nand $\n93,653\n313,076",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 94,
+          "evidence_snippet": "0\n6,407\nTotal, at cost\n431,767\n298,619\nAccumulated depreciation\n(\n118,691\n)\n(\n93,653\n)\nTotal, net\n$\n313,076\n$\n204,966\nDuring fiscal years 2026, 2025, and 2024, depreciation expense was $\n34.3\nbillion, $\n22.0\nbillion, ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_08",
+      "quadrant": "en-en",
+      "ticker": "MSFT",
+      "question": "What net other income or expense did Microsoft report for fiscal 2026?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        55,
+        56,
+        62,
+        78
+      ],
+      "keywords": [
+        "Other income (expense), net",
+        "10,697"
+      ],
+      "evidence_snippet": "Other income (expense), net\n10,697",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 62,
+      "answer_value": "10,697",
+      "answer_display": "10,697",
+      "period": "FY2026 ended 2026-06-30",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "MSFT::otherincomeexpensenet::FY2026 ended 2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "INC\nOME STATEMENTS\n(In millions, except per share amounts)\nYear Ended June 30,\n2026\n2025\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "ges in relevant market rates or prices:\n(In millions)\nRisk Categories\nHypothetical Change\nJune 30,\n2026\nImpact\nForeign currency – Revenue\n10"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 55,
+          "evidence_snippet": "\nNet gains (losses) on foreign currency remeasurements\n(527\n)\n171\nOther, net\n4,722\n(4,725\n)\nTotal\n$\n10,697\n$\n(4,901\n)\nWe use derivative instruments to manage risks related to foreign currencies, interest rates, equit",
+          "verification": "跨页表续行的 GAAP 其他收支净额；与前页标签及期间列合读。",
+          "context_pages": [
+            {
+              "page": 54,
+              "evidence_snippet": "ions, except percentages)\n2026\n2025\nPercentage\nChange\nSales and marketing\n$\n26,710\n$\n25,654\n4%\nAs a percent of revenue\n8%\n9%\n(1)ppt\nSales and marketing expenses include payroll, stock-based compensation expense, employee benefits, and other headcount-related expenses\nassociated with sales and marketing personnel, and the costs of advertising, promotions, trade shows, seminars, and other programs.\nFiscal Year 2026 Compared with Fiscal Year 2025\nSales and marketing expenses increased $1.1 billion or 4% driven by investments in commercial sales and higher Copilot advertising expenses.\nGeneral and Administrative\n(In millions, except percentages)\n2026\n2025\nPercentage\nChange\nGeneral and administrative\n$\n7,956\n$\n7,223\n10%\nAs a percent of revenue\n2%\n3%\n(1)ppt\nGeneral and administrative expenses include payroll, employee benefits, stock-based compensation expense, and other headcount-related\nexpenses associated with finance, legal, facilities, certain human resources and other administrative personnel, certain taxes, and legal and other\nadministrative fees.\n40\nPART II\nItem 7\nFiscal Year 2026 Compared with Fiscal Year 2025\nGeneral and administrative expenses increased $733 million or 10% driven by higher legal expenses and gains on divestitures in the prior period.\nOTHER INCOME (EXPENSE), NET\nThe components of other income (expense), net were as follows:\n(In millions)\nYear Ended June 30,\n2026\n2025\nInterest and dividends income\n$\n3,301\n$\n2,647\nInterest expense\n(3,051\n)\n(2,385\n)\nNet recognized gains (losses) on investments\n4,385\n(349\n)\n",
+              "reason": "数值为上一页已标注的其他收支净额表格续行，不是下方非 GAAP 调整额。"
+            }
+          ]
+        },
+        {
+          "page": 56,
+          "evidence_snippet": "10,697\n$\n(4,901\n)\n$\n(1,646\n)\n318%\n(198)%\nNet (gains) losses from investments in OpenAI\n(6,530\n)\n4,763\n1,482\n(237)%\n2",
+          "verification": "跨页表续行的 GAAP 其他收支净额；与前页标签及期间列合读。",
+          "context_pages": [
+            {
+              "page": 55,
+              "evidence_snippet": "26, we believe our\nallowances for income tax contingencies are adequate. We disagree with the proposed adjustments and will vigorously contest the NOPAs\nthrough the IRS’s administrative appeals office and, if necessary, judicial proceedings.\nWe are subject to income tax in many jurisdictions outside the U.S., some of which are currently under audit by local tax authorities. The\nresolution of these audits is not expected to be material to our consolidated financial statements. Our operations in Ireland remain subject to\nexamination for tax years 2021 and thereafter.\nNON-GAAP FINANCIAL MEASURES\nAdjusted other income (expense), net, adjusted net income, and adjusted diluted EPS are non-GAAP financial measures which exclude net\n(gains) losses from investments in OpenAI. We believe these non-GAAP measures aid investors by providing additional insight into our financial\nperformance and help clarify trends affecting our business. For comparability of reporting, management considers non-GAAP measures in\nconjunction with GAAP financial results in evaluating business performance. These non-GAAP financial measures presented should not be\nconsidered a substitute for, or superior to, the measures of financial performance prepared in accordance with GAAP.\nThe following table reconciles our financial results reported in accordance with GAAP to non-GAAP financial results:\n(In millions, except percentages\nand per share amounts)\n2026\n2025\n2024\nPercentage\nChange 2026 Versus 2025\nPercentage\nChange 2025 Versus 2024\nOther income (expense), net\n$\n",
+              "reason": "数值为上一页已标注的其他收支净额表格续行，不是下方非 GAAP 调整额。"
+            }
+          ]
+        },
+        {
+          "page": 62,
+          "evidence_snippet": "Other income (expense), net\n10,697",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 78,
+          "evidence_snippet": "10,697\n$\n(\n4,901\n)\n$\n(\n1,646\n)\nOther income (expense), net included $\n6.5\nbillion of net gains, $\n4.8\nbillion of net",
+          "verification": "跨页表续行的 GAAP 其他收支净额；与前页标签及期间列合读。",
+          "context_pages": [
+            {
+              "page": 77,
+              "evidence_snippet": "$\n13.70\n$\n11.86\nDiluted (A/C)\n$\n17.95\n$\n13.64\n$\n11.80\nAnti-dilutive stock-based awards excluded from the calculations of diluted EPS were immaterial during the periods presented.\nNOTE 3 — OTHER INCOME (EXPENSE), NET\nThe components of other income (expense), net were as follows:\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\nInterest and dividends income\n$\n3,301\n$\n2,647\n$\n3,157\nInterest expense\n(\n3,051\n)\n(\n2,385\n)\n(\n2,935\n)\nNet recognized gains (losses) on investments\n4,385\n(\n349\n)\n(\n118\n)\nNet gains (losses) on derivatives\n1,867\n(\n260\n)\n(\n187\n)\nNet gains (losses) on foreign currency remeasurements\n(\n527\n)\n171\n(\n244\n)\nOther, net\n4,722\n(\n4,725\n)\n(\n1,319\n)\nTotal\n$\n",
+              "reason": "数值为上一页已标注的其他收支净额表格续行，不是下方非 GAAP 调整额。"
+            }
+          ]
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_09",
+      "quadrant": "en-en",
+      "ticker": "MSFT",
+      "question": "How much cash did Microsoft pay in common stock dividends during fiscal 2026?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        68
+      ],
+      "keywords": [
+        "Common stock cash dividends paid",
+        "26,445"
+      ],
+      "evidence_snippet": "Common stock cash dividends paid\n(\n26,445\n)\n(\n24,082\n)\n(\n21,771\n)\n",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 68,
+      "answer_value": "26,445",
+      "answer_display": "(26,445)",
+      "period": "FY2026 ended 2026-06-30",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "MSFT::commonstockcashdividendspaid::FY2026 ended 2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 66,
+          "evidence_snippet": "CASH FLOWS S\nTATEMENTS\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 66,
+          "evidence_snippet": "2\nPART II\nItem 8\nCASH FLOWS S\nTATEMENTS\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\nOperations\nNet income\n$\n133,749\n$\n101,832\n$\n88,136\n"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 68,
+          "evidence_snippet": "Common stock cash dividends paid\n(\n26,445\n)\n(\n24,082\n)\n(\n21,771\n)\n",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_10",
+      "quadrant": "en-en",
+      "ticker": "MSFT",
+      "question": "What revenue did Microsoft's Productivity and Business Processes segment earn in fiscal 2026?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        51,
+        124
+      ],
+      "keywords": [
+        "Productivity and Business Processes",
+        "139,996",
+        "Revenue"
+      ],
+      "evidence_snippet": "Productivity and Business Processes\nRevenue\n$\n139,996",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 124,
+      "answer_value": "139,996",
+      "answer_display": "139,996",
+      "period": "FY2026 ended 2026-06-30",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "MSFT::productivityandbusinessprocesses::FY2026 ended 2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 124,
+          "evidence_snippet": "(In millions)\nYear Ended June 30,\n2026\n2025\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 124,
+          "evidence_snippet": "s follows during the periods presented:\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\nProductivity and Business Processes\nRevenue\n$\n139,9"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 51,
+          "evidence_snippet": "ions, except percentages)\n2026\n2025\nPercentage\nChange\nProductivity and Business Processes\nRevenue\n$\n139,996\n$\n120,810\n16%\nCost of revenue\n25,017\n22,422\n12%\nOperating expenses\n31,100\n28,615\n9%\nOperating income\n$\n83,879",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 124,
+          "evidence_snippet": "Productivity and Business Processes\nRevenue\n$\n139,996",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_11",
+      "quadrant": "en-en",
+      "ticker": "MSFT",
+      "question": "What was Microsoft's total finance lease cost in fiscal 2026?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        113
+      ],
+      "keywords": [
+        "Total finance lease cost",
+        "7,950"
+      ],
+      "evidence_snippet": "Total finance lease cost\n$\n7,950",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 113,
+      "answer_value": "7,950",
+      "answer_display": "7,950",
+      "period": "FY2026 ended 2026-06-30",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "MSFT::totalfinanceleasecost::FY2026 ended 2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 112,
+          "evidence_snippet": "The components of lease expense were as follows:\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 112,
+          "evidence_snippet": "rned revenue by segment was as follows:\n(In millions)\nJune 30,\n2026\n2025\nProductivity and Business Processes\n$\n57,936\n$\n50,567\nIntelligent C"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 113,
+          "evidence_snippet": "Total finance lease cost\n$\n7,950",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_06",
+      "quadrant": "zh-en",
+      "ticker": "MSFT",
+      "question": "微软截至 2026 年 6 月底的应计员工薪酬负债是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        65
+      ],
+      "keywords": [
+        "Accrued compensation",
+        "14,945"
+      ],
+      "evidence_snippet": "Accrued compensation\n14,945",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 65,
+      "answer_value": "14,945",
+      "answer_display": "14,945",
+      "period": "2026-06-30",
+      "period_kind": "as_of",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "MSFT::accruedcompensation::2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 64,
+          "evidence_snippet": "BALANCE\nSHEETS\n(In millions)\nJune 30,\n2026\n2025\n"
+        },
+        "unit_evidence": {
+          "page": 64,
+          "evidence_snippet": "notes.\n51\nPART II\nItem 8\nBALANCE\nSHEETS\n(In millions)\nJune 30,\n2026\n2025\nAssets\nCurrent assets:\nCash and cash equivalents\n$\n20,935\n$\n30,242\n"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 65,
+          "evidence_snippet": "Accrued compensation\n14,945",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_07",
+      "quadrant": "zh-en",
+      "ticker": "MSFT",
+      "question": "微软 2026 财年来自产品销售的收入是多少？不包括服务及其他收入。",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "Product",
+        "64,696"
+      ],
+      "evidence_snippet": "Product\n$\n64,696",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 62,
+      "answer_value": "64,696",
+      "answer_display": "64,696",
+      "period": "FY2026 ended 2026-06-30",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "MSFT::product::FY2026 ended 2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 61,
+          "evidence_snippet": "INC\nOME STATEMENTS\n(In millions, except per share amounts)\nYear Ended June 30,\n2026\n2025\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 61,
+          "evidence_snippet": "ges in relevant market rates or prices:\n(In millions)\nRisk Categories\nHypothetical Change\nJune 30,\n2026\nImpact\nForeign currency – Revenue\n10"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 62,
+          "evidence_snippet": "Product\n$\n64,696",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_08",
+      "quadrant": "zh-en",
+      "ticker": "MSFT",
+      "question": "微软 2026 财年收购公司（扣除取得现金和剥离业务）以及购买无形和其他资产的现金支出合计是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        68
+      ],
+      "keywords": [
+        "Acquisition of companies, net of cash acquired and divestitures, and purchases of intangible and other assets",
+        "1,743"
+      ],
+      "evidence_snippet": "Acquisition of companies, net of cash acquired and divestitures, and purchases of intangible and other assets\n(\n1,743\n)\n(\n5,978\n)\n(\n69,132\n)\n",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 68,
+      "answer_value": "1,743",
+      "answer_display": "(1,743)",
+      "period": "FY2026 ended 2026-06-30",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "MSFT::acquisitionofcompaniesnetofcashacquiredanddivestituresandpurchasesofintangibleandotherassets::FY2026 ended 2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 66,
+          "evidence_snippet": "CASH FLOWS S\nTATEMENTS\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 66,
+          "evidence_snippet": "2\nPART II\nItem 8\nCASH FLOWS S\nTATEMENTS\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\nOperations\nNet income\n$\n133,749\n$\n101,832\n$\n88,136\n"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 68,
+          "evidence_snippet": "Acquisition of companies, net of cash acquired and divestitures, and purchases of intangible and other assets\n(\n1,743\n)\n(\n5,978\n)\n(\n69,132\n)\n",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_09",
+      "quadrant": "zh-en",
+      "ticker": "MSFT",
+      "question": "微软 2026 财年新增物业和设备实际支出了多少现金？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        68
+      ],
+      "keywords": [
+        "Additions to property and equipment",
+        "115,948"
+      ],
+      "evidence_snippet": "Additions to property and equipment\n(\n115,948\n)\n(\n64,551\n)\n(\n44,477\n)\n",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 68,
+      "answer_value": "115,948",
+      "answer_display": "(115,948)",
+      "period": "FY2026 ended 2026-06-30",
+      "period_kind": "year_ended",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "MSFT::additionstopropertyandequipment::FY2026 ended 2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 66,
+          "evidence_snippet": "CASH FLOWS S\nTATEMENTS\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\n"
+        },
+        "unit_evidence": {
+          "page": 66,
+          "evidence_snippet": "2\nPART II\nItem 8\nCASH FLOWS S\nTATEMENTS\n(In millions)\nYear Ended June 30,\n2026\n2025\n2024\nOperations\nNet income\n$\n133,749\n$\n101,832\n$\n88,136\n"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 68,
+          "evidence_snippet": "Additions to property and equipment\n(\n115,948\n)\n(\n64,551\n)\n(\n44,477\n)\n",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_10",
+      "quadrant": "zh-en",
+      "ticker": "MSFT",
+      "question": "截至 2026 年 6 月底，微软服务器、网络设备和软件的原始成本是多少？不是扣除折旧后的净额。",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        94
+      ],
+      "keywords": [
+        "Servers, network equipment, and software",
+        "215,874"
+      ],
+      "evidence_snippet": "Servers, network equipment, and software\n215,874",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 94,
+      "answer_value": "215,874",
+      "answer_display": "215,874",
+      "period": "2026-06-30",
+      "period_kind": "as_of",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "MSFT::serversnetworkequipmentandsoftware::2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 94,
+          "evidence_snippet": "NOTE 6 — PROPERTY AND EQUIPMENT\nThe components of property and equipment were as follows:\n(In millions)\nJune 30,\n2026\n2025\n"
+        },
+        "unit_evidence": {
+          "page": 94,
+          "evidence_snippet": "property and equipment were as follows:\n(In millions)\nJune 30,\n2026\n2025\nLand\n$\n10,546\n$\n9,338\nBuildings and improvements\n182,749\n137,921\nLe"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 94,
+          "evidence_snippet": "Servers, network equipment, and software\n215,874",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_11",
+      "quadrant": "zh-en",
+      "ticker": "MSFT",
+      "question": "微软截至 2026 年 6 月底智能云分部的未赚取收入余额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        112
+      ],
+      "keywords": [
+        "Intelligent Cloud",
+        "14,942"
+      ],
+      "evidence_snippet": "Intelligent Cloud\n14,942",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ],
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "source_sha": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "primary_page": 112,
+      "answer_value": "14,942",
+      "answer_display": "14,942",
+      "period": "2026-06-30",
+      "period_kind": "as_of",
+      "unit": "USD million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "MSFT::intelligentcloud::2026-06-30::USD million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2026",
+        "period_evidence": {
+          "page": 112,
+          "evidence_snippet": "Unearned revenue by segment was as follows:\n(In millions)\nJune 30,\n2026\n2025\n"
+        },
+        "unit_evidence": {
+          "page": 112,
+          "evidence_snippet": "rned revenue by segment was as follows:\n(In millions)\nJune 30,\n2026\n2025\nProductivity and Business Processes\n$\n57,936\n$\n50,567\nIntelligent C"
+        },
+        "column_interpretation": "2026 年列；明细表按所询指标读取，现金流括号表示流出。"
+      },
+      "page_evidence": [
+        {
+          "page": 112,
+          "evidence_snippet": "Intelligent Cloud\n14,942",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_12",
+      "quadrant": "en-en",
+      "ticker": "0700.HK",
+      "question": "What was Tencent's accounts payable balance at 31 December 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        134,
+        229,
+        261
+      ],
+      "keywords": [
+        "Accounts payable",
+        "121,127"
+      ],
+      "evidence_snippet": "Accounts payable 40 121,127 118,712",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 134,
+      "answer_value": "121,127",
+      "answer_display": "121,127",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "0700.HK::accountspayable::2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 134,
+          "evidence_snippet": "Annual Report 2025\n133\nConsolidated Statement of Financial Position\nAs at 31 December 2025\nAs at 31 December\n2025 "
+        },
+        "unit_evidence": {
+          "page": 134,
+          "evidence_snippet": "31 December 2025\nAs at 31 December\n2025 2024\nNote RMB’Million RMB’Million\nCurrent liabilities\n Accounts p"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 134,
+          "evidence_snippet": "Accounts payable 40 121,127 118,712",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 229,
+          "evidence_snippet": "payables 2,702 5,754\n Other financial liabilities (Note 39) 5,473 8,725\n Accounts payable (Note 40) 121,127 118,712\n Lease liabilities 18,666 19,497\n Other payables and accruals 53,161 47,806\nFinancial liabilities at ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 261,
+          "evidence_snippet": "~ 30 days 110,812 107,893\n31 ~ 60 days 8,447 8,264\n61 ~ 90 days 326 842\nOver 90 days 1,542 1,713\n  \n121,127 118,712\n  ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_13",
+      "quadrant": "en-en",
+      "ticker": "0700.HK",
+      "question": "How much did Tencent recognise in general and administrative expenses for 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        8,
+        130
+      ],
+      "keywords": [
+        "General and administrative expenses",
+        "(136,127)"
+      ],
+      "evidence_snippet": "General and administrative expenses 7 (136,127) (112,761)",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 130,
+      "answer_value": "(136,127)",
+      "answer_display": "(136,127)",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "0700.HK::generalandadministrativeexpenses::2025-01-01/2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 130,
+          "evidence_snippet": "Annual Report 2025\n129\nConsolidated Income Statement\nFor the year ended 31 December 2025\nYear ended 31 December\n20"
+        },
+        "unit_evidence": {
+          "page": 130,
+          "evidence_snippet": "cember 2025\nYear ended 31 December\n2025 2024\nNote RMB’Million RMB’Million\nRevenues\n Value-added Services "
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 8,
+          "evidence_snippet": "2,593 349,246\nSelling and marketing expenses (41,727) (36,388)\nGeneral and administrative expenses (136,127) (112,761)\nOther gains/(losses), net (3,177) 8,002\n  \nOperating profit 241,562 208,099\nNet gains/(losses) fro",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 130,
+          "evidence_snippet": "General and administrative expenses 7 (136,127) (112,761)",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_14",
+      "quadrant": "en-en",
+      "ticker": "0700.HK",
+      "question": "How much income tax did Tencent pay in cash during 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        139
+      ],
+      "keywords": [
+        "Income tax paid",
+        "(44,699)"
+      ],
+      "evidence_snippet": "Income tax paid (44,699) (46,184)",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 139,
+      "answer_value": "(44,699)",
+      "answer_display": "(44,699)",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "0700.HK::incometaxpaid::2025-01-01/2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 139,
+          "evidence_snippet": "solidated Statement of Cash Flows\nFor the year ended 31 December 2025\nYear ended 31 December\n2025 2024\nNote RMB’Million RMB’Million\nCash flows from operating activit"
+        },
+        "unit_evidence": {
+          "page": 139,
+          "evidence_snippet": "cember 2025\nYear ended 31 December\n2025 2024\nNote RMB’Million RMB’Million\nCash flows from operating activ"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 139,
+          "evidence_snippet": "Income tax paid (44,699) (46,184)",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_15",
+      "quadrant": "en-en",
+      "ticker": "0700.HK",
+      "question": "What revenue did Tencent's FinTech and Business Services segment generate in 2025?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        9,
+        130,
+        194,
+        196
+      ],
+      "keywords": [
+        "FinTech and Business Services",
+        "229,435"
+      ],
+      "evidence_snippet": "FinTech and Business Services 229,435 211,956",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 130,
+      "answer_value": "229,435",
+      "answer_display": "229,435",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "0700.HK::fintechandbusinessservices::2025-01-01/2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 130,
+          "evidence_snippet": "Annual Report 2025\n129\nConsolidated Income Statement\nFor the year ended 31 December 2025\nYear ended 31 December\n20"
+        },
+        "unit_evidence": {
+          "page": 130,
+          "evidence_snippet": "cember 2025\nYear ended 31 December\n2025 2024\nNote RMB’Million RMB’Million\nRevenues\n Value-added Services "
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 9,
+          "evidence_snippet": "81 319,168 16% 49% 49%\nMarketing Services 144,973 121,374 19% 19% 18%\nFinTech and Business Services 229,435 211,956 8% 31% 32%\nOthers 8,077 7,759 4% 1% 1%\n    \nThe Group 751,766 660,257 14% 100% 100%\n    \n– Revenues f",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 130,
+          "evidence_snippet": "FinTech and Business Services 229,435 211,956",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 194,
+          "evidence_snippet": " Total\nRMB’Million RMB’Million RMB’Million RMB’Million RMB’Million\nSegment revenues 369,281 144,973 229,435 8,077 751,766\n     \nGross profit 222,296 83,389 116,616 292 422,593\n     \nCost of revenues\n Depreciation 5,67",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 196,
+          "evidence_snippet": "al networks 127,749 121,456\n – Marketing Services 144,973 121,374\n –  FinTech and Business Services 229,435 211,956\n –  Others 8,077 7,759\n  \n751,766 660,257\n  ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_enen_16",
+      "quadrant": "en-en",
+      "ticker": "0700.HK",
+      "question": "At the end of 2025, what capital commitments had Tencent contracted for constructing or purchasing buildings?",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "target_pages": [
+        265
+      ],
+      "keywords": [
+        "Construction/purchase of buildings",
+        "5,237"
+      ],
+      "evidence_snippet": "Construction/purchase of buildings 5,237 2,937",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 265,
+      "answer_value": "5,237",
+      "answer_display": "5,237",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "0700.HK::constructionpurchaseofbuildings::2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 265,
+          "evidence_snippet": "Consolidated Financial Statements\nFor the year ended 31 December 2025\n44 COMMITMENTS\n(a) Capital commitments\nCapital commitments as at 31 December 2025 and 2024 are "
+        },
+        "unit_evidence": {
+          "page": 265,
+          "evidence_snippet": " analysed as follows:\nAs at 31 December\n2025 2024\nRMB’Million RMB’Million\nContracted:\n Construction/purch"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 265,
+          "evidence_snippet": "Construction/purchase of buildings 5,237 2,937",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_12",
+      "quadrant": "zh-en",
+      "ticker": "0700.HK",
+      "question": "截至 2025 年末，腾讯的递延所得税资产余额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        132,
+        235
+      ],
+      "keywords": [
+        "Deferred income tax assets",
+        "28,618"
+      ],
+      "evidence_snippet": "Deferred income tax assets 29 28,618 28,325",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 132,
+      "answer_value": "28,618",
+      "answer_display": "28,618",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "balance_sheet",
+      "fact_key": "0700.HK::deferredincometaxassets::2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 132,
+          "evidence_snippet": "Annual Report 2025\n131\nConsolidated Statement of Financial Position\nAs at 31 December 2025\nAs at 31 December\n2025 "
+        },
+        "unit_evidence": {
+          "page": 132,
+          "evidence_snippet": "31 December 2025\nAs at 31 December\n2025 2024\nNote RMB’Million RMB’Million\nASSETS\nNon-current assets\n Prop"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 132,
+          "evidence_snippet": "Deferred income tax assets 29 28,618 28,325",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 235,
+          "evidence_snippet": " income tax assets pursuant to set-off provisions (8,287) (6,632)\n  \nNet deferred income tax assets 28,618 28,325\n  \nGross deferred income tax liabilities:\n – expected to be settled after 12 months (20,955) (23,945)\n",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_13",
+      "quadrant": "zh-en",
+      "ticker": "0700.HK",
+      "question": "腾讯 2025 年在合并利润表中确认的融资成本是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        8,
+        130,
+        202
+      ],
+      "keywords": [
+        "Finance costs",
+        "(15,130)"
+      ],
+      "evidence_snippet": "Finance costs 11 (15,130) (11,981)",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 130,
+      "answer_value": "(15,130)",
+      "answer_display": "(15,130)",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "profit_loss",
+      "fact_key": "0700.HK::financecosts::2025-01-01/2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 130,
+          "evidence_snippet": "Annual Report 2025\n129\nConsolidated Income Statement\nFor the year ended 31 December 2025\nYear ended 31 December\n20"
+        },
+        "unit_evidence": {
+          "page": 130,
+          "evidence_snippet": "cember 2025\nYear ended 31 December\n2025 2024\nNote RMB’Million RMB’Million\nRevenues\n Value-added Services "
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 8,
+          "evidence_snippet": "ains/(losses) from investments and others 10,168 4,187\nInterest income 16,909 16,004\nFinance costs (15,130) (11,981)\nShare of profit/(loss) of associates and joint ventures, net 23,740 25,176\n  \nProfit before income ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 130,
+          "evidence_snippet": "Finance costs 11 (15,130) (11,981)",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        },
+        {
+          "page": 202,
+          "evidence_snippet": "RMB’Million\nInterest and related expenses 13,456 12,447\nExchange losses/(gains), net 1,674 (466)\n  \n15,130 11,981\n  \nInterest and related expenses mainly arose from borrowings, notes payable and lease liabilities as ",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_14",
+      "quadrant": "zh-en",
+      "ticker": "0700.HK",
+      "question": "腾讯 2025 年用于回购股份的现金支付额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        140
+      ],
+      "keywords": [
+        "Payments for repurchase of shares",
+        "(73,312)"
+      ],
+      "evidence_snippet": "Payments for repurchase of shares (73,312) (102,331)",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 140,
+      "answer_value": "(73,312)",
+      "answer_display": "(73,312)",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "cash_flow",
+      "fact_key": "0700.HK::paymentsforrepurchaseofshares::2025-01-01/2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 140,
+          "evidence_snippet": "Annual Report 2025\n139\nConsolidated Statement of Cash Flows\nFor the year ended 31 December 2025\nYear ended 31 Dece"
+        },
+        "unit_evidence": {
+          "page": 140,
+          "evidence_snippet": "cember 2025\nYear ended 31 December\n2025 2024\nNote RMB’Million RMB’Million\nCash flows from financing activ"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 140,
+          "evidence_snippet": "Payments for repurchase of shares (73,312) (102,331)",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    },
+    {
+      "id": "hv2_zhen_15",
+      "quadrant": "zh-en",
+      "ticker": "0700.HK",
+      "question": "腾讯 2025 年为研发发生的费用总额是多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        199
+      ],
+      "keywords": [
+        "expenses for the purpose of R&D",
+        "85,747",
+        "R&D"
+      ],
+      "evidence_snippet": "During the year ended 31 December 2025, the Group had incurred expenses for the purpose of R&D of approximately \nRMB85,747 million (2024: RMB70,686 million), which mainly comprised employee benefits expenses of approximately \nRMB63,620 million (2024: RMB56,061 million).\n",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 199,
+      "answer_value": "85,747",
+      "answer_display": "85,747",
+      "period": "2025-01-01/2025-12-31",
+      "period_kind": "year_ended",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "0700.HK::expensesforthepurposeofrd::2025-01-01/2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 199,
+          "evidence_snippet": "Consolidated Financial Statements\nFor the year ended 31 December 2025\n7 EXPENSES BY NATURE\n2025 2024\nRMB’Million RMB’Million\nTransaction costs (Note (a)) 136,382 134"
+        },
+        "unit_evidence": {
+          "page": 199,
+          "evidence_snippet": "d 31 December 2025\n7 EXPENSES BY NATURE\n2025 2024\nRMB’Million RMB’Million\nTransaction costs (Note (a)) 13"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 199,
+          "evidence_snippet": "During the year ended 31 December 2025, the Group had incurred expenses for the purpose of R&D of approximately \nRMB85,747 million (2024: RMB70,686 million), which mainly comprised employee benefits expenses of approximately \nRMB63,620 million (2024: RMB56,061 million).\n",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "report-stated approximately CNY million"
+    },
+    {
+      "id": "hv2_zhen_16",
+      "quadrant": "zh-en",
+      "ticker": "0700.HK",
+      "question": "腾讯 2025 年末已签约的被投企业资本投资承诺有多少？",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "target_pages": [
+        265
+      ],
+      "keywords": [
+        "Capital investments in investees",
+        "12,164"
+      ],
+      "evidence_snippet": "Capital investments in investees 12,164 9,298",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ],
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "primary_page": 265,
+      "answer_value": "12,164",
+      "answer_display": "12,164",
+      "period": "2025-12-31",
+      "period_kind": "as_of",
+      "unit": "CNY million",
+      "entity_scope": "consolidated",
+      "coverage_category": "segment_expense_notes",
+      "fact_key": "0700.HK::capitalinvestmentsininvestees::2025-12-31::CNY million",
+      "period_unit_validation": {
+        "mode": "manual_pdf_text_header_and_row",
+        "automated_period_column_validation": false,
+        "expected_report_year": "2025",
+        "period_evidence": {
+          "page": 265,
+          "evidence_snippet": "Consolidated Financial Statements\nFor the year ended 31 December 2025\n44 COMMITMENTS\n(a) Capital commitments\nCapital commitments as at 31 December 2025 and 2024 are "
+        },
+        "unit_evidence": {
+          "page": 265,
+          "evidence_snippet": " analysed as follows:\nAs at 31 December\n2025 2024\nRMB’Million RMB’Million\nContracted:\n Construction/purch"
+        },
+        "column_interpretation": "2025 年本期/期末列；明细按所询行读取，不混用上期、母公司或现金与应计口径。"
+      },
+      "page_evidence": [
+        {
+          "page": 265,
+          "evidence_snippet": "Capital investments in investees 12,164 9,298",
+          "verification": "已人工按同一指标、期间、单位及合并口径复核；数值相同本身不是采纳理由。",
+          "context_pages": []
+        }
+      ],
+      "excluded_same_number_pages": [],
+      "answer_precision": "as displayed in the frozen PDF; no extra precision inferred"
+    }
+  ]
+}

@@ -11,12 +11,20 @@ _TICKER = re.compile(r"(?<![A-Za-z0-9.^=-])(?:[A-Z]{1,5}|\d{6}\.(?:SS|SZ)|\d{4,5
 
 
 def new_context() -> dict[str, Any]:
-    return {"report_id": None, "ticker": None, "job_id": None, "job_status": None, "messages": []}
+    return {"report_id": None, "ticker": None, "knowledge_ticker": None, "job_id": None, "job_status": None, "messages": []}
 
 
 def _message(context: dict[str, Any], role: str, text: str, answer: dict[str, Any] | None = None) -> dict[str, Any]:
     updated = {**context, "messages": [*context["messages"], {"role": role, "text": text, "answer": answer}]}
     return updated
+
+
+def select_knowledge_corpus(context: dict[str, Any], ticker: str) -> dict[str, Any]:
+    """绑定中文官方年报语料；切换语料时清空旧报告和聊天消息。"""
+    normalized = str(ticker).strip().upper()
+    if context.get("knowledge_ticker") == normalized and not context.get("report_id") and not context.get("job_id"):
+        return context
+    return {**new_context(), "ticker": normalized, "knowledge_ticker": normalized}
 
 
 def select_report(context: dict[str, Any], report: dict[str, Any]) -> dict[str, Any]:
@@ -67,8 +75,12 @@ def route_message(text: str, context: dict[str, Any]) -> tuple[str, dict[str, st
         if len(topic) > 200:
             return "guidance", "研究主题过长，请控制在 200 字以内。"
         return "research", {"ticker": found.group(), "topic": topic}
+    if not context["report_id"] and context.get("knowledge_ticker"):
+        if len(normalized) > 500:
+            return "guidance", "问题过长，请控制在 500 字以内。"
+        return "knowledge", normalized
     if not context["report_id"]:
-        return "guidance", "请先在侧栏选择已完成报告，或输入“分析 AAPL 服务业务和现金流风险”创建任务。当前只支持报告指标、来源、降级原因和风险追问。"
+        return "guidance", "请先在侧栏选择中文年报语料或已完成报告，或输入“分析 AAPL 服务业务和现金流风险”创建任务。"
     if len(normalized) > 500:
         return "guidance", "问题过长，请控制在 500 字以内。"
     return "answer", normalized
@@ -77,12 +89,18 @@ def route_message(text: str, context: dict[str, Any]) -> tuple[str, dict[str, st
 def dispatch_message(
     context: dict[str, Any], text: str, create_job: Callable[[dict[str, str]], dict[str, Any]],
     ask: Callable[[dict[str, str]], dict[str, Any]], requested_by: str, horizon: str = "中期",
+    knowledge_ask: Callable[[dict[str, str]], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """只有明确的研究指令才触发任务；普通追问绝不走网络研究路径。"""
     kind, detail = route_message(text, context)
     updated = _message(context, "user", text.strip())
     if kind == "guidance":
         return _message(updated, "assistant", str(detail))
+    if kind == "knowledge":
+        if knowledge_ask is None:
+            return _message(updated, "assistant", "中文年报问答暂不可用，请稍后重试。")
+        result = knowledge_ask({"ticker": str(context["knowledge_ticker"]), "question": str(detail), "requested_by": requested_by})
+        return _message(updated, "assistant", str(result.get("answer") or result.get("message") or "当前证据不足，暂不回答。"), result)
     if kind == "research":
         request = {**detail, "horizon": horizon, "requested_by": requested_by}
         created = create_job(request)

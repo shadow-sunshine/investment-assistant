@@ -39,6 +39,22 @@ QUADRANT_LABEL = {
 }
 MODES = ["hash", "semantic"]
 
+# 冻结的 R0 样本集基线 SHA256 —— 由 Git 历史核实，不得凭文件名或记忆假定。
+# 来源：commit c0f5782 「test(R0): 固化四象限双语评测样本与评测器（评测结果尚未产生）」
+#       路径 data/bilingual_eval_set.json，原始字节 SHA256 如下。
+# 已核验：git show c0f5782:data/bilingual_eval_set.json 的 SHA256 与当前工作区文件逐字节一致。
+# 规则：只有显式创建新的评测基线（新 commit 固化样本 + 同步更新本常量）时才允许改动；
+#       R1 实验若使用的评测集 SHA 不等于本基线，必须在建索引/检索前 BLOCKED。
+FROZEN_R0_EVAL_SET_SHA256 = "8a367299a49abe836c21738c792f55e890e9c2b7cf5fcb3f0891442eb657acf5"
+
+
+def get_frozen_r0_eval_set_sha256() -> str:
+    """返回冻结的 R0 样本集 SHA256（抽成函数以便测试 monkeypatch）。
+
+    与 `_sha256_of_file(EVAL_SET_PATH)` 同口径（均按文件原始字节计算）。
+    """
+    return FROZEN_R0_EVAL_SET_SHA256
+
 
 def load_eval_set(path: Path = EVAL_SET_PATH) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -54,6 +70,28 @@ def _page_of(source: dict[str, Any]) -> int | None:
 def _keyword_match(content: str, keywords: list[str]) -> bool:
     lowered = content.lower()
     return all(keyword.lower() in lowered for keyword in keywords)
+
+
+def _is_target_source(source: dict[str, Any], case: dict[str, Any]) -> bool:
+    """目标命中的统一口径：同一标的 **且** 页码落在 gold page 内。
+
+    只比页码会把别的 PDF 的同页码误判为命中。实测：`zhzh_moutai_inventory`
+    （ticker 600519.SS、目标页 [14, 57]）在不限定 ticker 时召回 `0700.HK page 57`，
+    旧逻辑按页码把它算成命中，这是错的。
+    """
+    metadata = source.get("metadata") or {}
+    if str(metadata.get("ticker", "")) != case["ticker"]:
+        return False
+    return _page_of(source) in case["target_pages"]
+
+
+def top_result_is_relevant(scoped: list[dict[str, Any]], case: dict[str, Any]) -> bool:
+    """Top-1 是否命中目标页：必须走 `_is_target_source`（ticker + 页码双校验）。
+
+    不能只比页码 —— 否则异标的同页码会被误判为 Top-1 relevant（与 unscoped 误命中是同一类 bug）。
+    scoped 检索本身已按 ticker 过滤，所以本次真实结果未被污染；这里只是消除评测器内部口径不一致。
+    """
+    return bool(scoped and _is_target_source(scoped[0], case))
 
 
 def verify_materials(materials: dict[str, Any]) -> dict[str, Any]:
@@ -72,6 +110,64 @@ def verify_materials(materials: dict[str, Any]) -> dict[str, Any]:
             "page_authority": spec.get("page_authority"),
         }
     return report
+
+
+def _sha256_of_file(path: Path) -> str:
+    """评测集文件的 sha256，用于把「用了哪份样本」固化进产物，事后可校验是否被改动。"""
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _eval_set_gold_summary(eval_set: dict[str, Any]) -> list[dict[str, Any]]:
+    """样本集 gold page 指纹：按 id 稳定排序，记录每例的 ticker 与目标页（升序）。
+
+    与 `eval_set_sha256` 配合，保证 R1 实验不因样本被增删或 gold page 被改动而失去可比性。
+    """
+    return [
+        {"id": case["id"], "ticker": case["ticker"], "target_pages": sorted(case["target_pages"])}
+        for case in sorted(eval_set["cases"], key=lambda case: case["id"])
+    ]
+
+
+class MaterialDriftError(RuntimeError):
+    """资料 sha256 与样本集记录不一致（或资料缺失）时抛出。评测必须 fail-closed。"""
+
+
+def assert_materials_comparable(material_report: dict[str, Any]) -> None:
+    """资料漂移/缺失时直接拒绝评测，而不是带着不可比的语料继续出指标。"""
+    broken = {
+        ticker: item.get("status") for ticker, item in material_report.items() if item.get("status") != "match"
+    }
+    if broken:
+        raise MaterialDriftError(
+            "资料快照与样本集记录不一致，评测拒绝给出可比结论："
+            + "，".join(f"{ticker}={status}" for ticker, status in sorted(broken.items()))
+        )
+
+
+def render_blocked_report(material_report: dict[str, Any], evaluated_at: str) -> str:
+    return "\n".join(
+        [
+            "# R0 四象限双语检索评测 —— BLOCKED",
+            "",
+            f"- 评测时间：{evaluated_at}",
+            "- **状态：BLOCKED —— 资料快照不一致，已拒绝产出可比指标**",
+            "",
+            "## 资料快照校验",
+            "",
+            "| 标的 | 状态 | 预期 sha256 | 实际 sha256 |",
+            "|---|---|---|---|",
+        ]
+        + [
+            f"| {ticker} | {item.get('status', '未校验')} | {item.get('expected_sha256', '-')} | {item.get('actual_sha256', '-')} |"
+            for ticker, item in material_report.items()
+        ]
+        + [
+            "",
+            "> 资料 sha256 与样本集记录不一致（drift）或资料缺失（missing）时，本评测**不跑检索、不生成 Recall/Top-1、"
+            "不给出任何可比结论**。请先恢复样本集记录的资料版本，或显式更新样本集中的 sha256 并说明原因。",
+            "",
+        ]
+    )
 
 
 def _failure_reason(case_result: dict[str, Any], case: dict[str, Any]) -> str:
@@ -95,7 +191,7 @@ def run_case(rag: LocalResearchRAG, case: dict[str, Any], top_k: int) -> dict[st
 
     scoped_pages = [_page_of(source) for source in scoped]
     target_pages = case["target_pages"]
-    relevant = [source for source in scoped if _page_of(source) in target_pages]
+    relevant = [source for source in scoped if _is_target_source(source, case)]
     forbidden = set(case.get("forbidden_tickers", []))
     unscoped_tickers = [str(source["metadata"].get("ticker", "")) for source in unscoped]
     cross_ticker = [ticker for ticker in unscoped_tickers if ticker in forbidden]
@@ -112,11 +208,12 @@ def run_case(rag: LocalResearchRAG, case: dict[str, Any], top_k: int) -> dict[st
         "keyword_verified_hit_at_k": any(_keyword_match(source["content"], case["keywords"]) for source in relevant),
         "citation_page_relevance": round(len(relevant) / top_k, 4),
         "top_result_page": scoped_pages[0] if scoped_pages else None,
-        "top_result_is_relevant": bool(scoped_pages and scoped_pages[0] in target_pages),
+        "top_result_is_relevant": top_result_is_relevant(scoped, case),
         "retrieved_files": [source["metadata"].get("file_name") for source in scoped],
         "unscoped_tickers": unscoped_tickers,
+        "unscoped_pages": [_page_of(source) for source in unscoped],
         "cross_ticker_source_count_unscoped": len(cross_ticker),
-        "unscoped_page_hit_at_k": any(_page_of(source) in target_pages for source in unscoped),
+        "unscoped_page_hit_at_k": any(_is_target_source(source, case) for source in unscoped),
     }
     result["failure_reason"] = _failure_reason(result, case)
     return result
@@ -315,16 +412,41 @@ def run_evaluation(top_k: int = 4, eval_set_path: Path = EVAL_SET_PATH) -> dict[
     eval_set = load_eval_set(eval_set_path)
     material_report = verify_materials(eval_set["materials"])
     drift = [ticker for ticker, item in material_report.items() if item.get("status") != "match"]
+    evaluated_at = datetime.now(UTC).isoformat()
+    RESULT_DIR.mkdir(parents=True, exist_ok=True)
+    if drift:
+        # fail-closed：不调用 run_mode，不产出任何可比较指标。
+        payload = {
+            "status": "blocked",
+            "blocked_reason": "material_drift",
+            "eval_set": str(eval_set_path),
+            "eval_set_sha256": _sha256_of_file(eval_set_path),
+            "eval_set_case_count": len(eval_set["cases"]),
+            "top_k": top_k,
+            "evaluated_at": evaluated_at,
+            "material_verification": material_report,
+            "material_drift": drift,
+            "results": {},
+        }
+        (RESULT_DIR / "bilingual_r0.json").write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        (RESULT_DIR / "bilingual_r0.md").write_text(
+            render_blocked_report(material_report, evaluated_at), encoding="utf-8"
+        )
+        return payload
     results = {mode: run_mode(mode, eval_set, top_k) for mode in MODES}
     payload = {
+        "status": "ok",
         "eval_set": str(eval_set_path),
+        "eval_set_sha256": _sha256_of_file(eval_set_path),
+        "eval_set_case_count": len(eval_set["cases"]),
         "top_k": top_k,
-        "evaluated_at": datetime.now(UTC).isoformat(),
+        "evaluated_at": evaluated_at,
         "material_verification": material_report,
         "material_drift": drift,
         "results": results,
     }
-    RESULT_DIR.mkdir(parents=True, exist_ok=True)
     (RESULT_DIR / "bilingual_r0.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     (RESULT_DIR / "bilingual_r0.md").write_text(
         render_report(eval_set, results, material_report), encoding="utf-8"
@@ -341,6 +463,21 @@ def reattribute_payload(
     适用前提：指标（Recall/Top-1）未变，仅归因标签口径修正。检索结果本身保持原样。
     """
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
+    if payload.get("status") == "blocked":
+        raise MaterialDriftError("结果处于 BLOCKED 状态（资料漂移），请先恢复资料后重跑评测，不要重算归因。")
+    # 样本集身份校验（护栏收尾）：无 SHA 或 SHA 不匹配时 fail-closed，不得用新样本重写旧报告。
+    stored_sha = payload.get("eval_set_sha256")
+    current_sha = _sha256_of_file(eval_set_path)
+    if stored_sha is None:
+        raise MaterialDriftError(
+            "结果未记录 eval_set_sha256，无法校验样本集身份；拒绝重渲染归因。"
+            "请恢复冻结样本或显式重跑评测，不要凭当前文件 SHA 补写旧结果。"
+        )
+    if stored_sha != current_sha:
+        raise MaterialDriftError(
+            f"评测集身份不匹配（结果记录 {stored_sha[:12]}… ≠ 当前 {current_sha[:12]}…），"
+            "拒绝用新样本重写旧实验报告。"
+        )
     cases_by_id = {case["id"]: case for case in load_eval_set(eval_set_path)["cases"]}
     for result in payload["results"].values():
         if "cases" not in result:
@@ -365,6 +502,9 @@ def main() -> int:
     parser.add_argument("--eval-set", type=Path, default=EVAL_SET_PATH)
     args = parser.parse_args()
     payload = run_evaluation(args.top_k, args.eval_set)
+    if payload.get("status") == "blocked":
+        print(f"BLOCKED：{payload['blocked_reason']}；资料漂移={payload['material_drift']}；未产出任何指标。")
+        return 1
     print(json.dumps(payload["results"]["hash"].get("metrics", {}), ensure_ascii=False, indent=2))
     print(json.dumps(payload["results"]["semantic"].get("metrics", payload["results"]["semantic"].get("error")), ensure_ascii=False, indent=2))
     if payload["material_drift"]:

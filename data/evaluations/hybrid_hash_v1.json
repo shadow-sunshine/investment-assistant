@@ -1,0 +1,2736 @@
+{
+  "status": "ok",
+  "evaluated_at": "2026-09-28T10:42:29.333153+00:00",
+  "mode": "hash",
+  "reranker": "disabled",
+  "baseline_definition": "rag.search default expands financial terms; comparable to historical R3 treatment, NOT R3 raw-query baseline",
+  "hybrid_definition": "same query expansion, vector 48 chunks + literal top 48 pages, reciprocal-rank fusion at page level",
+  "candidate_definition": "baseline first 48 vector chunks, hybrid first 48 fused pages; union may have up to 96 pages",
+  "sha256": {
+    "D:\\It\\Test_Project\\Investment_Assistant\\data\\bilingual_eval_set.json": "8a367299a49abe836c21738c792f55e890e9c2b7cf5fcb3f0891442eb657acf5",
+    "D:\\It\\Test_Project\\Investment_Assistant\\data\\r3_holdout_eval_set_v3.json": "8da7a9c10b473c17984c954790c1c94b875d75c77eee1303f34267751665a85a",
+    "D:\\It\\Test_Project\\Investment_Assistant\\data\\financial_term_map.json": "66a0ce85220d200bc71979365916fba0194c108d7e856a3ea0c494a741c1dfb6",
+    "D:\\It\\Test_Project\\Investment_Assistant\\data\\evaluations\\bilingual_r0.json": "3302ab9ad5a95713829e60e3975f1675e457047d512ce7be9b4f435a0987610d",
+    "D:\\It\\Test_Project\\Investment_Assistant\\data\\evaluations\\r3_real_chroma_v3.json": "35e4769671e567333b8f0d08a8b09b082b637b519fa5dfe1bb006cf94a012fc3"
+  },
+  "material_verification": {
+    "AAPL": {
+      "status": "match",
+      "expected_sha256": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "actual_sha256": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "page_authority": "official"
+    },
+    "MSFT": {
+      "status": "match",
+      "expected_sha256": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "actual_sha256": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "page_authority": "generated"
+    },
+    "0700.HK": {
+      "status": "match",
+      "expected_sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "actual_sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "page_authority": "official"
+    },
+    "600519.SS": {
+      "status": "match",
+      "expected_sha256": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "actual_sha256": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "page_authority": "official"
+    }
+  },
+  "indexed_chunks": {
+    "AAPL": 406,
+    "MSFT": 533,
+    "0700.HK": 827,
+    "600519.SS": 263
+  },
+  "results": {
+    "R0": {
+      "baseline_default": {
+        "metrics": {
+          "case_count": 32,
+          "page_recall_at_k": 0.0938,
+          "keyword_verified_recall_at_k": 0.0938,
+          "top1_page_relevance": 0.0625,
+          "citation_page_relevance": 0.0312,
+          "candidate_recall_at_48": 0.5312,
+          "number_check_at_k": 0.0938,
+          "number_check_denominator": 32,
+          "scoped_ticker_pollution_count": 0
+        },
+        "by_quadrant": {
+          "zh-zh": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 0.625,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "en-en": {
+            "case_count": 8,
+            "page_recall_at_k": 0.375,
+            "keyword_verified_recall_at_k": 0.375,
+            "top1_page_relevance": 0.25,
+            "citation_page_relevance": 0.125,
+            "candidate_recall_at_48": 0.75,
+            "number_check_at_k": 0.375,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "zh-en": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 0.125,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "en-zh": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 0.625,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          }
+        },
+        "cases": [
+          {
+            "id": "zhzh_moutai_revenue",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 43
+          },
+          {
+            "id": "zhzh_moutai_total_operating_revenue",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "zhzh_moutai_net_profit",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "30",
+              "46"
+            ],
+            "candidate_page_count": 43
+          },
+          {
+            "id": "zhzh_moutai_operating_cash_flow",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "31",
+              "30"
+            ],
+            "candidate_page_count": 41
+          },
+          {
+            "id": "zhzh_moutai_eps",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "zhzh_moutai_roe",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "zhzh_moutai_selling_expense",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 43
+          },
+          {
+            "id": "zhzh_moutai_inventory",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "2",
+              "122",
+              "72",
+              "30"
+            ],
+            "candidate_page_count": 41
+          },
+          {
+            "id": "enen_aapl_total_assets",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "2",
+              "22",
+              "80",
+              "42"
+            ],
+            "candidate_page_count": 33
+          },
+          {
+            "id": "enen_aapl_basic_eps",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "39",
+              "32",
+              "29",
+              "47"
+            ],
+            "candidate_page_count": 34
+          },
+          {
+            "id": "enen_aapl_wearables",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.5,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "26",
+              "39",
+              "27",
+              "4"
+            ],
+            "candidate_page_count": 29
+          },
+          {
+            "id": "enen_msft_total_revenue",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "127",
+              "52",
+              "125",
+              "74"
+            ],
+            "candidate_page_count": 29
+          },
+          {
+            "id": "enen_msft_operating_income",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "125",
+              "52",
+              "55",
+              "54"
+            ],
+            "candidate_page_count": 31
+          },
+          {
+            "id": "enen_msft_gross_margin",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "51",
+              "127",
+              "53",
+              "115"
+            ],
+            "candidate_page_count": 31
+          },
+          {
+            "id": "enen_tencent_revenue",
+            "quadrant": "en-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "5",
+              "9",
+              "200",
+              "196"
+            ],
+            "candidate_page_count": 43
+          },
+          {
+            "id": "enen_tencent_gross_profit",
+            "quadrant": "en-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "5",
+              "10",
+              "8",
+              "234"
+            ],
+            "candidate_page_count": 44
+          },
+          {
+            "id": "zhen_msft_net_income",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "77",
+              "55",
+              "66",
+              "78"
+            ],
+            "candidate_page_count": 31
+          },
+          {
+            "id": "zhen_msft_rnd_expense",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "53",
+              "73",
+              "54",
+              "33"
+            ],
+            "candidate_page_count": 24
+          },
+          {
+            "id": "zhen_msft_total_assets",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "136",
+              "123",
+              "94",
+              "115"
+            ],
+            "candidate_page_count": 36
+          },
+          {
+            "id": "zhen_msft_total_liabilities",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "136",
+              "123",
+              "94",
+              "115"
+            ],
+            "candidate_page_count": 35
+          },
+          {
+            "id": "zhen_msft_operating_cash_flow",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "57",
+              "113",
+              "66",
+              "107"
+            ],
+            "candidate_page_count": 34
+          },
+          {
+            "id": "zhen_tencent_profit_for_the_year",
+            "quadrant": "zh-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "52",
+              "57",
+              "53",
+              "49"
+            ],
+            "candidate_page_count": 36
+          },
+          {
+            "id": "zhen_tencent_profit_before_tax",
+            "quadrant": "zh-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "52",
+              "57",
+              "53",
+              "49"
+            ],
+            "candidate_page_count": 35
+          },
+          {
+            "id": "zhen_tencent_selling_expense",
+            "quadrant": "zh-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "52",
+              "53",
+              "57",
+              "49"
+            ],
+            "candidate_page_count": 35
+          },
+          {
+            "id": "enzh_moutai_total_assets",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "61",
+              "53"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "enzh_moutai_equity",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "129",
+              "33"
+            ],
+            "candidate_page_count": 40
+          },
+          {
+            "id": "enzh_moutai_cash",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "35",
+              "53"
+            ],
+            "candidate_page_count": 40
+          },
+          {
+            "id": "enzh_moutai_contract_liability",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "129",
+              "63"
+            ],
+            "candidate_page_count": 40
+          },
+          {
+            "id": "enzh_moutai_rnd_expense",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "33",
+              "30",
+              "31",
+              "97"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "enzh_moutai_admin_expense",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "24",
+              "31",
+              "30",
+              "53"
+            ],
+            "candidate_page_count": 38
+          },
+          {
+            "id": "enzh_moutai_cost_of_sales",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "53",
+              "63",
+              "31"
+            ],
+            "candidate_page_count": 43
+          },
+          {
+            "id": "enzh_moutai_liquor_gross_margin",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "53",
+              "63"
+            ],
+            "candidate_page_count": 41
+          }
+        ],
+        "retrieval_seconds": 0.5887
+      },
+      "hybrid": {
+        "metrics": {
+          "case_count": 32,
+          "page_recall_at_k": 0.2812,
+          "keyword_verified_recall_at_k": 0.25,
+          "top1_page_relevance": 0.1875,
+          "citation_page_relevance": 0.0781,
+          "candidate_recall_at_48": 0.7812,
+          "number_check_at_k": 0.25,
+          "number_check_denominator": 32,
+          "scoped_ticker_pollution_count": 0
+        },
+        "by_quadrant": {
+          "zh-zh": {
+            "case_count": 8,
+            "page_recall_at_k": 0.625,
+            "keyword_verified_recall_at_k": 0.5,
+            "top1_page_relevance": 0.5,
+            "citation_page_relevance": 0.1562,
+            "candidate_recall_at_48": 1.0,
+            "number_check_at_k": 0.5,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "en-en": {
+            "case_count": 8,
+            "page_recall_at_k": 0.5,
+            "keyword_verified_recall_at_k": 0.5,
+            "top1_page_relevance": 0.25,
+            "citation_page_relevance": 0.1562,
+            "candidate_recall_at_48": 1.0,
+            "number_check_at_k": 0.5,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "zh-en": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 0.25,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "en-zh": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 0.875,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          }
+        },
+        "cases": [
+          {
+            "id": "zhzh_moutai_revenue",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "61",
+              "54",
+              "129",
+              "142"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_total_operating_revenue",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "61",
+              "54",
+              "6",
+              "129"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_net_profit",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "33",
+              "34",
+              "5",
+              "53"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_operating_cash_flow",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "6",
+              "56",
+              "129",
+              "53"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_eps",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "33",
+              "5",
+              "70",
+              "2"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_roe",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "79",
+              "6",
+              "33",
+              "129"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_selling_expense",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "61",
+              "54",
+              "108",
+              "63"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_inventory",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "137",
+              "6",
+              "68",
+              "70"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_aapl_total_assets",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "76",
+              "2",
+              "42",
+              "22"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_aapl_basic_eps",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "39",
+              "32",
+              "29",
+              "18"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_aapl_wearables",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.5,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "26",
+              "39",
+              "25",
+              "27"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_msft_total_revenue",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "52",
+              "112",
+              "51",
+              "127"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_msft_operating_income",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "51",
+              "125",
+              "52",
+              "113"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_msft_gross_margin",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "51",
+              "53",
+              "136",
+              "97"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_tencent_revenue",
+            "quadrant": "en-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "9",
+              "13",
+              "8",
+              "223"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_tencent_gross_profit",
+            "quadrant": "en-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "10",
+              "8",
+              "5",
+              "14"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_net_income",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "55",
+              "77",
+              "66",
+              "63"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_rnd_expense",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "53",
+              "73",
+              "54",
+              "59"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_total_assets",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "123",
+              "136",
+              "135",
+              "94"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_total_liabilities",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "123",
+              "136",
+              "135",
+              "94"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_operating_cash_flow",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "57",
+              "113",
+              "66",
+              "69"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_tencent_profit_for_the_year",
+            "quadrant": "zh-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "52",
+              "57",
+              "54",
+              "53"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_tencent_profit_before_tax",
+            "quadrant": "zh-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "52",
+              "57",
+              "54",
+              "53"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_tencent_selling_expense",
+            "quadrant": "zh-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "52",
+              "53",
+              "57",
+              "54"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_total_assets",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "33",
+              "129"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_equity",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "129",
+              "33"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_cash",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "33",
+              "6"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_contract_liability",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "129",
+              "33"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_rnd_expense",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "33",
+              "1"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_admin_expense",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "1",
+              "129"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_cost_of_sales",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "129",
+              "33"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_liquor_gross_margin",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "129",
+              "33"
+            ],
+            "candidate_page_count": 48
+          }
+        ],
+        "retrieval_seconds": 0.7393
+      }
+    },
+    "R3_v3": {
+      "baseline_default": {
+        "metrics": {
+          "case_count": 32,
+          "page_recall_at_k": 0.0938,
+          "keyword_verified_recall_at_k": 0.0938,
+          "top1_page_relevance": 0.0,
+          "citation_page_relevance": 0.0234,
+          "candidate_recall_at_48": 0.3125,
+          "number_check_at_k": 0.0938,
+          "number_check_denominator": 32,
+          "scoped_ticker_pollution_count": 0
+        },
+        "by_quadrant": {
+          "zh-zh": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 0.0,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "en-en": {
+            "case_count": 8,
+            "page_recall_at_k": 0.25,
+            "keyword_verified_recall_at_k": 0.25,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0625,
+            "candidate_recall_at_48": 0.625,
+            "number_check_at_k": 0.25,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "zh-en": {
+            "case_count": 8,
+            "page_recall_at_k": 0.125,
+            "keyword_verified_recall_at_k": 0.125,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0312,
+            "candidate_recall_at_48": 0.25,
+            "number_check_at_k": 0.125,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "en-zh": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 0.375,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          }
+        },
+        "cases": [
+          {
+            "id": "zhzh_moutai_accounts_receivable",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 43
+          },
+          {
+            "id": "zhzh_moutai_capital_reserve",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "zhzh_moutai_income_tax_expense",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 44
+          },
+          {
+            "id": "zhzh_moutai_overseas_revenue",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "zhzh_moutai_prepayments",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 43
+          },
+          {
+            "id": "zhzh_moutai_rnd_investment",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "33",
+              "30"
+            ],
+            "candidate_page_count": 39
+          },
+          {
+            "id": "zhzh_moutai_surplus_reserve",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "46",
+              "33"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "zhzh_moutai_undistributed_profit",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "1",
+              "5",
+              "125",
+              "46"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "enen_aapl_net_income",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "27",
+              "33",
+              "28",
+              "44"
+            ],
+            "candidate_page_count": 34
+          },
+          {
+            "id": "enen_aapl_operating_income",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "27",
+              "28",
+              "24",
+              "37"
+            ],
+            "candidate_page_count": 36
+          },
+          {
+            "id": "enen_aapl_provision_income_taxes",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "28",
+              "44",
+              "32",
+              "43"
+            ],
+            "candidate_page_count": 34
+          },
+          {
+            "id": "enen_aapl_total_net_sales",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "27",
+              "39",
+              "51",
+              "32"
+            ],
+            "candidate_page_count": 30
+          },
+          {
+            "id": "enen_msft_income_before_taxes",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "55",
+              "105",
+              "54",
+              "110"
+            ],
+            "candidate_page_count": 33
+          },
+          {
+            "id": "enen_msft_total_equity",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "74",
+              "122",
+              "127",
+              "59"
+            ],
+            "candidate_page_count": 29
+          },
+          {
+            "id": "enen_tencent_operating_profit",
+            "quadrant": "en-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "5",
+              "207",
+              "8",
+              "203"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "enen_tencent_total_assets",
+            "quadrant": "en-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "234",
+              "26",
+              "254",
+              "175"
+            ],
+            "candidate_page_count": 39
+          },
+          {
+            "id": "zhen_aapl_cost_of_sales_v3",
+            "quadrant": "zh-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "61",
+              "34",
+              "22",
+              "44"
+            ],
+            "candidate_page_count": 32
+          },
+          {
+            "id": "zhen_aapl_gross_margin_v3",
+            "quadrant": "zh-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "27",
+              "32",
+              "10",
+              "45"
+            ],
+            "candidate_page_count": 33
+          },
+          {
+            "id": "zhen_aapl_rnd_v3",
+            "quadrant": "zh-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "27",
+              "6",
+              "44",
+              "50"
+            ],
+            "candidate_page_count": 28
+          },
+          {
+            "id": "zhen_aapl_total_opex_v3",
+            "quadrant": "zh-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "61",
+              "34",
+              "22",
+              "5"
+            ],
+            "candidate_page_count": 34
+          },
+          {
+            "id": "zhen_msft_cost_of_revenue_v3",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "117",
+              "136",
+              "55",
+              "74"
+            ],
+            "candidate_page_count": 34
+          },
+          {
+            "id": "zhen_msft_general_admin_v3",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "117",
+              "136",
+              "55",
+              "74"
+            ],
+            "candidate_page_count": 35
+          },
+          {
+            "id": "zhen_msft_sales_marketing_v3",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "117",
+              "136",
+              "127",
+              "55"
+            ],
+            "candidate_page_count": 30
+          },
+          {
+            "id": "zhen_msft_tax_provision_v3",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "117",
+              "136",
+              "55",
+              "74"
+            ],
+            "candidate_page_count": 33
+          },
+          {
+            "id": "enzh_moutai_trading_financial_assets_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "15",
+              "129",
+              "61",
+              "30"
+            ],
+            "candidate_page_count": 45
+          },
+          {
+            "id": "enzh_moutai_other_receivables_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "33",
+              "53"
+            ],
+            "candidate_page_count": 40
+          },
+          {
+            "id": "enzh_moutai_long_term_equity_investments_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "94",
+              "61"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "enzh_moutai_fixed_assets_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "129",
+              "31",
+              "30",
+              "33"
+            ],
+            "candidate_page_count": 41
+          },
+          {
+            "id": "enzh_moutai_right_of_use_assets_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "2",
+              "129"
+            ],
+            "candidate_page_count": 41
+          },
+          {
+            "id": "enzh_moutai_finance_expense_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "2",
+              "30",
+              "63",
+              "129"
+            ],
+            "candidate_page_count": 42
+          },
+          {
+            "id": "enzh_moutai_investing_cash_flow_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "129",
+              "2"
+            ],
+            "candidate_page_count": 41
+          },
+          {
+            "id": "enzh_moutai_dividend_per_ten_shares_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "73",
+              "31",
+              "30",
+              "33"
+            ],
+            "candidate_page_count": 41
+          }
+        ],
+        "retrieval_seconds": 0.5586
+      },
+      "hybrid": {
+        "metrics": {
+          "case_count": 32,
+          "page_recall_at_k": 0.1562,
+          "keyword_verified_recall_at_k": 0.1562,
+          "top1_page_relevance": 0.0312,
+          "citation_page_relevance": 0.0391,
+          "candidate_recall_at_48": 0.6875,
+          "number_check_at_k": 0.1562,
+          "number_check_denominator": 32,
+          "scoped_ticker_pollution_count": 0
+        },
+        "by_quadrant": {
+          "zh-zh": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 1.0,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "en-en": {
+            "case_count": 8,
+            "page_recall_at_k": 0.5,
+            "keyword_verified_recall_at_k": 0.5,
+            "top1_page_relevance": 0.125,
+            "citation_page_relevance": 0.125,
+            "candidate_recall_at_48": 1.0,
+            "number_check_at_k": 0.5,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "zh-en": {
+            "case_count": 8,
+            "page_recall_at_k": 0.125,
+            "keyword_verified_recall_at_k": 0.125,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0312,
+            "candidate_recall_at_48": 0.375,
+            "number_check_at_k": 0.125,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          },
+          "en-zh": {
+            "case_count": 8,
+            "page_recall_at_k": 0.0,
+            "keyword_verified_recall_at_k": 0.0,
+            "top1_page_relevance": 0.0,
+            "citation_page_relevance": 0.0,
+            "candidate_recall_at_48": 0.375,
+            "number_check_at_k": 0.0,
+            "number_check_denominator": 8,
+            "scoped_ticker_pollution_count": 0
+          }
+        },
+        "cases": [
+          {
+            "id": "zhzh_moutai_accounts_receivable",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "59",
+              "6",
+              "70",
+              "68"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_capital_reserve",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "33",
+              "71",
+              "70",
+              "68"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_income_tax_expense",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "61",
+              "1",
+              "63",
+              "129"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_overseas_revenue",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "54",
+              "61",
+              "129",
+              "1"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_prepayments",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "59",
+              "70",
+              "68",
+              "6"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_rnd_investment",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "68",
+              "70",
+              "61",
+              "71"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_surplus_reserve",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "61",
+              "70",
+              "71",
+              "1"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhzh_moutai_undistributed_profit",
+            "quadrant": "zh-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "70",
+              "61",
+              "33",
+              "68"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_aapl_net_income",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "33",
+              "39",
+              "44",
+              "32"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_aapl_operating_income",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": true,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "32",
+              "4",
+              "33",
+              "28"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_aapl_provision_income_taxes",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "28",
+              "32",
+              "44",
+              "48"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_aapl_total_net_sales",
+            "quadrant": "en-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "27",
+              "25",
+              "39",
+              "51"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_msft_income_before_taxes",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "55",
+              "105",
+              "62",
+              "76"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_msft_total_equity",
+            "quadrant": "en-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "127",
+              "47",
+              "85",
+              "59"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_tencent_operating_profit",
+            "quadrant": "en-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "5",
+              "8",
+              "11",
+              "207"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enen_tencent_total_assets",
+            "quadrant": "en-en",
+            "ticker": "0700.HK",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "141",
+              "75",
+              "170",
+              "254"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_aapl_cost_of_sales_v3",
+            "quadrant": "zh-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "61",
+              "22",
+              "44",
+              "51"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_aapl_gross_margin_v3",
+            "quadrant": "zh-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": true,
+            "keyword_verified_hit_at_k": true,
+            "number_check_at_k": true,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.25,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "27",
+              "32",
+              "10",
+              "45"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_aapl_rnd_v3",
+            "quadrant": "zh-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "27",
+              "6",
+              "44",
+              "50"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_aapl_total_opex_v3",
+            "quadrant": "zh-en",
+            "ticker": "AAPL",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "61",
+              "22",
+              "51",
+              "45"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_cost_of_revenue_v3",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "117",
+              "136",
+              "47",
+              "48"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_general_admin_v3",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "117",
+              "136",
+              "47",
+              "48"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_sales_marketing_v3",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "117",
+              "136",
+              "47",
+              "48"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "zhen_msft_tax_provision_v3",
+            "quadrant": "zh-en",
+            "ticker": "MSFT",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "117",
+              "136",
+              "47",
+              "48"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_trading_financial_assets_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "30",
+              "129",
+              "33",
+              "31"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_other_receivables_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "33",
+              "129"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_long_term_equity_investments_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "31",
+              "30",
+              "94",
+              "33"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_fixed_assets_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "129",
+              "30",
+              "31",
+              "33"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_right_of_use_assets_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": false,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "129",
+              "33"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_finance_expense_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "129",
+              "33"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_investing_cash_flow_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "30",
+              "31",
+              "129",
+              "1"
+            ],
+            "candidate_page_count": 48
+          },
+          {
+            "id": "enzh_moutai_dividend_per_ten_shares_v3",
+            "quadrant": "en-zh",
+            "ticker": "600519.SS",
+            "page_hit_at_k": false,
+            "keyword_verified_hit_at_k": false,
+            "number_check_at_k": false,
+            "top_result_is_relevant": false,
+            "citation_page_relevance": 0.0,
+            "cross_ticker_source_count_scoped": 0,
+            "candidate_recall_at_48": true,
+            "retrieved_pages": [
+              "73",
+              "30",
+              "31",
+              "33"
+            ],
+            "candidate_page_count": 48
+          }
+        ],
+        "retrieval_seconds": 0.5381
+      }
+    }
+  },
+  "online_switch": "forbidden",
+  "semantic": "not_tested"
+}

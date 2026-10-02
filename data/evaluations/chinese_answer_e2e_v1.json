@@ -1,0 +1,747 @@
+{
+  "status": "ok",
+  "evaluated_at": "2026-09-29T11:36:46.887455+00:00",
+  "dataset_sha256": "cbeee47816304ab84b63fe8effe63b0ed1b2206a5baa915cb7c2eeb393ff5f65",
+  "model": {
+    "name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42"
+  },
+  "protocol": {
+    "top_k": 4,
+    "candidate_budget": 48,
+    "semantic_budget": 16,
+    "answer_policy": "answer only when a field-labelled numeric line is found; otherwise refuse",
+    "online_path_changed": false
+  },
+  "metrics": {
+    "cases": 17,
+    "answerable": 13,
+    "refusal_cases": 4,
+    "status_accuracy": 1.0,
+    "answer_value_accuracy": 1.0,
+    "citation_accuracy": 1.0,
+    "grounded_answer_rate": 1.0,
+    "correct_refusal_rate": 1.0
+  },
+  "cases": [
+    {
+      "id": "cnholdout_v1_01",
+      "ticker": "300750.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "货币资金为 333,512,927。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 31
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 113
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 111
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 164
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 31
+          },
+          "excerpt": "比例\n货币资金 333,512,927  34.21% 303,511,993  38.58% -4.37% 其他资产占比上升\n交易性金融资产 58,993,528  6.05% 14,282,253  1.82% 4.23% 加强资金管理，新"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_02",
+      "ticker": "300750.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "交易性金融资产为 58,993,528。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 31
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 214
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 164
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 197
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 31
+          },
+          "excerpt": "货币资金 333,512,927  34.21% 303,511,993  38.58% -4.37% 其他资产占比上升\n交易性金融资产 58,993,528  6.05% 14,282,253  1.82% 4.23% 加强资金管理，新\n增购买理财产品"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_03",
+      "ticker": "300750.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "研发投入占营业收入比例为 5.23%。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 30
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 1
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 2
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 3
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 30
+          },
+          "excerpt": "研发投入金额（千元）                             22,146,581                              18,606,756                              18,356,108\n研发投入占营业收入比例 5.23% 5.14% 4.58%\n□适用 不适用"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_04",
+      "ticker": "300750.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "境外收入为 30.60%。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 25
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 179
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 204
+          },
+          {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 93
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "300750.SZ",
+            "file_name": "300750_2025_annual_report.pdf",
+            "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+            "page": 25
+          },
+          "excerpt": "境内 294,060,576  69.40% 251,677,045  69.52% 16.84%\n境外 129,641,258  30.60% 110,335,509  30.48% 17.50%\n公司需遵守《深圳证券交易所上市公司自律监管指引第 4号——创业板行业信息披露》中的“锂离子电池产业链相关业务”"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_05",
+      "ticker": "000001.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "不良贷款率为 1.05%。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 37
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 23
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 7
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 53
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 37
+          },
+          "excerpt": "(416) (957) (56.5%)\n不良贷款率 1.05% 1.06% -0.01 个百分点\n逾期90 天以上贷款偏离度（注1） 0.56 0.63 -0.07"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_06",
+      "ticker": "000001.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "拨备覆盖率为 220.88%。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 7
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 25
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 53
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 20
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 7
+          },
+          "excerpt": "处置，严把新增资产质量关。2025年末，不良贷款率1.05%，较上年末下降0.01个百分点；不良贷款\n生成率同比下降0.17个百分点；拨备覆盖率220.88%，持续保持在良好水平。同时，严守流动性安全、\n消费者权益保护与声誉风险底线，确保银行安全稳健运行。"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_07",
+      "ticker": "000001.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "营业利润为 51,408。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 17
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 120
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 151
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 122
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 17
+          },
+          "excerpt": "信用及其他资产减值损失 40,567 49,428 59,094 (17.9%)\n营业利润 51,408 55,206 57,928 (6.9%)\n利润总额 51,159 54,738 57,718 (6.5%)"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_08",
+      "ticker": "000001.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "每股经营活动产生的现金流量净额为 16.28。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 18
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 1
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 2
+          },
+          {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 3
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000001.SZ",
+            "file_name": "000001_2025_annual_report.pdf",
+            "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+            "page": 18
+          },
+          "excerpt": "扣除非经常性损益后的基本/稀释每股收益 2.07 2.16 2.25 (4.2%)\n每股经营活动产生的现金流量净额 16.28 3.26 4.76 399.4%\n财务比率（%）："
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_09",
+      "ticker": "000858.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "营业利润为 12,251,151,014.43。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 56
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 20
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 58
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 1
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 56
+          },
+          "excerpt": "资产处置收益（损失以“-”号填列） 12,694,451.10 -3,356,759.80\n三、营业利润（亏损以“－”号填列） 12,251,151,014.43 44,200,075,710.37\n加：营业外收入 46,397,872.57 40,043,015.14"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_10",
+      "ticker": "000858.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "财务费用为 -2,661,630,589.09。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 56
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 15
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 116
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 113
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 56
+          },
+          "excerpt": "研发费用 449,183,817.50 405,053,632.27\n财务费用 -2,661,630,589.09 -2,833,530,840.46\n其中：利息费用 28,573,949.37 40,436,892.68"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_11",
+      "ticker": "000858.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "现金及现金等价物净增加额为 -656,583,784.01。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 17
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 117
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 60
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 61
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 17
+          },
+          "excerpt": "筹资活动产生的现金流量净额 -28,391,572,146.41 -19,622,477,387.77 不适用\n现金及现金等价物净增加额 -656,583,784.01 11,675,590,193.38 -105.62%（注3）\n相关数据同比发生重大变动的主要影响因素说明"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_12",
+      "ticker": "000858.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "应收账款为 37,745,419.51。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 18
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 89
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 87
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 134
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 18
+          },
+          "excerpt": "货币资金 127,014,443,016.86 66.86% 127,398,915,484.11 67.67% -0.81%\n应收账款 37,745,419.51 0.02% 37,346,561.95 0.02% 0.00%\n存货 20,065,336,751.20  10.56% 18,233,702,166.62 9.69% 0.87%"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_13",
+      "ticker": "000858.SZ",
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "answered",
+        "answer": "长期股权投资为 2,233,514,411.45。",
+        "reason": null,
+        "sources": [
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 18
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 97
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 113
+          },
+          {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 140
+          }
+        ],
+        "evidence": {
+          "metadata": {
+            "ticker": "000858.SZ",
+            "file_name": "000858_2025_annual_report.pdf",
+            "source_sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4",
+            "page": 18
+          },
+          "excerpt": "存货 20,065,336,751.20  10.56% 18,233,702,166.62 9.69% 0.87%\n长期股权投资 2,233,514,411.45 1.18% 2,081,612,703.43 1.11% 0.07%\n固定资产 7,641,231,013.35 4.02% 7,264,740,683.62 3.86% 0.16%"
+        }
+      }
+    },
+    {
+      "id": "cnholdout_v1_14",
+      "ticker": "300750.SZ",
+      "expected_status": "refused",
+      "actual_status": "refused",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "refused",
+        "answer": "当前证据边界不足，无法可靠回答该问题。",
+        "reason": "问题要求预测、投资建议或超出冻结年报事实范围。",
+        "sources": []
+      }
+    },
+    {
+      "id": "cnholdout_v1_15",
+      "ticker": "000001.SZ",
+      "expected_status": "refused",
+      "actual_status": "refused",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "refused",
+        "answer": "当前证据边界不足，无法可靠回答该问题。",
+        "reason": "问题要求预测、投资建议或超出冻结年报事实范围。",
+        "sources": []
+      }
+    },
+    {
+      "id": "cnholdout_v1_16",
+      "ticker": "000858.SZ",
+      "expected_status": "refused",
+      "actual_status": "refused",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "refused",
+        "answer": "当前证据边界不足，无法可靠回答该问题。",
+        "reason": "问题要求预测、投资建议或超出冻结年报事实范围。",
+        "sources": []
+      }
+    },
+    {
+      "id": "cnholdout_v1_17",
+      "ticker": "300750.SZ",
+      "expected_status": "refused",
+      "actual_status": "refused",
+      "status_correct": true,
+      "value_correct": true,
+      "citation_correct": true,
+      "grounded_answer": true,
+      "output": {
+        "status": "refused",
+        "answer": "当前证据边界不足，无法可靠回答该问题。",
+        "reason": "问题要求预测、投资建议或超出冻结年报事实范围。",
+        "sources": []
+      }
+    }
+  ],
+  "limitations": [
+    "17条控制留出，仍只有2025年三份中文年报",
+    "回答抽取为确定性基线，不代表LLM生成质量",
+    "期间/单位/列语义仍需独立人工门禁"
+  ]
+}

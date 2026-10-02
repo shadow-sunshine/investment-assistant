@@ -1,0 +1,714 @@
+{
+  "schema_version": "r3-holdout-v3",
+  "created_at": "2026-09-26",
+  "purpose": "R3 独立留出集 v3：四象限各 8 条；与 R0 无重复，且 holdout 内部不复用同一 ticker/page/keyword/value 事实。gold page 先于检索逐页标注，检索仅使用 question 与冻结 query-only 术语扩展。",
+  "quadrant_definition": {
+    "zh-zh": "中文提问 / 中文资料（600519.SS）",
+    "en-en": "英文提问 / 英文资料（AAPL / MSFT / 0700.HK）",
+    "zh-en": "中文提问 / 英文资料（AAPL / MSFT / 0700.HK）—— treatment 扩展方向主要在此象限生效",
+    "en-zh": "英文提问 / 中文资料（600519.SS）—— 无英文→中文扩展方向，预期两臂均接近 0"
+  },
+  "independence": {
+    "vs_r0_level1": "规范化 (ticker, question) 零重复",
+    "vs_r0_level2": "规范化 (ticker, target_page, normalized keywords) 零重复",
+    "within_holdout": "规范化 (ticker, target_page, normalized keywords) 零重复；跨语言象限不复用同一事实",
+    "note": "v1 与 v2 均保留为历史探索性产物；v1 与 R0 重复，v2 虽与 R0 独立但 holdout 内部存在双语事实重复，本 v3 重建后才可作独立留出评测。"
+  },
+  "materials": {
+    "AAPL": {
+      "file_name": "Apple_2025_Form_10-K.pdf",
+      "sha256": "3eb270b22acb7d8d8e9c32a43dc221dec3345f8e4bca02755fdbc1ee16c823de",
+      "doc_lang": "en",
+      "page_authority": "official",
+      "manifest_listed": false,
+      "note": "未收录于 materials_manifest.json（早于 fetch_materials 入库）；sha256 于本样本集构建时计算并留存"
+    },
+    "MSFT": {
+      "file_name": "MSFT_SEC_10-K_2026-06-30_official-html.pdf",
+      "sha256": "803350171b5cbf667f0915a7de46b17d2e2c6351d398bf36e22016671997d109",
+      "doc_lang": "en",
+      "page_authority": "generated",
+      "manifest_listed": true,
+      "note": "SEC 无 PDF 版本，由官方 HTML 本地转换；页码为本地转换页码，非官方分页；首页含 XBRL 标签噪音"
+    },
+    "0700.HK": {
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "doc_lang": "en",
+      "page_authority": "official",
+      "manifest_listed": true
+    },
+    "600519.SS": {
+      "file_name": "600519_2025_annual_report.pdf",
+      "sha256": "474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288",
+      "doc_lang": "zh",
+      "page_authority": "official",
+      "manifest_listed": true
+    }
+  },
+  "cases": [
+    {
+      "id": "zhzh_moutai_accounts_receivable",
+      "quadrant": "zh-zh",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年末应收账款余额是多少？",
+      "target_pages": [
+        14
+      ],
+      "keywords": [
+        "应收账款",
+        "2,609,048.49"
+      ],
+      "evidence_snippet": "应收账款 2,609,048.49 0.001 18,974,192.75 0.01 -86.25",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "zhzh_moutai_capital_reserve",
+      "quadrant": "zh-zh",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年末资本公积是多少？",
+      "target_pages": [
+        14
+      ],
+      "keywords": [
+        "资本公积",
+        "1,577,095.18"
+      ],
+      "evidence_snippet": "资本公积 1,577,095.18 0.001 1,374,964,415.72 0.46 -99.89",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "zhzh_moutai_income_tax_expense",
+      "quadrant": "zh-zh",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年所得税费用是多少？",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "所得税费用",
+        "29,444,936,771.41"
+      ],
+      "evidence_snippet": "减：所得税费用 58 29,444,936,771.41 30,303,850,168.56",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "zhzh_moutai_overseas_revenue",
+      "quadrant": "zh-zh",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年国外营业收入是多少？",
+      "target_pages": [
+        10
+      ],
+      "keywords": [
+        "国外",
+        "4,850,142,322.68"
+      ],
+      "evidence_snippet": "国外 4,850,142,322.68 402,957,612.75 91.69",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "zhzh_moutai_prepayments",
+      "quadrant": "zh-zh",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年末预付款项余额是多少？",
+      "target_pages": [
+        14
+      ],
+      "keywords": [
+        "预付款项",
+        "6,637,314.31"
+      ],
+      "evidence_snippet": "预付款项 6,637,314.31 0.002 26,975,033.20 0.01 -75.39",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "zhzh_moutai_rnd_investment",
+      "quadrant": "zh-zh",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年研发投入合计是多少？",
+      "target_pages": [
+        12
+      ],
+      "keywords": [
+        "研发投入合计",
+        "803,132,232.31"
+      ],
+      "evidence_snippet": "研发投入合计 803,132,232.31",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "zhzh_moutai_surplus_reserve",
+      "quadrant": "zh-zh",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年末盈余公积是多少？",
+      "target_pages": [
+        58
+      ],
+      "keywords": [
+        "盈余公积",
+        "50,543,176,610.94"
+      ],
+      "evidence_snippet": "盈余公积 41 50,543,176,610.94 46,635,793,479.39",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "zhzh_moutai_undistributed_profit",
+      "quadrant": "zh-zh",
+      "question_lang": "zh",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "贵州茅台 2025 年末未分配利润是多少？",
+      "target_pages": [
+        58
+      ],
+      "keywords": [
+        "未分配利润",
+        "191,905,148,832.21"
+      ],
+      "evidence_snippet": "未分配利润 43 191,905,148,832.21 182,787,415,205.05",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enen_aapl_net_income",
+      "quadrant": "en-en",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "ticker": "AAPL",
+      "question": "What was Apple's net income in fiscal 2025?",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Net income",
+        "112,010"
+      ],
+      "evidence_snippet": "Net income $ 112,010 $ 93,736 $ 96,995",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enen_aapl_operating_income",
+      "quadrant": "en-en",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "ticker": "AAPL",
+      "question": "What was Apple's operating income in fiscal 2025?",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Operating income",
+        "133,050"
+      ],
+      "evidence_snippet": "Operating income 133,050 123,216 114,301",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enen_aapl_provision_income_taxes",
+      "quadrant": "en-en",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "ticker": "AAPL",
+      "question": "What was Apple's provision for income taxes in fiscal 2025?",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Provision for income taxes",
+        "20,719"
+      ],
+      "evidence_snippet": "Provision for income taxes $ 20,719 $ 29,749 $ 16,741",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enen_aapl_total_net_sales",
+      "quadrant": "en-en",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "ticker": "AAPL",
+      "question": "What were Apple's total net sales in fiscal 2025?",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Total net sales",
+        "416,161"
+      ],
+      "evidence_snippet": "Total net sales $ 416,161 $ 391,035 $ 383,285",
+      "forbidden_tickers": [
+        "MSFT",
+        "600519.SS",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enen_msft_income_before_taxes",
+      "quadrant": "en-en",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "ticker": "MSFT",
+      "question": "What was Microsoft's income before income taxes in fiscal 2026?",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "Income before income taxes",
+        "165,934"
+      ],
+      "evidence_snippet": "Income before income taxes 165,934 123,627 107,787",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enen_msft_total_equity",
+      "quadrant": "en-en",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "ticker": "MSFT",
+      "question": "What was Microsoft's total stockholders' equity at the end of fiscal 2026?",
+      "target_pages": [
+        65
+      ],
+      "keywords": [
+        "442,387"
+      ],
+      "evidence_snippet": "Total stockholders' equity 442,387",
+      "forbidden_tickers": [
+        "AAPL",
+        "600519.SS",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enen_tencent_operating_profit",
+      "quadrant": "en-en",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "ticker": "0700.HK",
+      "question": "What was Tencent's operating profit for the year ended 31 December 2025?",
+      "target_pages": [
+        4
+      ],
+      "keywords": [
+        "Operating profit",
+        "241,562"
+      ],
+      "evidence_snippet": "Operating profit 124,656 110,827 160,074 208,099 241,562",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "enen_tencent_total_assets",
+      "quadrant": "en-en",
+      "question_lang": "en",
+      "doc_lang": "en",
+      "ticker": "0700.HK",
+      "question": "What were Tencent's total assets at the end of 2025?",
+      "target_pages": [
+        4
+      ],
+      "keywords": [
+        "Total assets",
+        "1,612,364"
+      ],
+      "evidence_snippet": "Total assets 1,612,364 1,578,131 1,577,246 1,780,995 2,038,986",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "zhen_aapl_cost_of_sales_v3",
+      "quadrant": "zh-en",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "ticker": "AAPL",
+      "question": "苹果 2025 财年的总销售成本是多少？",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Total cost of sales",
+        "220,960"
+      ],
+      "evidence_snippet": "Total cost of sales 220,960 210,352 214,137",
+      "forbidden_tickers": [
+        "MSFT",
+        "0700.HK",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "zhen_aapl_gross_margin_v3",
+      "quadrant": "zh-en",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "ticker": "AAPL",
+      "question": "苹果 2025 财年的毛利是多少？",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Gross margin",
+        "195,201"
+      ],
+      "evidence_snippet": "Gross margin 195,201 180,683 169,148",
+      "forbidden_tickers": [
+        "MSFT",
+        "0700.HK",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "zhen_aapl_rnd_v3",
+      "quadrant": "zh-en",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "ticker": "AAPL",
+      "question": "苹果 2025 财年的研发费用是多少？",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Research and development",
+        "34,550"
+      ],
+      "evidence_snippet": "Research and development 34,550 31,370 29,915",
+      "forbidden_tickers": [
+        "MSFT",
+        "0700.HK",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "zhen_aapl_total_opex_v3",
+      "quadrant": "zh-en",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "ticker": "AAPL",
+      "question": "苹果 2025 财年的总运营费用是多少？",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "Total operating expenses",
+        "62,151"
+      ],
+      "evidence_snippet": "Total operating expenses 62,151 57,467 54,847",
+      "forbidden_tickers": [
+        "MSFT",
+        "0700.HK",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "zhen_msft_cost_of_revenue_v3",
+      "quadrant": "zh-en",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "ticker": "MSFT",
+      "question": "微软 2026 财年的总销售成本是多少？",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "Total cost of revenue",
+        "106,374"
+      ],
+      "evidence_snippet": "Total cost of revenue 106,374 87,831 74,114",
+      "forbidden_tickers": [
+        "AAPL",
+        "0700.HK",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "zhen_msft_general_admin_v3",
+      "quadrant": "zh-en",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "ticker": "MSFT",
+      "question": "微软 2026 财年的一般及行政费用是多少？",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "General and administrative",
+        "7,956"
+      ],
+      "evidence_snippet": "General and administrative 7,956 7,223 7,609",
+      "forbidden_tickers": [
+        "AAPL",
+        "0700.HK",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "zhen_msft_sales_marketing_v3",
+      "quadrant": "zh-en",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "ticker": "MSFT",
+      "question": "微软 2026 财年的销售与市场营销费用是多少？",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "Sales and marketing",
+        "26,710"
+      ],
+      "evidence_snippet": "Sales and marketing 26,710 25,654 24,456",
+      "forbidden_tickers": [
+        "AAPL",
+        "0700.HK",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "zhen_msft_tax_provision_v3",
+      "quadrant": "zh-en",
+      "question_lang": "zh",
+      "doc_lang": "en",
+      "ticker": "MSFT",
+      "question": "微软 2026 财年的所得税费用是多少？",
+      "target_pages": [
+        62
+      ],
+      "keywords": [
+        "Provision for income taxes",
+        "32,185"
+      ],
+      "evidence_snippet": "Provision for income taxes 32,185 21,795 19,651",
+      "forbidden_tickers": [
+        "AAPL",
+        "0700.HK",
+        "600519.SS"
+      ]
+    },
+    {
+      "id": "enzh_moutai_trading_financial_assets_v3",
+      "quadrant": "en-zh",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "What was Kweichow Moutai's trading financial assets balance at the end of 2025?",
+      "target_pages": [
+        14
+      ],
+      "keywords": [
+        "248,513,280.00"
+      ],
+      "evidence_snippet": "交易性金融资产 248,513,280.00 0.08 -100.00",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enzh_moutai_other_receivables_v3",
+      "quadrant": "en-zh",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "What were Kweichow Moutai's other receivables at the end of 2025?",
+      "target_pages": [
+        14
+      ],
+      "keywords": [
+        "51,027,010.56"
+      ],
+      "evidence_snippet": "其他应收款 51,027,010.56 0.02 160,176,582.69 0.05 -68.14",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enzh_moutai_long_term_equity_investments_v3",
+      "quadrant": "en-zh",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "What were Kweichow Moutai's long-term equity investments at the end of 2025?",
+      "target_pages": [
+        14
+      ],
+      "keywords": [
+        "26,871,114,612.71"
+      ],
+      "evidence_snippet": "长期股权投资 26,871,114,612.71 8.84 1,210,959,803.42 0.41 2,118.99",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enzh_moutai_fixed_assets_v3",
+      "quadrant": "en-zh",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "What was Kweichow Moutai's fixed assets balance at the end of 2025?",
+      "target_pages": [
+        14
+      ],
+      "keywords": [
+        "22,488,122,304.35"
+      ],
+      "evidence_snippet": "固定资产 22,488,122,304.35 7.40 21,871,446,747.14 7.32 2.82",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enzh_moutai_right_of_use_assets_v3",
+      "quadrant": "en-zh",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "What was Kweichow Moutai's right-of-use assets balance at the end of 2025?",
+      "target_pages": [
+        14
+      ],
+      "keywords": [
+        "221,738,227.51"
+      ],
+      "evidence_snippet": "使用权资产 221,738,227.51 0.07 410,594,173.53 0.14 -46.00",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enzh_moutai_finance_expense_v3",
+      "quadrant": "en-zh",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "What was Kweichow Moutai's finance expense in 2025?",
+      "target_pages": [
+        9
+      ],
+      "keywords": [
+        "-815,240,284.72"
+      ],
+      "evidence_snippet": "财务费用 -815,240,284.72 -1,470,219,863.34 不适用",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enzh_moutai_investing_cash_flow_v3",
+      "quadrant": "en-zh",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "What was Kweichow Moutai's net cash flow from investing activities in 2025?",
+      "target_pages": [
+        9
+      ],
+      "keywords": [
+        "-31,641,898,948.89"
+      ],
+      "evidence_snippet": "投资活动产生的现金流量净额 -31,641,898,948.89 -1,785,202,630.00",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    },
+    {
+      "id": "enzh_moutai_dividend_per_ten_shares_v3",
+      "quadrant": "en-zh",
+      "question_lang": "en",
+      "doc_lang": "zh",
+      "ticker": "600519.SS",
+      "question": "What cash dividend per 10 shares did Kweichow Moutai declare for 2025?",
+      "target_pages": [
+        32
+      ],
+      "keywords": [
+        "276.24"
+      ],
+      "evidence_snippet": "公司全体股东每 10 股派发现金红利 276.24 元（含税）",
+      "forbidden_tickers": [
+        "AAPL",
+        "MSFT",
+        "0700.HK"
+      ]
+    }
+  ]
+}

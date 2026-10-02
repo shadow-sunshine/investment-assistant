@@ -1,0 +1,478 @@
+{
+  "status": "ok",
+  "evaluated_at": "2026-09-29T10:00:05.194941+00:00",
+  "dataset_sha256": "c97e1a451e372ba9c72c3731183d16b4735129c1ef379255bf129ec489aa8696",
+  "model": {
+    "name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42"
+  },
+  "protocol": {
+    "candidate_budget": 48,
+    "semantic_budget": 16,
+    "top_k": 4,
+    "semantic_scope": "lexical_top16_query_relevant_excerpt",
+    "online_path_changed": false
+  },
+  "metrics": {
+    "cases": 26,
+    "candidate_recall_at_48": 1.0,
+    "page_recall_at_4": 0.8846,
+    "field_value_cooccurrence_at_4": 0.8846,
+    "top1": 0.5,
+    "ticker_pollution": 0,
+    "median_retrieval_ms": 485.702
+  },
+  "by_ticker": {
+    "300750.SZ": {
+      "cases": 10,
+      "candidate_recall_at_48": 1.0,
+      "page_recall_at_4": 0.9,
+      "field_value_cooccurrence_at_4": 0.9,
+      "top1": 0.6,
+      "ticker_pollution": 0,
+      "median_retrieval_ms": 493.753
+    },
+    "000001.SZ": {
+      "cases": 8,
+      "candidate_recall_at_48": 1.0,
+      "page_recall_at_4": 0.875,
+      "field_value_cooccurrence_at_4": 0.875,
+      "top1": 0.25,
+      "ticker_pollution": 0,
+      "median_retrieval_ms": 512.649
+    },
+    "000858.SZ": {
+      "cases": 8,
+      "candidate_recall_at_48": 1.0,
+      "page_recall_at_4": 0.875,
+      "field_value_cooccurrence_at_4": 0.875,
+      "top1": 0.625,
+      "ticker_pollution": 0,
+      "median_retrieval_ms": 482.592
+    }
+  },
+  "cases": [
+    {
+      "id": "cnboot_zhzh_01",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        116,
+        231,
+        118,
+        30
+      ],
+      "retrieval_ms": 438.096
+    },
+    {
+      "id": "cnboot_zhzh_02",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        59,
+        117,
+        6,
+        12
+      ],
+      "retrieval_ms": 631.775
+    },
+    {
+      "id": "cnboot_zhzh_03",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        121,
+        30,
+        201,
+        120
+      ],
+      "retrieval_ms": 572.148
+    },
+    {
+      "id": "cnboot_zhzh_04",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        11,
+        213,
+        66,
+        65
+      ],
+      "retrieval_ms": 493.753
+    },
+    {
+      "id": "cnboot_zhzh_05",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        25,
+        12,
+        1,
+        13
+      ],
+      "retrieval_ms": 433.488
+    },
+    {
+      "id": "cnboot_zhzh_06",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": false,
+      "field_value_cooccurrence_at_4": false,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        12,
+        1,
+        9,
+        15
+      ],
+      "retrieval_ms": 278.599
+    },
+    {
+      "id": "cnboot_zhzh_07",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        30,
+        29,
+        20,
+        38
+      ],
+      "retrieval_ms": 590.599
+    },
+    {
+      "id": "cnboot_zhzh_08",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        172,
+        145,
+        31,
+        114
+      ],
+      "retrieval_ms": 471.465
+    },
+    {
+      "id": "cnboot_zhzh_09",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        148,
+        29,
+        196,
+        118
+      ],
+      "retrieval_ms": 510.231
+    },
+    {
+      "id": "cnboot_zhzh_10",
+      "ticker": "300750.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        30,
+        121,
+        120,
+        12
+      ],
+      "retrieval_ms": 431.941
+    },
+    {
+      "id": "cnboot_zhzh_11",
+      "ticker": "000001.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        19,
+        17,
+        6,
+        26
+      ],
+      "retrieval_ms": 512.649
+    },
+    {
+      "id": "cnboot_zhzh_12",
+      "ticker": "000001.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        26,
+        53,
+        25,
+        7
+      ],
+      "retrieval_ms": 484.878
+    },
+    {
+      "id": "cnboot_zhzh_13",
+      "ticker": "000001.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        41,
+        32,
+        25,
+        19
+      ],
+      "retrieval_ms": 477.082
+    },
+    {
+      "id": "cnboot_zhzh_14",
+      "ticker": "000001.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        27,
+        31,
+        25,
+        23
+      ],
+      "retrieval_ms": 529.665
+    },
+    {
+      "id": "cnboot_zhzh_15",
+      "ticker": "000001.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        83,
+        18,
+        82,
+        19
+      ],
+      "retrieval_ms": 586.261
+    },
+    {
+      "id": "cnboot_zhzh_16",
+      "ticker": "000001.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        36,
+        131,
+        128,
+        19
+      ],
+      "retrieval_ms": 632.621
+    },
+    {
+      "id": "cnboot_zhzh_17",
+      "ticker": "000001.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": false,
+      "field_value_cooccurrence_at_4": false,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        220,
+        121,
+        98,
+        1
+      ],
+      "retrieval_ms": 358.23
+    },
+    {
+      "id": "cnboot_zhzh_18",
+      "ticker": "000001.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        238,
+        25,
+        54,
+        17
+      ],
+      "retrieval_ms": 486.299
+    },
+    {
+      "id": "cnboot_zhzh_19",
+      "ticker": "000858.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        49,
+        56,
+        13,
+        17
+      ],
+      "retrieval_ms": 503.449
+    },
+    {
+      "id": "cnboot_zhzh_20",
+      "ticker": "000858.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        15,
+        113,
+        56,
+        57
+      ],
+      "retrieval_ms": 454.304
+    },
+    {
+      "id": "cnboot_zhzh_21",
+      "ticker": "000858.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        113,
+        58,
+        15,
+        56
+      ],
+      "retrieval_ms": 450.132
+    },
+    {
+      "id": "cnboot_zhzh_22",
+      "ticker": "000858.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        17,
+        16,
+        6,
+        5
+      ],
+      "retrieval_ms": 350.105
+    },
+    {
+      "id": "cnboot_zhzh_23",
+      "ticker": "000858.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        60,
+        61,
+        17,
+        116
+      ],
+      "retrieval_ms": 540.677
+    },
+    {
+      "id": "cnboot_zhzh_24",
+      "ticker": "000858.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": false,
+      "field_value_cooccurrence_at_4": false,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        117,
+        61,
+        60,
+        74
+      ],
+      "retrieval_ms": 482.592
+    },
+    {
+      "id": "cnboot_zhzh_25",
+      "ticker": "000858.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": false,
+      "ticker_pollution": 0,
+      "top_pages": [
+        96,
+        95,
+        114,
+        54
+      ],
+      "retrieval_ms": 485.702
+    },
+    {
+      "id": "cnboot_zhzh_26",
+      "ticker": "000858.SZ",
+      "candidate_hit_at_48": true,
+      "page_hit_at_4": true,
+      "field_value_cooccurrence_at_4": true,
+      "top1_hit": true,
+      "ticker_pollution": 0,
+      "top_pages": [
+        109,
+        72,
+        49,
+        81
+      ],
+      "retrieval_ms": 468.646
+    }
+  ],
+  "limitations": [
+    "开发集不是独立盲测",
+    "字段数值共现不证明期间/单位/列归属",
+    "语义精排只覆盖字面前16页",
+    "默认线上路径未改变"
+  ]
+}

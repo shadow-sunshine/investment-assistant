@@ -58,5 +58,74 @@
     },
     "stock_id": "7609",
     "announcement_title": "ANNUAL REPORT 2025"
+  },
+  "300750.SZ": {
+    "ticker": "300750.SZ",
+    "source": "巨潮资讯",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-03-10/1225002214.PDF",
+    "downloaded_at": "2026-09-29T09:42:02.266385+00:00",
+    "filing_form": "annual_report",
+    "filing_date": null,
+    "report_date": "2025",
+    "material_kind": "official_pdf",
+    "page_authority": "official",
+    "file_name": "300750_2025_annual_report.pdf",
+    "validation": {
+      "file_size_bytes": 2043710,
+      "page_count": 232,
+      "text_page_count": 232,
+      "sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9"
+    },
+    "announcement_title": "宁德时代2025年年度报告",
+    "company": "宁德时代",
+    "sector": "新能源电池",
+    "language": "zh-CN",
+    "corpus_role": "chinese_retrieval_bootstrap"
+  },
+  "000001.SZ": {
+    "ticker": "000001.SZ",
+    "source": "巨潮资讯",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-03-21/1225022887.PDF",
+    "downloaded_at": "2026-09-29T09:42:12.450772+00:00",
+    "filing_form": "annual_report",
+    "filing_date": null,
+    "report_date": "2025",
+    "material_kind": "official_pdf",
+    "page_authority": "official",
+    "file_name": "000001_2025_annual_report.pdf",
+    "validation": {
+      "file_size_bytes": 1975076,
+      "page_count": 288,
+      "text_page_count": 288,
+      "sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c"
+    },
+    "announcement_title": "平安银行2025年年度报告",
+    "company": "平安银行",
+    "sector": "商业银行",
+    "language": "zh-CN",
+    "corpus_role": "chinese_retrieval_bootstrap"
+  },
+  "000858.SZ": {
+    "ticker": "000858.SZ",
+    "source": "巨潮资讯",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-04-30/1225273091.PDF",
+    "downloaded_at": "2026-09-29T09:42:19.122806+00:00",
+    "filing_form": "annual_report",
+    "filing_date": null,
+    "report_date": "2025",
+    "material_kind": "official_pdf",
+    "page_authority": "official",
+    "file_name": "000858_2025_annual_report.pdf",
+    "validation": {
+      "file_size_bytes": 3085658,
+      "page_count": 141,
+      "text_page_count": 141,
+      "sha256": "09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4"
+    },
+    "announcement_title": "五粮液2025年年度报告",
+    "company": "五粮液",
+    "sector": "白酒消费",
+    "language": "zh-CN",
+    "corpus_role": "chinese_retrieval_bootstrap"
   }
 }

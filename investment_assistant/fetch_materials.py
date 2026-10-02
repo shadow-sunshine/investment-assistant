@@ -21,6 +21,24 @@ from reportlab.pdfgen.canvas import Canvas
 
 from .config import DATA_DIR, KNOWLEDGE_DIR
 from .rag import LocalResearchRAG
+from .source_governance import (
+    RESULT_FAILED,
+    RESULT_SUCCESS,
+    SourceCallFailure,
+    SourceCallPolicy,
+    SourceErrorCode,
+    ToolCallAuditRecord,
+    ToolCallError,
+    call_fingerprint,
+    classify_exception,
+    classify_http_response,
+    classify_material_fetch_error,
+    execute_source_call,
+    get_default_health_registry,
+    get_default_tool_call_ledger,
+    sanitize_detail,
+    tool_error,
+)
 
 MANIFEST_PATH = DATA_DIR / "materials_manifest.json"
 SEC_TICKER_URL = "https://www.sec.gov/files/company_tickers.json"
@@ -30,6 +48,7 @@ SEC_ARCHIVE_FILE_URL = "https://www.sec.gov/Archives/edgar/data/{cik}/{accession
 SEC_SOURCE = "SEC EDGAR"
 CNINFO_SOURCE = "\u5de8\u6f6e\u8d44\u8baf"
 HKEX_SOURCE = "\u62ab\u9732\u6613"
+SOURCE_ROUTER = "source_router"
 CNINFO_TOP_SEARCH_URL = "http://www.cninfo.com.cn/new/information/topSearch/query"
 CNINFO_ANNOUNCEMENT_URL = "http://www.cninfo.com.cn/new/hisAnnouncement/query"
 CNINFO_STATIC_URL = "http://static.cninfo.com.cn/"
@@ -40,9 +59,22 @@ HKEX_COMPANY_NAMES = {"0700.HK": "Tencent Holdings"}
 MIN_REQUEST_INTERVAL_SECONDS = 2.0
 MAX_RETRIES = 1
 
+#: R4 统一调用策略：只重试瞬时错误（网络/429/5xx），总预算耗尽即 fail-closed。
+REQUEST_POLICY = SourceCallPolicy(
+    connect_timeout_s=10.0,
+    read_timeout_s=30.0,
+    total_budget_s=90.0,
+    max_attempts=MAX_RETRIES + 1,
+    backoff_seconds=1.0,
+)
+
 
 class MaterialFetchError(RuntimeError):
-    """Raised when an official material cannot be acquired and validated."""
+    """官方资料获取失败；若可用则保留治理层的结构化错误。"""
+
+    def __init__(self, message: str, *, error: ToolCallError | None = None) -> None:
+        super().__init__(message)
+        self.error = error
 
 
 def route_source(ticker: str) -> str:
@@ -54,7 +86,17 @@ def route_source(ticker: str) -> str:
         return CNINFO_SOURCE
     if re.fullmatch(r"[A-Z][A-Z0-9.\-]{0,14}", normalized):
         return SEC_SOURCE
-    raise MaterialFetchError(f"\u65e0\u6cd5\u8bc6\u522b ticker {normalized} \u7684\u5b98\u65b9\u4fe1\u6e90\u8def\u7531\u3002")
+    message = f"\u65e0\u6cd5\u8bc6\u522b ticker {normalized} \u7684\u5b98\u65b9\u4fe1\u6e90\u8def\u7531\u3002"
+    raise MaterialFetchError(
+        message,
+        error=tool_error(
+            SOURCE_ROUTER,
+            "fetch_annual_report",
+            SourceErrorCode.UNSUPPORTED_TICKER,
+            message=message,
+            detail=sanitize_detail(message),
+        ),
+    )
 
 
 class OfficialMaterialFetcher:
@@ -65,10 +107,12 @@ class OfficialMaterialFetcher:
         session: requests.Session | None = None,
         sleeper: Callable[[float], None] = time.sleep,
         clock: Callable[[], float] = time.monotonic,
+        policy: SourceCallPolicy | None = None,
     ) -> None:
         self.session = session or requests.Session()
         self.sleeper = sleeper
         self.clock = clock
+        self._policy = policy or REQUEST_POLICY
         self._last_request_at: dict[str, float] = {}
 
     def _headers(self, host: str) -> dict[str, str]:
@@ -83,20 +127,43 @@ class OfficialMaterialFetcher:
                 self.sleeper(wait_seconds)
         self._last_request_at[source] = self.clock()
 
-    def _get(self, url: str, source: str, host: str) -> requests.Response:
-        errors: list[str] = []
-        for attempt in range(MAX_RETRIES + 1):
+    def _execute_http(
+        self,
+        send: Callable[[], requests.Response],
+        source: str,
+        operation: str,
+        extra_check: Callable[[requests.Response], Any] | None = None,
+    ) -> requests.Response:
+        """统一 HTTP 执行：状态码/内容分类、瞬时错误重试、礼貌间隔与总预算均由治理策略决定。"""
+
+        def attempt() -> requests.Response:
             self._wait_for_source(source)
-            try:
-                response = self.session.get(url, headers=self._headers(host), timeout=30)
-                if response.status_code >= 400:
-                    raise MaterialFetchError(f"HTTP {response.status_code}")
-                return response
-            except Exception as exc:
-                errors.append(f"\u7b2c {attempt + 1} \u6b21\u8bf7\u6c42\uff1a{type(exc).__name__}: {exc}")
-        raise MaterialFetchError(
-            f"{source} \u8bf7\u6c42\u5931\u8d25\uff08\u6700\u591a\u91cd\u8bd5 {MAX_RETRIES} \u6b21\uff09\uff1a{'\uFF1B'.join(errors)}"
-        )
+            response = send()
+            status_error = classify_http_response(response, source, operation)
+            if status_error is not None:
+                raise SourceCallFailure(status_error)
+            if extra_check is not None:
+                content_error = extra_check(response)
+                if content_error is not None:
+                    raise SourceCallFailure(content_error)
+            return response
+
+        try:
+            return execute_source_call(
+                attempt,
+                source=source,
+                operation=operation,
+                policy=self._policy,
+                clock=self.clock,
+                sleeper=self.sleeper,
+            )
+        except SourceCallFailure as failure:
+            error = failure.error
+            raise MaterialFetchError(
+                f"{source} 请求失败（最多重试 {MAX_RETRIES} 次，实际尝试 {error.attempts} 次）："
+                f"{error.detail or sanitize_detail(error.message)}",
+                error=error,
+            ) from failure
 
     def _source_headers(self, source: str, host: str) -> dict[str, str]:
         headers = self._headers(host)
@@ -114,21 +181,34 @@ class OfficialMaterialFetcher:
     def _anti_bot_error(self, source: str, detail: str) -> MaterialFetchError:
         return MaterialFetchError(f"{source} \u7591\u4f3c\u88ab\u53cd\u722c\u62e6\u622a\uff1a{detail}")
 
+    def _anti_bot_content_error(self, source: str, operation: str, detail: str) -> Any:
+        """内容层反爬拦截：不可重试，detail 保留“疑似被反爬拦截”特征供上层映射。"""
+        return tool_error(
+            source,
+            operation,
+            SourceErrorCode.ANTI_BOT_OR_BLOCKED,
+            message=f"{source} 疑似被反爬拦截，已停止访问。",
+            detail=sanitize_detail(f"疑似被反爬拦截：{detail}"),
+        )
+
+    def _get(self, url: str, source: str, host: str) -> requests.Response:
+        def send() -> requests.Response:
+            return self.session.get(url, headers=self._headers(host), timeout=self._policy.request_timeout)
+
+        return self._execute_http(send, source, "http_get")
+
     def _post(self, url: str, source: str, host: str, data: dict[str, str]) -> requests.Response:
-        errors: list[str] = []
-        for attempt in range(MAX_RETRIES + 1):
-            self._wait_for_source(source)
-            try:
-                response = self.session.post(url, headers=self._source_headers(source, host), data=data, timeout=30)
-                if response.status_code >= 400:
-                    raise MaterialFetchError(f"HTTP {response.status_code}")
-                if self._looks_like_html(response):
-                    raise self._anti_bot_error(source, f"POST {url} \u8fd4\u56de HTML \u800c\u975e JSON")
-                return response
-            except Exception as exc:
-                errors.append(f"\u7b2c {attempt + 1} \u6b21\u8bf7\u6c42\uff1a{type(exc).__name__}: {exc}")
-        joined_errors = "\uFF1B".join(errors)
-        raise MaterialFetchError(f"{source} \u8bf7\u6c42\u5931\u8d25\uff08\u6700\u591a\u91cd\u8bd5 {MAX_RETRIES} \u6b21\uff09\uff1a{joined_errors}")
+        def send() -> requests.Response:
+            return self.session.post(
+                url, headers=self._source_headers(source, host), data=data, timeout=self._policy.request_timeout
+            )
+
+        def check_html(response: requests.Response) -> Any:
+            if self._looks_like_html(response):
+                return self._anti_bot_content_error(source, "source_post", f"POST {url} 返回 HTML 而非 JSON")
+            return None
+
+        return self._execute_http(send, source, "source_post", extra_check=check_html)
 
     def _post_json(self, url: str, source: str, host: str, data: dict[str, str]) -> Any:
         response = self._post(url, source, host, data)
@@ -138,18 +218,12 @@ class OfficialMaterialFetcher:
             raise self._anti_bot_error(source, f"POST {url} \u8fd4\u56de\u7684\u4e0d\u662f JSON\uff1a{type(exc).__name__}: {exc}") from exc
 
     def _source_get(self, url: str, source: str, host: str, params: dict[str, str] | None = None) -> requests.Response:
-        errors: list[str] = []
-        for attempt in range(MAX_RETRIES + 1):
-            self._wait_for_source(source)
-            try:
-                response = self.session.get(url, headers=self._source_headers(source, host), params=params, timeout=30)
-                if response.status_code >= 400:
-                    raise MaterialFetchError(f"HTTP {response.status_code}")
-                return response
-            except Exception as exc:
-                errors.append(f"\u7b2c {attempt + 1} \u6b21\u8bf7\u6c42\uff1a{type(exc).__name__}: {exc}")
-        joined_errors = "\uFF1B".join(errors)
-        raise MaterialFetchError(f"{source} \u8bf7\u6c42\u5931\u8d25\uff08\u6700\u591a\u91cd\u8bd5 {MAX_RETRIES} \u6b21\uff09\uff1a{joined_errors}")
+        def send() -> requests.Response:
+            return self.session.get(
+                url, headers=self._source_headers(source, host), params=params, timeout=self._policy.request_timeout
+            )
+
+        return self._execute_http(send, source, "source_get")
 
     def _get_official_pdf(self, url: str, source: str, host: str) -> bytes:
         response = self._source_get(url, source, host)
@@ -516,14 +590,86 @@ class OfficialMaterialFetcher:
             raise MaterialFetchError(f"{SEC_SOURCE} \u4e0b\u8f7d\u6216\u5165\u5e93\u5931\u8d25\uff1a{type(exc).__name__}: {exc}") from exc
 
 
-def fetch_materials(ticker: str) -> dict[str, Any]:
-    """Fetch one ticker independently from its routed official disclosure source."""
-    source = route_source(ticker)
-    fetcher = OfficialMaterialFetcher()
-    if source == SEC_SOURCE:
-        return fetcher.fetch_sec_10k_pdf(ticker)
-    if source == CNINFO_SOURCE:
-        return fetcher.fetch_cninfo_annual_pdf(ticker)
-    if source == HKEX_SOURCE:
-        return fetcher.fetch_hkex_annual_pdf(ticker)
-    raise MaterialFetchError(f"{source} \u8def\u7531\u4e0d\u53ef\u7528\u3002")
+def fetch_materials(
+    ticker: str,
+    *,
+    job_id: str = "",
+    requested_by: str = "",
+) -> dict[str, Any]:
+    """获取单个标的资料，并在调用边界登记健康与工具审计结果。
+
+    ``job_id`` / ``requested_by`` 是可选调用上下文；不传时仍会产生可查询的审计记录，
+    但不会凭空推断任务身份或权限。
+    """
+    operation = "fetch_annual_report"
+    registry = get_default_health_registry()
+    ledger = get_default_tool_call_ledger()
+    started = time.monotonic()
+    started_at = datetime.now(UTC).isoformat()
+    source = SOURCE_ROUTER
+    normalized_ticker = str(ticker).upper().strip()
+    fingerprint = call_fingerprint(source=source, operation=operation, ticker=normalized_ticker)
+    attempts = 1
+    result_status = RESULT_FAILED
+    error_code: str | None = None
+
+    try:
+        source = route_source(ticker)
+        fingerprint = call_fingerprint(source=source, operation=operation, ticker=normalized_ticker)
+        fetcher = OfficialMaterialFetcher()
+        if source == SEC_SOURCE:
+            result = fetcher.fetch_sec_10k_pdf(ticker)
+        elif source == CNINFO_SOURCE:
+            result = fetcher.fetch_cninfo_annual_pdf(ticker)
+        elif source == HKEX_SOURCE:
+            result = fetcher.fetch_hkex_annual_pdf(ticker)
+        else:
+            raise MaterialFetchError(f"{source} \u8def\u7531\u4e0d\u53ef\u7528\u3002")
+    except MaterialFetchError as exc:
+        error = classify_material_fetch_error(
+            exc,
+            source=source,
+            operation=operation,
+            elapsed_ms=int((time.monotonic() - started) * 1000),
+        )
+        registry.record_failure(source, operation, error)
+        attempts = error.attempts
+        error_code = error.error_code.value
+        raise
+    except Exception as exc:
+        error = classify_exception(
+            exc,
+            source=source,
+            operation=operation,
+            attempts=attempts,
+            elapsed_ms=int((time.monotonic() - started) * 1000),
+        )
+        registry.record_failure(source, operation, error)
+        attempts = error.attempts
+        error_code = error.error_code.value
+        raise
+    else:
+        registry.record_success(
+            source,
+            operation,
+            latency_ms=int((time.monotonic() - started) * 1000),
+            data_fetched_at=str(result.get("downloaded_at") or "") or None,
+        )
+        result_status = RESULT_SUCCESS
+        return result
+    finally:
+        ledger.register(
+            ToolCallAuditRecord(
+                job_id=str(job_id or ""),
+                requested_by=str(requested_by or ""),
+                source=source,
+                operation=operation,
+                ticker=normalized_ticker,
+                fingerprint=fingerprint,
+                attempts=attempts,
+                started_at=started_at,
+                finished_at=datetime.now(UTC).isoformat(),
+                result_status=result_status,
+                error_code=error_code,
+            )
+        )

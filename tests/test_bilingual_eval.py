@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 import pytest
 
 from investment_assistant import bilingual_eval
@@ -100,6 +102,86 @@ def test_failure_reason_separates_chunk_boundary_and_ranking():
     assert bilingual_eval._failure_reason(hit_but_not_top1, {"question_lang": "zh", "doc_lang": "zh"}) == "ranking"
 
 
+def test_is_target_source_requires_ticker_and_page():
+    """目标命中必须同时满足「同一标的」和「页码落在 gold page 内」。"""
+    case = {"ticker": "600519.SS", "target_pages": [14, 57]}
+    assert bilingual_eval._is_target_source({"metadata": {"ticker": "600519.SS", "page": "57"}}, case) is True
+    assert bilingual_eval._is_target_source({"metadata": {"ticker": "0700.HK", "page": "57"}}, case) is False
+    assert bilingual_eval._is_target_source({"metadata": {"ticker": "600519.SS", "page": "99"}}, case) is False
+
+
+def test_top_result_is_relevant_rejects_wrong_ticker_same_page():
+    """P2-2 回归：Top-1 是错误 ticker 但相同页码时，不得算 Top-1 relevant。"""
+    case = {"ticker": "600519.SS", "target_pages": [57]}
+    wrong = {"metadata": {"ticker": "0700.HK", "page": 57}}
+    right = {"metadata": {"ticker": "600519.SS", "page": 57}}
+    assert bilingual_eval.top_result_is_relevant([wrong], case) is False
+    assert bilingual_eval.top_result_is_relevant([right], case) is True
+    assert bilingual_eval.top_result_is_relevant([], case) is False
+
+
+def test_run_evaluation_records_eval_set_sha(tmp_path, monkeypatch):
+    """P2-1：R0 产物也要固化「用了哪份样本」（eval_set_sha256 + case_count）。"""
+    monkeypatch.setattr(bilingual_eval, "RESULT_DIR", tmp_path)
+    monkeypatch.setattr(bilingual_eval, "verify_materials", lambda m: {t: {"status": "match"} for t in m})
+
+    def _stub_mode(mode, eval_set, top_k):
+        return {
+            "mode": mode,
+            "metrics": {},
+            "by_quadrant": {
+                q: {
+                    "case_count": 0,
+                    "page_recall_at_k": 0,
+                    "keyword_verified_recall_at_k": 0,
+                    "top1_page_relevance": 0,
+                    "cross_ticker_sources_per_case_unscoped": 0,
+                }
+                for q in bilingual_eval.QUADRANT_ORDER
+            },
+            "cases": [],
+            "status": {},
+            "indexed_chunks": {},
+            "failure_reason_counts": {},
+        }
+
+    monkeypatch.setattr(bilingual_eval, "run_mode", _stub_mode)
+    payload = bilingual_eval.run_evaluation()
+    assert "eval_set_sha256" in payload
+    assert payload["eval_set_sha256"] == bilingual_eval._sha256_of_file(bilingual_eval.EVAL_SET_PATH)
+    assert payload["eval_set_case_count"] == 32
+
+
+def test_material_drift_blocks_r0_evaluation(tmp_path, monkeypatch):
+    """资料漂移/缺失必须 fail-closed：不跑检索、不产指标、Markdown 显示 BLOCKED。"""
+    monkeypatch.setattr(bilingual_eval, "RESULT_DIR", tmp_path)
+    monkeypatch.setattr(
+        bilingual_eval,
+        "verify_materials",
+        lambda materials: {
+            ticker: {"status": "drift", "expected_sha256": "a", "actual_sha256": "b"} for ticker in materials
+        },
+    )
+
+    def _must_not_run(*args, **kwargs):
+        raise AssertionError("资料漂移时不得跑检索")
+
+    monkeypatch.setattr(bilingual_eval, "run_mode", _must_not_run)
+    payload = bilingual_eval.run_evaluation()
+    assert payload["status"] == "blocked"
+    assert payload["blocked_reason"] == "material_drift"
+    assert payload["results"] == {}
+    assert "BLOCKED" in (tmp_path / "bilingual_r0.md").read_text(encoding="utf-8")
+
+
+def test_assert_materials_comparable_raises_on_drift_and_missing():
+    with pytest.raises(bilingual_eval.MaterialDriftError):
+        bilingual_eval.assert_materials_comparable({"AAPL": {"status": "drift"}})
+    with pytest.raises(bilingual_eval.MaterialDriftError):
+        bilingual_eval.assert_materials_comparable({"AAPL": {"status": "missing"}})
+    bilingual_eval.assert_materials_comparable({"AAPL": {"status": "match"}})
+
+
 def test_material_verification_reports_status_per_ticker(eval_set):
     report = bilingual_eval.verify_materials(eval_set["materials"])
     assert set(report) == set(eval_set["materials"])
@@ -132,3 +214,35 @@ def test_gold_keywords_actually_appear_on_target_pages(eval_set):
             if all(keyword in text for keyword in case["keywords"]):
                 matched_pages.append(page_number)
         assert matched_pages, f"{case['id']} 的目标页 {case['target_pages']} 未同时包含 {case['keywords']}"
+
+
+def test_frozen_r0_eval_set_sha256_matches_current_file():
+    """4.B.2/4.B.3：冻结基线常量必须等于当前评测集原始字节 SHA，否则默认路径会误 BLOCKED。"""
+    assert len(bilingual_eval.FROZEN_R0_EVAL_SET_SHA256) == 64
+    assert (
+        bilingual_eval.get_frozen_r0_eval_set_sha256()
+        == bilingual_eval._sha256_of_file(bilingual_eval.EVAL_SET_PATH)
+    )
+
+
+def test_reattribute_payload_fail_closed_on_eval_set_mismatch(tmp_path, monkeypatch):
+    """1.3/4.B.6：R0 复渲染时评测集 SHA 不一致，拒绝用新样本重写旧报告。"""
+    monkeypatch.setattr(bilingual_eval, "RESULT_DIR", tmp_path)
+    payload = {
+        "status": "ok",
+        "eval_set_sha256": "stored-sha",
+        "results": {"hash": {"cases": []}, "semantic": {"cases": []}},
+    }
+    (tmp_path / "bilingual_r0.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(bilingual_eval, "_sha256_of_file", lambda p: "current-sha")
+    with pytest.raises(bilingual_eval.MaterialDriftError):
+        bilingual_eval.reattribute_payload(tmp_path / "bilingual_r0.json", bilingual_eval.EVAL_SET_PATH)
+
+
+def test_reattribute_payload_fail_closed_when_sha_missing(tmp_path, monkeypatch):
+    """4.B.7：R0 旧结果无 SHA 时 fail-closed，不得静默补写。"""
+    monkeypatch.setattr(bilingual_eval, "RESULT_DIR", tmp_path)
+    payload = {"status": "ok", "results": {"hash": {"cases": []}, "semantic": {"cases": []}}}
+    (tmp_path / "bilingual_r0.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    with pytest.raises(bilingual_eval.MaterialDriftError):
+        bilingual_eval.reattribute_payload(tmp_path / "bilingual_r0.json", bilingual_eval.EVAL_SET_PATH)

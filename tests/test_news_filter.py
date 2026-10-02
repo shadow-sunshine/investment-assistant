@@ -54,3 +54,62 @@ def test_collect_real_data_audits_all_news_and_indexes_only_passed_items(monkeyp
     assert result["raw_news"][0]["filter"]["passed"] is True
     assert result["raw_news"][1]["filter"]["reason"] == REJECTION_REASON
     assert result["filtered_news_available"] is True
+
+
+def test_alias_file_missing_or_corrupt_is_structured_and_audited(tmp_path):
+    import json
+
+    import pytest
+
+    from investment_assistant.news_filter import NewsFilterError, load_ticker_aliases
+    from investment_assistant.source_governance import get_default_health_registry, get_default_tool_call_ledger
+
+    get_default_health_registry().reset()
+    get_default_tool_call_ledger().reset()
+    missing = tmp_path / "missing-aliases.json"
+    with pytest.raises(NewsFilterError) as missing_error:
+        load_ticker_aliases(missing)
+    assert missing_error.value.error.error_code.value == "dependency_error"
+
+    corrupt = tmp_path / "broken-aliases.json"
+    corrupt.write_text("{not-json", encoding="utf-8")
+    with pytest.raises(NewsFilterError) as corrupt_error:
+        load_ticker_aliases(corrupt)
+    assert corrupt_error.value.error.error_code.value == "parse_error"
+
+    malformed = tmp_path / "malformed-aliases.json"
+    malformed.write_text('{"AAPL": "Apple"}', encoding="utf-8")
+    with pytest.raises(NewsFilterError) as schema_error:
+        load_ticker_aliases(malformed)
+    assert schema_error.value.error.error_code.value == "parse_error"
+
+    records = get_default_tool_call_ledger().records()
+    assert [record.operation for record in records] == ["load_ticker_aliases"] * 3
+    assert all(record.result_status == "failed" for record in records)
+    assert all(record.source == "local_news_filter" for record in records)
+    assert get_default_health_registry().snapshot("Yahoo Finance via yfinance")["status"] == "unknown"
+
+
+def test_local_no_match_is_not_registered_as_network_failure():
+    from investment_assistant.source_governance import get_default_health_registry, get_default_tool_call_ledger
+
+    get_default_health_registry().reset()
+    get_default_tool_call_ledger().reset()
+    passed, audited = filter_news_records([{"title": "Unrelated market story", "summary": "No issuer mention"}], "AAPL")
+    assert passed == [] and audited[0]["filter"]["passed"] is False
+    assert get_default_tool_call_ledger().records() == ()
+    assert get_default_health_registry().snapshot("Yahoo Finance via yfinance")["status"] == "unknown"
+
+
+def test_news_fetch_failure_metadata_survives_list_compatible_local_filter():
+    from investment_assistant.market_data import NewsRecords
+    from investment_assistant.source_governance import SourceErrorCode, tool_error
+
+    failure = tool_error("Yahoo Finance via yfinance", "fetch_recent_news", SourceErrorCode.TIMEOUT)
+    fetched = NewsRecords(error=failure)
+    passed, audited = filter_news_records(fetched, "AAPL")
+
+    assert passed == [] and audited == []
+    assert isinstance(audited, list)
+    assert audited.fetch_status == "failed"
+    assert audited.fetch_error.error_code == SourceErrorCode.TIMEOUT

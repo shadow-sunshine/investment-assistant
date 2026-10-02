@@ -88,7 +88,14 @@ def test_progress_tracks_completed_steps():
 
 def test_store_roundtrip_and_rejects_illegal_job_id(tmp_path):
     store = rj.JobStore(tmp_path / "jobs")
-    job = rj.ReportJob(job_id=JOB_ID, ticker="AAPL", topic="服务业务", horizon="中期", requested_by="demo")
+    job = rj.ReportJob(
+        job_id=JOB_ID,
+        ticker="AAPL",
+        topic="服务业务",
+        horizon="中期",
+        requested_by="demo",
+        tool_error={"error_code": "rate_limited", "http_status": 429},
+    )
     store.save(job)
 
     loaded = store.load(JOB_ID)
@@ -109,6 +116,34 @@ def test_job_id_pattern_matches_generated_ids():
 
 
 # --- 执行与进度 -------------------------------------------------------------
+
+
+def test_structured_source_error_survives_job_storage_and_api(tmp_path, monkeypatch):
+    from investment_assistant.fetch_materials import MaterialFetchError
+    from investment_assistant.source_governance import RATE_LIMITED, tool_error
+
+    structured = tool_error(
+        "SEC EDGAR", "fetch_annual_report", RATE_LIMITED, http_status=429, retry_after_ms=2000
+    )
+
+    class _FailingGraph:
+        def stream(self, initial_state, stream_mode=None):
+            raise MaterialFetchError("HTTP 429", error=structured)
+            yield  # 使该方法成为生成器
+
+    service = _make_service(tmp_path, graph_factory=_FailingGraph)
+    job, _created = service.create(ticker="AAPL", topic="服务业务", horizon="中期", requested_by="demo")
+
+    stored = service.get(job.job_id)
+    assert stored is not None
+    assert stored.tool_error == structured.to_dict()
+
+    monkeypatch.setattr(api, "job_service", service)
+    response = TestClient(api.app).get(f"/api/report-jobs/{job.job_id}")
+    assert response.status_code == 200
+    degradation = response.json()["degradation"]
+    assert degradation["status"] == "source_unavailable"
+    assert any("SEC EDGAR" in reason for reason in degradation["degradation_reasons"])
 
 
 def test_create_runs_to_completion_and_persists_report(tmp_path, monkeypatch):
@@ -291,14 +326,16 @@ def test_api_submit_then_poll_then_fetch_report(api_client):
     assert status.status_code == 200
     payload = status.json()
     assert payload["status"] == rj.STATUS_COMPLETED
-    assert payload["requested_by"] == "demo"
+    assert payload["requested_by"] == "test-actor"
     assert payload["progress"] == 100
     assert len(payload["steps"]) == len(rj.WORKFLOW_STEPS)
     assert payload["steps"][0]["label"]
 
+    assert payload["delivery"]["release_status"] == "needs_review"
     report = http.get(f"/api/report-jobs/{job_id}/report")
-    assert report.status_code == 200
-    assert "假报告" in report.json()["report"]
+    assert report.status_code == 409
+    assert report.json()["detail"]["delivery"]["release_status"] == "needs_review"
+    assert "report" not in report.json()["detail"]
 
 
 def test_api_report_returns_409_before_completion(tmp_path, monkeypatch):
@@ -351,3 +388,40 @@ def test_api_lists_jobs(api_client):
     assert listed.status_code == 200
     assert len(listed.json()) == 1
     assert listed.json()[0]["ticker"] == "AAPL"
+
+
+def test_completed_graph_with_source_error_returns_job_scoped_degradation(tmp_path, monkeypatch):
+    class SourceGapGraph(_FakeGraph):
+        def stream(self, initial_state, stream_mode=None):
+            for mode, payload in super().stream(initial_state, stream_mode):
+                if mode == "values":
+                    payload = {**payload, "market_snapshot": {
+                        "source": "Yahoo Finance via yfinance", "error_code": "timeout",
+                        "error": "行情源请求超时。", "data_available": False,
+                    }}
+                yield mode, payload
+
+    report_dir = tmp_path / "reports"
+    monkeypatch.setattr(api, "REPORT_DIR", report_dir)
+    monkeypatch.setattr(rj, "REPORT_DIR", report_dir)
+    service = _make_service(tmp_path, graph_factory=SourceGapGraph)
+    monkeypatch.setattr(api, "job_service", service)
+    http = TestClient(api.app)
+
+    created = http.post("/api/report-jobs", json={"ticker": "AAPL", "topic": "服务业务", "horizon": "中期"})
+    job_id = created.json()["job_id"]
+    payload = http.get(f"/api/report-jobs/{job_id}").json()
+
+    assert payload["status"] == rj.STATUS_COMPLETED
+    assert payload["degradation"]["status"] == "source_unavailable"
+    assert payload["degradation_reasons"] and "Yahoo Finance" in payload["degradation_reasons"][0]
+    assert payload["source_errors"][0]["error_code"] == "timeout"
+
+
+def test_completed_graph_without_source_fault_has_empty_degradation_reasons(api_client):
+    http, _service = api_client
+    created = http.post("/api/report-jobs", json={"ticker": "AAPL", "topic": "服务业务", "horizon": "中期"})
+    payload = http.get(f"/api/report-jobs/{created.json()['job_id']}").json()
+    assert payload["status"] == rj.STATUS_COMPLETED
+    assert payload["degradation"] == {"status": "ok", "degradation_reasons": []}
+    assert payload["degradation_reasons"] == []

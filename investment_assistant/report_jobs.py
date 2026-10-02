@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from .config import JOB_DIR, REPORT_DIR
+from .source_governance import SourceErrorCode, ToolCallError, tool_error
 from .workflow import audit_json, create_research_workflow
 
 # --- 状态枚举 ---------------------------------------------------------------
@@ -98,10 +99,13 @@ def persist_report(result: dict[str, Any], report_dir: Path) -> str:
     与 ``api.generate_report`` 原先的落盘行为保持一致（同一命名、同一目录约定）。
     """
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    report_id = f"{_safe_ticker(result.get('ticker') or 'UNKNOWN')}_{timestamp}"
+    report_id = f"{_safe_ticker(result.get('ticker') or 'UNKNOWN')}_{timestamp}_{uuid.uuid4().hex[:10]}"
     report_dir.mkdir(parents=True, exist_ok=True)
-    (report_dir / f"{report_id}.md").write_text(result.get("report") or "", encoding="utf-8")
-    (report_dir / f"{report_id}.json").write_text(audit_json(result), encoding="utf-8")
+    # 唯一 ID + 排他创建，避免同秒跨租户报告互相覆盖。
+    with (report_dir / f"{report_id}.md").open("x", encoding="utf-8") as handle:
+        handle.write(result.get("report") or "")
+    with (report_dir / f"{report_id}.json").open("x", encoding="utf-8") as handle:
+        handle.write(audit_json(result))
     return report_id
 
 
@@ -157,6 +161,8 @@ class ReportJob:
     topic: str
     horizon: str
     requested_by: str
+    tenant_id: str | None = None
+    actor_id: str | None = None
     status: str = STATUS_QUEUED
     current_step: str | None = None
     created_at: str = field(default_factory=_now)
@@ -164,11 +170,13 @@ class ReportJob:
     completed_at: str | None = None
     report_id: str | None = None
     error: str | None = None
+    tool_error: dict[str, Any] | None = None
+    source_errors: list[dict[str, Any]] = field(default_factory=list)
     steps: list[StepRecord] = field(default_factory=_default_steps)
 
     @property
-    def request_key(self) -> tuple[str, str, str]:
-        return (self.ticker, self.topic, self.horizon)
+    def request_key(self) -> tuple[str | None, str, str, str]:
+        return (self.tenant_id, self.ticker, self.topic, self.horizon)
 
     @property
     def is_terminal(self) -> bool:
@@ -193,6 +201,8 @@ class ReportJob:
             "topic": self.topic,
             "horizon": self.horizon,
             "requested_by": self.requested_by,
+            "tenant_id": self.tenant_id,
+            "actor_id": self.actor_id,
             "status": self.status,
             "current_step": self.current_step,
             "progress": self.progress,
@@ -201,6 +211,8 @@ class ReportJob:
             "completed_at": self.completed_at,
             "report_id": self.report_id,
             "error": self.error,
+            "tool_error": self.tool_error,
+            "source_errors": self.source_errors,
             "steps": [step.to_dict() for step in self.steps],
         }
 
@@ -214,6 +226,8 @@ class ReportJob:
             topic=str(raw.get("topic") or ""),
             horizon=str(raw.get("horizon") or ""),
             requested_by=str(raw.get("requested_by") or "anonymous"),
+            tenant_id=str(raw.get("tenant_id") or "") or None,
+            actor_id=str(raw.get("actor_id") or "") or None,
             status=str(raw.get("status") or STATUS_QUEUED),
             current_step=raw.get("current_step"),
             created_at=str(raw.get("created_at") or _now()),
@@ -221,6 +235,8 @@ class ReportJob:
             completed_at=raw.get("completed_at"),
             report_id=raw.get("report_id"),
             error=raw.get("error"),
+            tool_error=raw.get("tool_error"),
+            source_errors=list(raw.get("source_errors") or []),
             steps=steps,
         )
 
@@ -356,6 +372,34 @@ def _abandon_unfinished_steps(job: ReportJob, message: str) -> None:
                 record.duration_ms = _elapsed_ms(record.started_at, record.completed_at)
 
 
+
+def _source_errors_from_state(state: dict[str, Any]) -> list[dict[str, Any]]:
+    """只从当前 job 的最终图状态提取来源错误，不查询进程级健康快照。"""
+    errors: list[ToolCallError] = []
+    operations = {"market_snapshot": "fetch_market_snapshot", "financial_snapshot": "fetch_financial_snapshot"}
+    for key, operation in operations.items():
+        value = state.get(key)
+        if not isinstance(value, dict) or not value.get("error_code"):
+            continue
+        try:
+            code = SourceErrorCode(str(value["error_code"]))
+        except ValueError:
+            continue
+        errors.append(tool_error(str(value.get("source") or "Yahoo Finance via yfinance"), operation, code, attempts=int(value.get("attempts") or 1), message=str(value.get("error") or "来源数据不可用。")))
+    news = state.get("raw_news")
+    news_error = getattr(news, "fetch_error", None)
+    if news_error is None and getattr(news, "fetch_status", None) == "failed":
+        news_error = getattr(news, "error", None)
+    if isinstance(news_error, ToolCallError):
+        errors.append(news_error)
+    elif isinstance(news_error, dict):
+        try:
+            errors.append(ToolCallError.from_dict(news_error))
+        except (TypeError, ValueError):
+            pass
+    return [error.to_dict() for error in errors]
+
+
 class JobService:
     """报告任务的创建、执行、查询与取消。
 
@@ -372,7 +416,7 @@ class JobService:
         self._store = store
         self._graph_factory = graph_factory
         self._lock = threading.RLock()
-        self._active: dict[tuple[str, str, str], str] = {}
+        self._active: dict[tuple[str | None, str, str, str], str] = {}
         self._cancel_requested: set[str] = set()
         self._executor = executor or LocalThreadExecutor(self.run_job)
 
@@ -382,9 +426,9 @@ class JobService:
 
     # -- 对外接口 ----------------------------------------------------------
 
-    def create(self, *, ticker: str, topic: str, horizon: str, requested_by: str = "anonymous") -> tuple[ReportJob, bool]:
+    def create(self, *, ticker: str, topic: str, horizon: str, requested_by: str = "anonymous", tenant_id: str | None = None, actor_id: str | None = None) -> tuple[ReportJob, bool]:
         """创建任务。返回 ``(job, created)``；``created=False`` 表示复用了执行中的同参任务。"""
-        key = (ticker.upper().strip(), topic.strip(), horizon.strip())
+        key = (tenant_id, ticker.upper().strip(), topic.strip(), horizon.strip())
         with self._lock:
             existing_id = self._active.get(key)
             if existing_id:
@@ -394,10 +438,12 @@ class JobService:
                 self._active.pop(key, None)
             job = ReportJob(
                 job_id=_new_job_id(),
-                ticker=key[0],
-                topic=key[1],
-                horizon=key[2],
+                ticker=key[1],
+                topic=key[2],
+                horizon=key[3],
                 requested_by=(requested_by or "anonymous").strip() or "anonymous",
+                tenant_id=tenant_id,
+                actor_id=actor_id,
             )
             self._store.save(job)
             self._active[key] = job.job_id
@@ -460,7 +506,7 @@ class JobService:
         with self._lock:
             return job_id in self._cancel_requested
 
-    def _release(self, key: tuple[str, str, str]) -> None:
+    def _release(self, key: tuple[str | None, str, str, str]) -> None:
         with self._lock:
             current = self._active.get(key)
             if current:
@@ -515,6 +561,8 @@ class JobService:
             return
         except Exception as exc:  # noqa: BLE001 - 任务边界必须兜住任何节点异常
             message = f"{type(exc).__name__}: {exc}"
+            structured_error = getattr(exc, "error", None)
+            job.tool_error = structured_error.to_dict() if hasattr(structured_error, "to_dict") else None
             _fail_running_step(job, message)
             job.status = STATUS_FAILED
             job.error = message
@@ -524,10 +572,14 @@ class JobService:
             self._release(key)
             return
 
+        job.source_errors = _source_errors_from_state(final_state)
         try:
+            final_state["tenant_id"] = job.tenant_id
+            final_state["actor_id"] = job.actor_id
             job.report_id = persist_report(final_state, REPORT_DIR)
         except Exception as exc:  # noqa: BLE001 - 落盘失败也要落进任务记录
             job.status = STATUS_FAILED
+            job.tool_error = None
             job.error = f"报告落盘失败：{type(exc).__name__}: {exc}"
             _fail_running_step(job, job.error)
         else:

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 import html
+import json
 import os
 from typing import Any
 
@@ -12,7 +13,7 @@ import streamlit as st
 import yfinance as yf
 
 from investment_assistant.chat_session import (
-    dispatch_message, new_context, record_error, select_job, select_report, update_job,
+    dispatch_message, new_context, record_error, select_job, select_report, select_knowledge_corpus, update_job,
 )
 
 API_BASE_URL = os.getenv("INVESTMENT_ASSISTANT_API_URL", "http://127.0.0.1:8000")
@@ -21,7 +22,7 @@ st.set_page_config(
     page_title="\u667a\u80fd\u6295\u8d44\u52a9\u624b",
     page_icon="\U0001F4C8",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="auto",
 )
 
 APP_CSS = r"""
@@ -59,6 +60,8 @@ header[data-testid="stHeader"] [data-testid="stExpandSidebarButton"]:hover { bac
 [data-testid="stMainBlockContainer"] { max-width: 1360px; padding: 2.1rem 2rem 4rem; }
 [data-testid="stSidebar"] { background: #102e50; }
 [data-testid="stSidebar"] [data-testid="stSidebarContent"] { color: #f4f8fc; }
+[data-testid="stSidebar"] .stButton button { background: #1e466f !important; border-color: #6484a3 !important; color: #f4f8fc !important; }
+[data-testid="stSidebar"] .stButton button:hover { background: #2b5d8f !important; }
 [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, [data-testid="stSidebar"] p, [data-testid="stSidebar"] [data-testid="stWidgetLabel"], [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] { color: #f4f8fc !important; }
 /* Streamlit 1.5x \u4f7f\u7528 react-aria ComboBox\uff1b\u76f4\u63a5\u4e3a\u5185\u5c42 role=group \u63d0\u4f9b\u6df1\u8272\u5bb9\u5668\u4e0e\u8fb9\u6846\u3002 */
 [data-testid="stSidebar"] [data-testid="stSelectbox"] > div.react-aria-ComboBox > div[role="group"] { background: rgba(255,255,255,.11) !important; border: 1px solid rgba(255,255,255,.34) !important; border-radius: 9px !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08) !important; }
@@ -145,16 +148,60 @@ h2, h3 { color: var(--navy-deep) !important; }
 st.markdown(APP_CSS, unsafe_allow_html=True)
 
 
+def _auth_headers() -> dict[str, str]:
+    token = st.session_state.get("auth_token")
+    return {"Authorization": f"Bearer {token}"} if token else {}
+
+
 def _api_get(path: str) -> Any:
-    response = requests.get(f"{API_BASE_URL}{path}", timeout=20)
+    response = requests.get(f"{API_BASE_URL}{path}", headers=_auth_headers(), timeout=20)
     response.raise_for_status()
     return response.json()
 
 
 def _api_post(path: str, payload: dict[str, Any]) -> Any:
-    response = requests.post(f"{API_BASE_URL}{path}", json=payload, timeout=30)
+    response = requests.post(f"{API_BASE_URL}{path}", json=payload, headers=_auth_headers(), timeout=30)
     response.raise_for_status()
     return response.json()
+
+
+# token 仅存本次 Streamlit 会话，不存进 URL、全局变量或浏览器持久缓存。
+if not st.session_state.get("auth_token"):
+    st.title("投研服务台 · 登录")
+    st.caption("使用后端 IA_AUTH_TOKENS 配置的个人凭证；演示级本地身份，不是企业 SSO。")
+    with st.form("login_form"):
+        entered = st.text_input("访问凭证", type="password")
+        login = st.form_submit_button("进入服务台", type="primary")
+    if login:
+        st.session_state.auth_token = entered
+        try:
+            st.session_state.identity = _api_get("/api/me")
+        except requests.RequestException:
+            st.session_state.pop("auth_token", None)
+            st.error("凭证无效、服务未配置身份或后端不可用。")
+        else:
+            authenticated_identity = st.session_state.identity
+            st.session_state.clear()
+            st.session_state.auth_token = entered
+            st.session_state.identity = authenticated_identity
+            st.session_state.chat_context = new_context()
+            st.query_params.clear()
+            st.rerun()
+    st.stop()
+try:
+    current_identity = _api_get("/api/me")
+except requests.RequestException:
+    st.session_state.clear()
+    st.error("会话身份已失效，请重新登录。")
+    st.stop()
+previous_identity = st.session_state.get("identity")
+if previous_identity and previous_identity != current_identity:
+    token = st.session_state.auth_token
+    st.session_state.clear()
+    st.session_state.auth_token = token
+    st.session_state.chat_context = new_context()
+    st.query_params.clear()
+st.session_state.identity = current_identity
 
 
 # --- Phase A：报告任务进度 ---------------------------------------------------
@@ -181,7 +228,7 @@ _JOB_STATUS_BADGE = {
 def _submit_job(payload: dict[str, Any]) -> tuple[str | None, str | None]:
     """提交任务。返回 ``(job_id, 提示语)``；重复提交（409）时复用既有任务。"""
     try:
-        created = requests.post(f"{API_BASE_URL}/api/report-jobs", json=payload, timeout=30)
+        created = requests.post(f"{API_BASE_URL}/api/report-jobs", json=payload, headers=_auth_headers(), timeout=30)
         created.raise_for_status()
     except requests.HTTPError as exc:
         detail = exc.response.json().get("detail") if exc.response is not None else None
@@ -375,9 +422,20 @@ def _show_report(data: dict[str, Any]) -> None:
 
 
 
+def _knowledge_answer_request(payload: dict[str, str]) -> dict[str, Any]:
+    """针对中文官方年报语料回答；拒答响应也作为可展示结果保留。"""
+    response = requests.post(f"{API_BASE_URL}/api/knowledge-answers", json=payload, headers=_auth_headers(), timeout=90)
+    if response.status_code in {409, 422}:
+        body = response.json()
+        if isinstance(body, dict) and body.get("status") in {"answered", "refused", "insufficient_evidence", "out_of_scope"}:
+            return body
+    response.raise_for_status()
+    return response.json()
+
+
 def _answer_request(payload: dict[str, str]) -> dict[str, Any]:
     """保留问答端点返回的拒答状态，而不是把 422 当成无内容异常。"""
-    response = requests.post(f"{API_BASE_URL}/api/answers", json=payload, timeout=30)
+    response = requests.post(f"{API_BASE_URL}/api/answers", json=payload, headers=_auth_headers(), timeout=30)
     if response.status_code == 422:
         body = response.json()
         if isinstance(body, dict) and body.get("status") == "out_of_scope":
@@ -396,9 +454,14 @@ def _create_chat_job(payload: dict[str, str]) -> dict[str, str]:
 def _show_chat_answer(answer: dict[str, Any]) -> None:
     status = answer.get("status") or "error"
     st.caption(f"回答状态：{status}")
-    for ref in answer.get("evidence_refs") or []:
-        location = f"{ref.get('file_name') or ref.get('ref')}，第 {ref.get('page') or '未提供'} 页" if ref.get("kind") == "source" else str(ref.get("ref"))
-        st.caption(f"证据：{ref.get('label') or ref.get('ref')}；{location}")
+    refs = answer.get("evidence_refs") or answer.get("sources") or []
+    for ref in refs:
+        metadata = ref.get("metadata") or ref.get("identity") or ref
+        location = f"{metadata.get('file_name') or ref.get('ref') or ref.get('source_id')}，第 {metadata.get('page') or '未提供'} 页"
+        st.caption(f"证据：{ref.get('label') or ref.get('citation') or ref.get('source_id') or ref.get('ref')}; {location}")
+    if answer.get("evidence"):
+        with st.expander("查看证据片段", expanded=False):
+            st.code(str(answer["evidence"].get("excerpt") if isinstance(answer["evidence"], dict) else answer["evidence"]))
     for limitation in answer.get("limitations") or []:
         st.caption(f"限制：{limitation}")
 
@@ -406,11 +469,14 @@ def _show_chat_answer(answer: dict[str, Any]) -> None:
 def _show_chat() -> None:
     context = st.session_state.chat_context
     st.markdown("### 研究对话")
-    st.caption("支持创建报告、追问已完成报告的指标/来源/降级/风险；不是开放式联网问答。发起人标签不等于身份认证或授权。")
-    scope = f"报告：{context['report_id']} | 标的：{context['ticker']}" if context["report_id"] else f"任务：{context['job_id']} | 标的：{context['ticker']}" if context["job_id"] else "尚未绑定报告；可在侧栏选择已有报告，或明确提出研究任务。"
+    st.caption("支持创建报告、追问已发布报告，或对已绑定的中文官方年报做有据回答；证据不足时明确拒答。")
+    scope = (f"报告：{context['report_id']} | 标的：{context['ticker']}" if context["report_id"] else
+             f"任务：{context['job_id']} | 标的：{context['ticker']}" if context["job_id"] else
+             f"中文年报：{context['knowledge_ticker']}（同标的隔离）" if context.get("knowledge_ticker") else
+             "尚未绑定报告或语料；可在侧栏选择中文年报，或明确提出研究任务。")
     st.markdown(f'<div class="ia-chat-context">{html.escape(scope)}</div>', unsafe_allow_html=True)
     if not context["messages"]:
-        st.info("试试：分析 AAPL 服务业务和现金流风险。选定报告后可问：最新收盘价是多少？S1 来自哪一页？")
+        st.info("试试：分析 AAPL 服务业务和现金流风险；中文年报模式可问：宁德时代 2025 年货币资金是多少？")
     for message in context["messages"]:
         with st.chat_message(message["role"]):
             st.write(message["text"])
@@ -447,6 +513,7 @@ def _show_chat() -> None:
             st.session_state.chat_context = dispatch_message(
                 st.session_state.chat_context, prompt, _create_chat_job, _answer_request,
                 st.session_state.get("requested_by_input", "anonymous"),
+                knowledge_ask=_knowledge_answer_request,
             )
         except (requests.RequestException, ValueError) as exc:
             detail = str(exc)
@@ -467,6 +534,182 @@ def _show_chat() -> None:
         st.rerun()
 
 
+def _show_review_workbench(history: list[dict[str, Any]]) -> None:
+    roles = set(st.session_state.identity.get("roles") or [])
+    if not roles.intersection({"reviewer", "publisher", "admin"}) or not history:
+        return
+    with st.expander("审核与发布工作台", expanded=False):
+        st.caption("创建、审核、发布由不同人员完成；人工逐条确认及整篇覆盖声明不等于系统自动证明语义蕴含。")
+        report_id = st.selectbox("选择报告版本", [item["id"] for item in history], key="review_report_id")
+        try:
+            status = _api_get(f"/api/reports/{report_id}/status")
+            st.info(f"发布状态：{status['publish_status']} · 审核状态：{status['review_status']}")
+        except requests.RequestException:
+            st.warning("无法确认当前发布状态。")
+            return
+        if roles.intersection({"reviewer", "admin"}):
+            try:
+                preview = _api_get(f"/api/reports/{report_id}/review")
+            except requests.RequestException:
+                st.caption("当前身份不可审核该报告，或证据版本不可核验。")
+            else:
+                st.markdown("#### 待审核正文")
+                st.markdown(preview["report"])
+                st.caption(f"结构证据门禁：{preview['gate']['release_status']}；claim 数：{preview['gate']['claims_total']}。这不代表已发布，也不自动证明语义支持。")
+                with st.expander("审核证据快照与人工 claim 编辑"):
+                    st.json(preview.get("evidence") or {})
+                    st.caption("自动 claim 抽取尚未实现。审核人可手工登记完整 claim 集；保存后旧审核/发布立即失效，仍须独立发布人发布。")
+                    edited = st.text_area("完整 claims JSON 数组", value=json.dumps(preview.get("claims") or [], ensure_ascii=False, indent=2),
+                                          height=240, key=f"claims_json_{report_id}")
+                    st.code('[{"claim_id":"c1","claim_text":"收入为已核验数值","anchors":[{"kind":"snapshot","field_path":"financial_snapshot.revenue","value":100,"period":"2025-09-30","unit":"USD"}]}]', language="json")
+                    if st.button("保存人工 claim 集", key=f"save_claims_{report_id}"):
+                        try:
+                            binding = preview["binding"]
+                            response = requests.put(f"{API_BASE_URL}/api/reports/{report_id}/claims", headers=_auth_headers(), timeout=30,
+                                json={"claims": json.loads(edited), "expected_md_sha256": binding["report_md_sha256"],
+                                      "expected_json_sha256": binding["report_json_sha256"]})
+                            response.raise_for_status()
+                        except (requests.RequestException, ValueError) as exc:
+                            st.error(_api_error(exc) if isinstance(exc, requests.RequestException) else "JSON 格式不正确。")
+                        else:
+                            st.success("已保存，须重新逐条审核。")
+                            st.rerun()
+                claims = preview.get("claims") or []
+                with st.form(f"review_{report_id}"):
+                    decisions = {}
+                    for claim in claims:
+                        claim_id = str(claim.get("claim_id") or "")
+                        if claim_id:
+                            checked = st.checkbox(f"已核对 {claim_id}：{str(claim.get('claim_text') or '')[:100]}", key=f"claim_{report_id}_{claim_id}")
+                            if checked:
+                                decisions[claim_id] = "supported"
+                    covered = st.checkbox("我已核对整份正文的所有关键结论，所列 claims 覆盖完整")
+                    decision = st.radio("审核决定", ["rejected", "approved"], horizontal=True)
+                    reason = st.text_area("审核理由（至少五字）", max_chars=1000)
+                    submitted = st.form_submit_button("记录审核决定")
+                if submitted:
+                    binding = preview["binding"]
+                    try:
+                        _api_post(f"/api/reports/{report_id}/review", {
+                            "decision": decision, "reason": reason, "claim_decisions": decisions,
+                            "coverage_attested": covered, "expected_md_sha256": binding["report_md_sha256"],
+                            "expected_json_sha256": binding["report_json_sha256"]})
+                        st.success("审核已记录；发布需独立发布人操作。")
+                        st.rerun()
+                    except requests.RequestException as exc:
+                        st.error(f"审核未生效：{_api_error(exc)}")
+        if roles.intersection({"publisher", "admin"}):
+            col_publish, col_withdraw = st.columns(2)
+            with col_publish:
+                if st.button("发布已审核版本", key=f"publish_{report_id}", use_container_width=True):
+                    try:
+                        _api_post(f"/api/reports/{report_id}/publish", {})
+                        st.success("当前版本已发布。")
+                        st.rerun()
+                    except requests.RequestException as exc:
+                        st.error(f"发布被拒绝：{_api_error(exc)}")
+            with col_withdraw:
+                if st.button("撤回发布", key=f"withdraw_{report_id}", use_container_width=True):
+                    try:
+                        _api_post(f"/api/reports/{report_id}/withdraw", {})
+                        st.session_state.current_report = None
+                        st.session_state.chat_context = new_context()
+                        st.success("已撤回，旧会话正文与回答缓存已清除。")
+                        st.rerun()
+                    except requests.RequestException as exc:
+                        st.error(f"撤回失败：{_api_error(exc)}")
+
+
+def _api_error(exc: requests.RequestException) -> str:
+    if isinstance(exc, requests.HTTPError) and exc.response is not None:
+        try:
+            payload = exc.response.json()
+            detail = payload.get("detail", payload) if isinstance(payload, dict) else {}
+            if isinstance(detail, dict):
+                return str(detail.get("message") or detail.get("error_code") or exc.response.status_code)
+            return str(detail)
+        except ValueError:
+            pass
+    return "后端不可用或请求未通过授权/版本校验。"
+
+
+def _show_research_memory(history: list[dict[str, Any]]) -> None:
+    with st.expander("版本关注与研究记忆", expanded=False):
+        st.caption("只监测白名单本地资料/已发布报告。记忆为有限期用户注记，不作为事实证据，不参与投资建议。")
+        watch_tab, memory_tab, compare_tab = st.tabs(["版本关注", "研究记忆", "报告比较"])
+        with watch_tab:
+            with st.form("new_watch"):
+                name = st.text_input("关注项名称")
+                files = st.text_input("白名单资料文件名（逗号分隔，可留空）")
+                report_ids = st.multiselect("关注报告版本（必须已发布）", [item["id"] for item in history])
+                submitted = st.form_submit_button("创建关注项")
+            if submitted:
+                try:
+                    _api_post("/api/watchlists", {"name": name, "file_names": [item.strip() for item in files.split(",") if item.strip()], "report_ids": report_ids})
+                    st.rerun()
+                except requests.RequestException as exc:
+                    st.error(_api_error(exc))
+            try:
+                watches = _api_get("/api/watchlists")
+            except requests.RequestException:
+                watches = []
+            for watch in watches:
+                st.write(f"{watch['name']} · {watch['watch_id']}")
+                if watch.get("last_check"):
+                    st.json(watch["last_check"])
+                controls = st.columns(3)
+                for column, label, operation in zip(controls, ["检查版本", "确认新基线", "删除关注"], ["check", "baseline", "delete"]):
+                    with column:
+                        if st.button(label, key=f"watch_{operation}_{watch['watch_id']}"):
+                            try:
+                                if operation == "delete":
+                                    response = requests.delete(f"{API_BASE_URL}/api/watchlists/{watch['watch_id']}", headers=_auth_headers(), timeout=20)
+                                    response.raise_for_status()
+                                else:
+                                    _api_post(f"/api/watchlists/{watch['watch_id']}/{operation}", {})
+                                st.rerun()
+                            except requests.RequestException as exc:
+                                st.error(_api_error(exc))
+        with memory_tab:
+            with st.form("new_memory"):
+                linked = st.selectbox("记忆关联报告", ["请选择", *[item["id"] for item in history]])
+                note = st.text_area("用户注记 / 阅读偏好（不是证据）", max_chars=1000)
+                ttl = st.number_input("有效天数（最长 90 天）", min_value=1, max_value=90, value=7)
+                submitted = st.form_submit_button("保存有限期记忆")
+            if submitted:
+                try:
+                    _api_post("/api/memories", {"report_id": linked, "content": note, "ttl_days": int(ttl)})
+                    st.rerun()
+                except requests.RequestException as exc:
+                    st.error(_api_error(exc))
+            try:
+                memories = _api_get("/api/memories")
+            except requests.RequestException:
+                memories = []
+            for memory in memories:
+                st.caption(f"{memory['report_id']} · {memory['status']} · 到期 {memory['expires_at']}")
+                if memory.get("content"):
+                    st.write(memory["content"])
+                if st.button("撤销记忆", key=f"delete_memory_{memory['memory_id']}"):
+                    try:
+                        response = requests.delete(f"{API_BASE_URL}/api/memories/{memory['memory_id']}", headers=_auth_headers(), timeout=20)
+                        response.raise_for_status()
+                        st.rerun()
+                    except requests.RequestException as exc:
+                        st.error(_api_error(exc))
+        with compare_tab:
+            with st.form("compare_reports"):
+                ids = [item["id"] for item in history]
+                left = st.selectbox("左侧报告", ["请选择", *ids])
+                right = st.selectbox("右侧报告", ["请选择", *ids])
+                submitted = st.form_submit_button("对比同标的事实")
+            if submitted:
+                try:
+                    st.json(_api_post("/api/reports/compare", {"left_report_id": left, "right_report_id": right}))
+                except requests.RequestException as exc:
+                    st.error(_api_error(exc))
+
+
 if "current_report" not in st.session_state:
     st.session_state.current_report = None
 if "chat_context" not in st.session_state:
@@ -481,7 +724,7 @@ if report_id and st.session_state.chat_context["report_id"] != report_id:
         st.session_state.current_report = report
         st.session_state.chat_context = select_report(st.session_state.chat_context, report)
     except requests.RequestException:
-        st.warning("指定的历史报告不存在或暂时无法读取。")
+        st.info("该报告未发布、已撤回或不可访问；未释放报告正文。")
 elif job_id and st.session_state.chat_context["job_id"] != job_id:
     try:
         job = _api_get(f"/api/report-jobs/{job_id}")
@@ -492,9 +735,38 @@ elif job_id and st.session_state.chat_context["job_id"] != job_id:
 
 st.markdown('<div class="ia-topline"><span class="ia-live-dot"></span>实时研究界面 · REAL-DATA CONNECTED</div>', unsafe_allow_html=True)
 st.title("智能投资助手")
-st.markdown('<div class="ia-hero"><div class="ia-hero-title">用对话提出研究任务，并对已完成报告继续追问。</div><div class="ia-hero-copy">任务进度、报告正文、数据来源与回答限制在同一研究会话中呈现；证据不足时不猜测。</div></div>', unsafe_allow_html=True)
+st.markdown('<div class="ia-hero"><div class="ia-hero-title">用对话提出研究任务，并对已发布报告继续追问。</div><div class="ia-hero-copy">任务进度、报告正文、数据来源与回答限制在同一研究会话中呈现；证据不足时不猜测。</div></div>', unsafe_allow_html=True)
 
 with st.sidebar:
+    identity = st.session_state.identity
+    st.markdown(f"**{identity['actor_id']}** · 租户 {identity['tenant_id']}")
+    if st.button("退出登录", use_container_width=True):
+        st.session_state.clear()
+        st.query_params.clear()
+        st.rerun()
+    st.markdown("### 中文年报问答")
+    st.caption("绑定一份中文官方年报后，可直接提问；回答只使用该标的资料，证据不足自动拒答。")
+    corpus_labels = {
+        "不绑定中文年报": None,
+        "贵州茅台（600519.SS）": "600519.SS",
+        "宁德时代（300750.SZ）": "300750.SZ",
+        "平安银行（000001.SZ）": "000001.SZ",
+        "五粮液（000858.SZ）": "000858.SZ",
+    }
+    current_corpus = st.session_state.chat_context.get("knowledge_ticker")
+    current_label = next((label for label, value in corpus_labels.items() if value == current_corpus), "不绑定中文年报")
+    selected_corpus = st.selectbox("选择语料", list(corpus_labels), index=list(corpus_labels).index(current_label), key="knowledge_corpus_select")
+    if st.button("进入中文问答", use_container_width=True):
+        selected_ticker = corpus_labels[selected_corpus]
+        if selected_ticker:
+            st.session_state.chat_context = select_knowledge_corpus(st.session_state.chat_context, selected_ticker)
+            st.session_state.current_report = None
+            st.query_params.clear()
+        else:
+            st.session_state.chat_context = new_context()
+            st.session_state.current_report = None
+            st.query_params.clear()
+        st.rerun()
     st.markdown("### 历史报告")
     st.caption("浏览器重载后聊天消息会清空；报告和任务可从这里找回。")
     try:
@@ -514,7 +786,7 @@ with st.sidebar:
                 st.query_params["report"] = report["id"]
                 st.rerun()
             except requests.RequestException:
-                st.error("读取报告失败，请检查后端或稍后重试。")
+                st.warning("报告尚待审核发布、已撤回或无权限；正文不可见。")
     st.markdown("### 报告任务")
     try:
         jobs = _api_get("/api/report-jobs")
@@ -532,16 +804,30 @@ with st.sidebar:
             st.rerun()
     else:
         st.caption("暂无任务记录。")
-    st.markdown("### 发起人")
-    st.text_input("发起人标识（非身份认证）", value="demo-user", key="requested_by_input")
+    st.caption("发起人由服务端身份绑定，不能用表单字段代替授权。")
+
+# 每次重绘都向服务端复核；撤回/漂移后先清空旧正文和会话回答缓存，再渲染对话。
+active_report_id = st.session_state.chat_context.get("report_id")
+if active_report_id:
+    try:
+        fresh = _api_get(f"/api/reports/{active_report_id}")
+        st.session_state.current_report = fresh
+    except requests.RequestException:
+        st.session_state.current_report = None
+        st.session_state.chat_context["messages"] = []
+        st.warning("报告尚未发布、已撤回、版本失效或不可访问；本会话已清除旧正文与回答。")
 
 _show_chat()
+_show_review_workbench(history)
+_show_research_memory(history)
 context = st.session_state.chat_context
 if context["report_id"] and (not st.session_state.current_report or st.session_state.current_report.get("id") != context["report_id"]):
     try:
         st.session_state.current_report = _api_get(f"/api/reports/{context['report_id']}")
     except requests.RequestException:
-        st.warning("已绑定报告，但暂时无法读取正文；可稍后重试。")
+        st.session_state.current_report = None
+        st.session_state.chat_context["messages"] = []
+        st.info("报告待审、已撤回或访问受限；不展示正文或旧回答。")
 if st.session_state.current_report and st.session_state.current_report.get("id") == context["report_id"]:
     with st.expander("查看当前报告全文、证据与风险", expanded=False):
         _show_report(st.session_state.current_report)

@@ -4,13 +4,42 @@
 
 一个面向学习与作品集展示的可追溯投研工作流项目。核心理念:AI 生成投研内容最大的问题不是"写不出来",而是**不可信**——数字可能是编的、引用可能是假的、失败可能被掩盖。本项目用工程手段而非 prompt 约束来解决这个问题。
 
+## 面试演示：两条受控路径
+
+- **中文官方年报问答**：侧栏绑定单一标的（贵州茅台、宁德时代、平安银行、五粮液），在聊天框提问；后端从对应 2025 年年报中召回证据，校验字段、数值、期间和单位，返回回答或明确拒答，并展示 `ticker + 文件名 + SHA256 + 页码`。这不是开放域聊天，也不做投资建议。
+- **研究报告工作流**：异步任务显示七步进度；报告有数据来源、风险与降级原因。未审核发布的报告不可对外问答，审核、发布与撤回由不同角色控制（单机演示级）。
+
+### 从零运行中文问答（Windows PowerShell）
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements-semantic.txt
+.\.venv\Scripts\python.exe scripts\prepare_chinese_corpus.py
+.\.venv\Scripts\python.exe -m investment_assistant.cli fetch --ticker 600519.SS
+# 首次联网缓存固定版本的多语模型；问答服务运行时只读本地模型。
+.\.venv\Scripts\python.exe -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2', revision='e8f8c211226b894fcb81acc59f3b34ba3efd5f42')"
+$env:IA_AUTH_TOKENS = '{"local-demo-token-change-me":{"actor":"analyst","tenant":"demo","roles":["analyst"]}}'
+.\start_demo.bat
+```
+
+浏览器打开 `http://127.0.0.1:8501`，用本地凭证登录，侧栏选“中文年报问答”，例如问“宁德时代2025年营业收入是多少？”。示例 token **仅限本机演示，不得用于公网服务**。若缺 PDF、模型或 SHA256 不匹配，接口会拒绝交付而非猜测；官方 PDF 不随仓库重发。完整报告演示还依赖实时数据、检索索引和人工审核发布，不能用未发布报告冒充可问答内容。
+
+### 可复核的边界与指标
+
+- 中文召回**开发集** 26 题：Page Recall@4 为 **88.46%**、Top-1 为 **50%**、跨标的污染 0；不是跨期间/跨资料的生产指标。
+- 17 题问答集修复后**回归**：13/13 数值与引用身份核验、4/4 拒答；该集曾用于调试，**不是独立盲测，也不能声称“幻觉率为零”**。
+- 早期四象限双语 32 题基线很低，英语/中文跨语泛化仍是未解决问题；中文官方年报受控问答与默认报告 RAG 是两条路径，不能把开发集指标套到后者。
+- 冷启动需加载多份 PDF 与本地模型，字段覆盖有限；跨页表头、复杂列语义会保守拒答。详见 [KNOWN_ISSUES.md](KNOWN_ISSUES.md)。
+
+
 | | |
 |---|---|
 | 工作流编排 | LangGraph 七节点状态机,全程输出机器可读审计记录 |
 | 真实数据 | yfinance 实时行情 / 财报 / 估值 / 新闻,记录来源与抓取时间 |
 | 证据溯源 | 本地 RAG(Chroma),PDF 页码级引用,ticker 隔离检索 |
 | 防幻觉 | 受控 LLM 三道防线:槽位模板 → 引用校验 → 安全校验回退 |
-| 质量评估 | 20 题人工标注评测集,45+ 单元测试,黄金样本离线回归 |
+| 质量评估 | 离线评测集、自动化回归与黄金样本；开发集/回归集指标明确区分 |
 
 > 仅用于学习和研究,不构成投资建议。数据来自非官方接口,可能延迟、缺失或被修订,所有结果必须回到原始来源复核。
 
@@ -152,7 +181,7 @@ investment_assistant/
 ├── evaluation.py        # 检索质量评测(R Recall/关键词核验/相关性)
 ├── golden_regression.py # 黄金样本离线回归
 ├── api.py / web_app.py / cli.py  # FastAPI / Streamlit / 命令行入口
-tests/                   # 45+ 单元测试
+tests/                   # 自动化单元与边界测试
 data/                    # 知识库、评测集、报告产物、审计记录
 ```
 
@@ -164,3 +193,31 @@ data/                    # 知识库、评测集、报告产物、审计记录
 ## 免责声明
 
 本项目仅用于学习和研究,不构成任何投资建议。市场存在本金损失风险;历史价格、回报和新闻内容均不能预测未来表现。请在任何决策前核验原始来源,并咨询持牌专业人士。
+
+
+## 团队身份与审核发布（R6/R7，单机演示）
+
+所有 `/api/*` 数据入口（health 除外）要求个人 Bearer token。后端启动前在其环境配置 `IA_AUTH_TOKENS`：
+
+```powershell
+# 以下仅为本地演示占位凭证；真实使用应换成足够随机的秘密，不写入仓库。
+$env:IA_AUTH_TOKENS = '{"replace-with-analyst-secret":{"actor":"analyst","tenant":"team-a","roles":["analyst"]},"replace-with-reviewer-secret":{"actor":"reviewer","tenant":"team-a","roles":["reviewer"]},"replace-with-publisher-secret":{"actor":"publisher","tenant":"team-a","roles":["publisher"]}}'
+.\start_demo.bat
+```
+
+配置可附 `expires_at`（带时区 ISO 时间）。不配置就拒绝数据访问，不存在匿名兼容入口。Streamlit 登录填写个人凭证；角色和租户以服务端为准。旧报告缺少可信归属时不能直接公有化。
+
+操作顺序：分析员创建任务 → 另一审核人打开工作台、手工登记完整 claims 并核验正文/证据 → 逐条确认和整篇覆盖声明 → 第三位发布人发布 → 同租户用户读取/问答。结构门禁通过不等于整篇语义自动证明；未经发布正文不交付。撤回或资料版本变化后旧审核/发布/关联记忆失效。
+
+版本关注与研究记忆在页面下方；记忆最多 90 天，可撤销，只作为用户注记，不参与事实生成。只支持单 API worker，本地 JSON 与审计不等于企业权限基础设施。
+
+### 完全离线的界面烟测
+
+```powershell
+.venv\Scripts\python.exe scripts\r6_r7_ui_smoke.py --port 18080
+# 另一个终端：
+$env:INVESTMENT_ASSISTANT_API_URL = 'http://127.0.0.1:18080'
+.venv\Scripts\python.exe -m streamlit run investment_assistant/web_app.py --server.headless=true --server.port=18501 --server.address=127.0.0.1
+```
+
+脚本只在临时目录创建合成资料。测试凭证为 `fixture-analyst-token`、`fixture-reviewer-token`、`fixture-publisher-token`、`fixture-other-tenant-token`，**绝不可用于真实服务**。烟测不是生产金融数据验证。交付审阅记录见 `docs/REVIEW_LOG.md`；本地截图和临时运行日志不随仓库发布。

@@ -1,7 +1,10 @@
 {
+  "status": "ok",
   "eval_set": "D:\\It\\Test_Project\\Investment_Assistant\\data\\bilingual_eval_set.json",
+  "eval_set_sha256": "8a367299a49abe836c21738c792f55e890e9c2b7cf5fcb3f0891442eb657acf5",
+  "eval_set_case_count": 32,
   "top_k": 4,
-  "evaluated_at": "2026-09-24T16:14:04.941122+00:00",
+  "evaluated_at": "2026-09-25T04:56:33.011364+00:00",
   "material_verification": {
     "AAPL": {
       "status": "match",
@@ -33,7 +36,7 @@
     "hash": {
       "mode": "hash",
       "top_k": 4,
-      "evaluated_at": "2026-09-24T16:06:34.611227+00:00",
+      "evaluated_at": "2026-09-25T04:58:10.537783+00:00",
       "status": {
         "embedding_mode": "hash",
         "semantic_model": null,
@@ -133,6 +136,12 @@
             "600519.SS",
             "600519.SS"
           ],
+          "unscoped_pages": [
+            1,
+            5,
+            46,
+            31
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -171,6 +180,12 @@
             "600519.SS",
             "600519.SS",
             "600519.SS"
+          ],
+          "unscoped_pages": [
+            1,
+            5,
+            46,
+            31
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
@@ -212,6 +227,12 @@
             "MSFT",
             "MSFT"
           ],
+          "unscoped_pages": [
+            118,
+            66,
+            77,
+            55
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -251,6 +272,12 @@
             "AAPL",
             "MSFT",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            139,
+            36,
+            57,
+            113
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -292,6 +319,12 @@
             "600519.SS",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            1,
+            46,
+            30,
+            229
+          ],
           "cross_ticker_source_count_unscoped": 1,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -330,6 +363,12 @@
             "600519.SS",
             "600519.SS",
             "600519.SS"
+          ],
+          "unscoped_pages": [
+            1,
+            46,
+            30,
+            31
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
@@ -371,6 +410,12 @@
             "600519.SS",
             "600519.SS"
           ],
+          "unscoped_pages": [
+            1,
+            5,
+            46,
+            31
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -411,8 +456,14 @@
             "600519.SS",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            2,
+            30,
+            31,
+            57
+          ],
           "cross_ticker_source_count_unscoped": 1,
-          "unscoped_page_hit_at_k": true,
+          "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
         },
         {
@@ -449,6 +500,12 @@
             "MSFT",
             "0700.HK",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            2,
+            74,
+            26,
+            127
           ],
           "cross_ticker_source_count_unscoped": 3,
           "unscoped_page_hit_at_k": false,
@@ -488,6 +545,12 @@
             "AAPL",
             "0700.HK",
             "AAPL"
+          ],
+          "unscoped_pages": [
+            39,
+            32,
+            207,
+            29
           ],
           "cross_ticker_source_count_unscoped": 1,
           "unscoped_page_hit_at_k": true,
@@ -529,6 +592,12 @@
             "AAPL",
             "AAPL"
           ],
+          "unscoped_pages": [
+            26,
+            39,
+            27,
+            4
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": true,
           "failure_reason": "none"
@@ -567,6 +636,12 @@
             "MSFT",
             "MSFT",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            127,
+            52,
+            125,
+            74
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
@@ -607,6 +682,12 @@
             "MSFT",
             "MSFT"
           ],
+          "unscoped_pages": [
+            125,
+            52,
+            55,
+            54
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -645,6 +726,12 @@
             "0700.HK",
             "AAPL",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            51,
+            14,
+            27,
+            53
           ],
           "cross_ticker_source_count_unscoped": 2,
           "unscoped_page_hit_at_k": false,
@@ -686,6 +773,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            5,
+            9,
+            200,
+            196
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -726,6 +819,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            5,
+            10,
+            8,
+            234
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": true,
           "failure_reason": "ranking"
@@ -764,6 +863,12 @@
             "MSFT",
             "MSFT",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            77,
+            55,
+            66,
+            78
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
@@ -804,6 +909,12 @@
             "MSFT",
             "MSFT"
           ],
+          "unscoped_pages": [
+            53,
+            27,
+            73,
+            54
+          ],
           "cross_ticker_source_count_unscoped": 1,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -842,6 +953,12 @@
             "600519.SS",
             "600519.SS",
             "600519.SS"
+          ],
+          "unscoped_pages": [
+            25,
+            137,
+            26,
+            28
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -882,6 +999,12 @@
             "600519.SS",
             "600519.SS"
           ],
+          "unscoped_pages": [
+            25,
+            137,
+            26,
+            28
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -920,6 +1043,12 @@
             "0700.HK",
             "AAPL",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            57,
+            139,
+            36,
+            113
           ],
           "cross_ticker_source_count_unscoped": 2,
           "unscoped_page_hit_at_k": false,
@@ -961,6 +1090,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            31,
+            30,
+            52,
+            57
+          ],
           "cross_ticker_source_count_unscoped": 2,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -1001,6 +1136,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            31,
+            30,
+            52,
+            57
+          ],
           "cross_ticker_source_count_unscoped": 2,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -1039,6 +1180,12 @@
             "600519.SS",
             "0700.HK",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            31,
+            30,
+            52,
+            118
           ],
           "cross_ticker_source_count_unscoped": 3,
           "unscoped_page_hit_at_k": false,
@@ -1079,6 +1226,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            26,
+            175,
+            234,
+            254
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -1117,6 +1270,12 @@
             "0700.HK",
             "0700.HK",
             "AAPL"
+          ],
+          "unscoped_pages": [
+            75,
+            262,
+            5,
+            22
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -1158,6 +1317,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            140,
+            175,
+            158,
+            254
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -1196,6 +1361,12 @@
             "0700.HK",
             "0700.HK",
             "0700.HK"
+          ],
+          "unscoped_pages": [
+            254,
+            225,
+            175,
+            262
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -1237,6 +1408,12 @@
             "MSFT",
             "AAPL"
           ],
+          "unscoped_pages": [
+            53,
+            33,
+            54,
+            27
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -1276,6 +1453,12 @@
             "MSFT",
             "0700.HK",
             "AAPL"
+          ],
+          "unscoped_pages": [
+            27,
+            54,
+            15,
+            45
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -1317,6 +1500,12 @@
             "AAPL",
             "AAPL"
           ],
+          "unscoped_pages": [
+            39,
+            55,
+            15,
+            18
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -1356,6 +1545,12 @@
             "AAPL",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            55,
+            28,
+            8,
+            83
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -1365,7 +1560,7 @@
     "semantic": {
       "mode": "semantic",
       "top_k": 4,
-      "evaluated_at": "2026-09-24T16:14:04.941122+00:00",
+      "evaluated_at": "2026-09-25T05:01:42.339566+00:00",
       "status": {
         "embedding_mode": "semantic",
         "semantic_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
@@ -1466,6 +1661,12 @@
             "600519.SS",
             "600519.SS"
           ],
+          "unscoped_pages": [
+            54,
+            26,
+            12,
+            107
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -1504,6 +1705,12 @@
             "600519.SS",
             "600519.SS",
             "600519.SS"
+          ],
+          "unscoped_pages": [
+            54,
+            26,
+            12,
+            107
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
@@ -1545,6 +1752,12 @@
             "600519.SS",
             "600519.SS"
           ],
+          "unscoped_pages": [
+            131,
+            70,
+            69,
+            54
+          ],
           "cross_ticker_source_count_unscoped": 1,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -1584,6 +1797,12 @@
             "0700.HK",
             "MSFT",
             "AAPL"
+          ],
+          "unscoped_pages": [
+            139,
+            25,
+            66,
+            36
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -1625,6 +1844,12 @@
             "600519.SS",
             "600519.SS"
           ],
+          "unscoped_pages": [
+            70,
+            54,
+            107,
+            69
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -1663,6 +1888,12 @@
             "600519.SS",
             "600519.SS",
             "600519.SS"
+          ],
+          "unscoped_pages": [
+            70,
+            69,
+            68,
+            71
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
@@ -1704,6 +1935,12 @@
             "600519.SS",
             "600519.SS"
           ],
+          "unscoped_pages": [
+            40,
+            1,
+            128,
+            70
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -1744,6 +1981,12 @@
             "600519.SS",
             "600519.SS"
           ],
+          "unscoped_pages": [
+            20,
+            122,
+            70,
+            68
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -1783,6 +2026,12 @@
             "AAPL",
             "AAPL"
           ],
+          "unscoped_pages": [
+            34,
+            52,
+            80,
+            33
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": true,
           "failure_reason": "none"
@@ -1821,6 +2070,12 @@
             "AAPL",
             "AAPL",
             "AAPL"
+          ],
+          "unscoped_pages": [
+            32,
+            24,
+            62,
+            39
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": true,
@@ -1862,6 +2117,12 @@
             "AAPL",
             "AAPL"
           ],
+          "unscoped_pages": [
+            26,
+            39,
+            32,
+            4
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": true,
           "failure_reason": "none"
@@ -1900,6 +2161,12 @@
             "MSFT",
             "MSFT",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            127,
+            126,
+            112,
+            52
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
@@ -1940,6 +2207,12 @@
             "MSFT",
             "MSFT"
           ],
+          "unscoped_pages": [
+            52,
+            127,
+            49,
+            54
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "candidate_miss"
@@ -1978,6 +2251,12 @@
             "MSFT",
             "MSFT",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            53,
+            49,
+            127,
+            45
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,
@@ -2019,6 +2298,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            196,
+            272,
+            5,
+            8
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": true,
           "failure_reason": "ranking"
@@ -2059,6 +2344,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            5,
+            130,
+            272,
+            4
+          ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": true,
           "failure_reason": "ranking"
@@ -2097,6 +2388,12 @@
             "0700.HK",
             "0700.HK",
             "0700.HK"
+          ],
+          "unscoped_pages": [
+            78,
+            12,
+            16,
+            8
           ],
           "cross_ticker_source_count_unscoped": 3,
           "unscoped_page_hit_at_k": false,
@@ -2137,6 +2434,12 @@
             "MSFT",
             "MSFT"
           ],
+          "unscoped_pages": [
+            27,
+            54,
+            53,
+            73
+          ],
           "cross_ticker_source_count_unscoped": 1,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -2175,6 +2478,12 @@
             "600519.SS",
             "MSFT",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            70,
+            33,
+            136,
+            123
           ],
           "cross_ticker_source_count_unscoped": 2,
           "unscoped_page_hit_at_k": false,
@@ -2215,6 +2524,12 @@
             "600519.SS",
             "MSFT"
           ],
+          "unscoped_pages": [
+            127,
+            70,
+            92,
+            118
+          ],
           "cross_ticker_source_count_unscoped": 2,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -2253,6 +2568,12 @@
             "0700.HK",
             "MSFT",
             "MSFT"
+          ],
+          "unscoped_pages": [
+            139,
+            25,
+            57,
+            66
           ],
           "cross_ticker_source_count_unscoped": 2,
           "unscoped_page_hit_at_k": false,
@@ -2294,6 +2615,12 @@
             "0700.HK",
             "AAPL"
           ],
+          "unscoped_pages": [
+            14,
+            12,
+            8,
+            27
+          ],
           "cross_ticker_source_count_unscoped": 1,
           "unscoped_page_hit_at_k": true,
           "failure_reason": "ranking"
@@ -2334,6 +2661,12 @@
             "AAPL",
             "AAPL"
           ],
+          "unscoped_pages": [
+            205,
+            11,
+            28,
+            44
+          ],
           "cross_ticker_source_count_unscoped": 2,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -2372,6 +2705,12 @@
             "AAPL",
             "0700.HK",
             "0700.HK"
+          ],
+          "unscoped_pages": [
+            12,
+            27,
+            8,
+            16
           ],
           "cross_ticker_source_count_unscoped": 1,
           "unscoped_page_hit_at_k": true,
@@ -2412,6 +2751,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            240,
+            198,
+            234,
+            26
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -2450,6 +2795,12 @@
             "0700.HK",
             "0700.HK",
             "0700.HK"
+          ],
+          "unscoped_pages": [
+            5,
+            225,
+            137,
+            135
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -2491,6 +2842,12 @@
             "0700.HK",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            158,
+            243,
+            229,
+            272
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "ranking"
@@ -2529,6 +2886,12 @@
             "0700.HK",
             "0700.HK",
             "0700.HK"
+          ],
+          "unscoped_pages": [
+            198,
+            168,
+            170,
+            231
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -2570,6 +2933,12 @@
             "MSFT",
             "AAPL"
           ],
+          "unscoped_pages": [
+            171,
+            30,
+            53,
+            27
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -2609,6 +2978,12 @@
             "0700.HK",
             "AAPL",
             "0700.HK"
+          ],
+          "unscoped_pages": [
+            54,
+            16,
+            27,
+            12
           ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
@@ -2650,6 +3025,12 @@
             "AAPL",
             "0700.HK"
           ],
+          "unscoped_pages": [
+            27,
+            42,
+            50,
+            14
+          ],
           "cross_ticker_source_count_unscoped": 4,
           "unscoped_page_hit_at_k": false,
           "failure_reason": "cross_language_miss"
@@ -2688,6 +3069,12 @@
             "600519.SS",
             "600519.SS",
             "600519.SS"
+          ],
+          "unscoped_pages": [
+            16,
+            120,
+            1,
+            15
           ],
           "cross_ticker_source_count_unscoped": 0,
           "unscoped_page_hit_at_k": false,

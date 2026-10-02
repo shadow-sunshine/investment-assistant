@@ -132,12 +132,13 @@ def test_generator_with_out_of_bounds_evidence_is_rejected(tmp_path):
 def test_api_answer_contract_and_error_boundaries(monkeypatch, tmp_path):
     context = _context(tmp_path)
     monkeypatch.setattr(api, "REPORT_DIR", tmp_path)
+    monkeypatch.setattr(api, "_effective_publication", lambda *_: (object(), None))
     client = TestClient(api.app)
 
     answered = client.post("/api/answers", json={"report_id": context.report_id, "question": "最新收盘价是多少？", "requested_by": "analyst"})
     assert answered.status_code == 200
     assert answered.json()["status"] == ANSWERED
-    assert answered.json()["access_control"]["mode"] == "mvp_attribution_only"
+    assert answered.json()["access_control"]["mode"] == "server_token"
 
     empty = client.post("/api/answers", json={"report_id": context.report_id, "question": "   "})
     assert empty.status_code == 422

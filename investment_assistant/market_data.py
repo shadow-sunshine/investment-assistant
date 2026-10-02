@@ -3,11 +3,37 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from typing import Any
+import time
+from typing import Any, Callable
 
 import numpy as np
 import pandas as pd
 import yfinance as yf
+
+from .source_governance import (
+    RESULT_FAILED,
+    RESULT_SUCCESS,
+    SourceCallFailure,
+    SourceCallPolicy,
+    SourceErrorCode,
+    ToolCallAuditRecord,
+    ToolCallError,
+    call_fingerprint,
+    classify_exception,
+    execute_source_call,
+    get_default_health_registry,
+    get_default_tool_call_ledger,
+    tool_error,
+)
+
+YAHOO_SOURCE = "Yahoo Finance via yfinance"
+YAHOO_CALL_POLICY = SourceCallPolicy(
+    connect_timeout_s=10.0,
+    read_timeout_s=30.0,
+    total_budget_s=90.0,
+    max_attempts=2,
+    backoff_seconds=1.0,
+)
 
 
 def _as_float(value: Any) -> float | None:
@@ -38,16 +64,56 @@ def _latest_statement_value(statement: pd.DataFrame, row_name: str) -> tuple[flo
     return _as_float(row.loc[latest_date]), _format_statement_date(latest_date)
 
 
+def _run_yahoo_call(call: Callable[[], Any], operation: str, attempts: list[int]) -> Any:
+    """所有 yfinance 网络入口共享同一重试、超时配置和总预算策略。"""
+    started = time.monotonic()
+
+    def counted_attempt() -> Any:
+        attempts[0] += 1
+        result = call()
+        elapsed_ms = int((time.monotonic() - started) * 1000)
+        if elapsed_ms >= YAHOO_CALL_POLICY.total_budget_s * 1000:
+            raise SourceCallFailure(tool_error(
+                YAHOO_SOURCE, operation, SourceErrorCode.TIMEOUT, retryable=False,
+                attempts=attempts[0], elapsed_ms=elapsed_ms,
+                detail="yfinance call exceeded configured total budget",
+            ))
+        return result
+
+    return execute_source_call(
+        counted_attempt,
+        source=YAHOO_SOURCE,
+        operation=operation,
+        policy=YAHOO_CALL_POLICY,
+    )
+
+
+def _error_with_actual_attempts(error: ToolCallError, attempts: int) -> ToolCallError:
+    from dataclasses import replace
+    return replace(error, attempts=attempts)
+
+
 def fetch_market_snapshot(ticker: str, period: str = "1y") -> dict[str, Any]:
-    """获取可审计的历史行情快照；请求失败时返回明确的错误字段。"""
+    """获取可审计的历史行情快照；空结果和调用失败均不伪造成可用数据。"""
     normalized_ticker = ticker.upper().strip()
     fetched_at = datetime.now(UTC).isoformat()
+    operation = "fetch_market_snapshot"
+    started = time.monotonic()
+    started_at = datetime.now(UTC).isoformat()
+    attempts = [0]
+    error: ToolCallError | None = None
+    status = RESULT_FAILED
     try:
-        security = yf.Ticker(normalized_ticker)
-        history = security.history(period=period, interval="1d", auto_adjust=True, timeout=15, raise_errors=True)
-        if history.empty or "Close" not in history:
-            return {"ticker": normalized_ticker, "fetched_at": fetched_at, "data_available": False, "error": "未获取到有效历史行情。"}
+        def fetch() -> pd.DataFrame:
+            history = yf.Ticker(normalized_ticker).history(
+                period=period, interval="1d", auto_adjust=True,
+                timeout=YAHOO_CALL_POLICY.read_timeout_s, raise_errors=True,
+            )
+            if history is None or history.empty or "Close" not in history or history["Close"].dropna().empty:
+                raise SourceCallFailure(tool_error(YAHOO_SOURCE, operation, SourceErrorCode.EMPTY_RESPONSE))
+            return history
 
+        history = _run_yahoo_call(fetch, operation, attempts)
         close = history["Close"].dropna()
         daily_returns = close.pct_change().dropna()
         latest = _as_float(close.iloc[-1])
@@ -57,12 +123,12 @@ def fetch_market_snapshot(ticker: str, period: str = "1y") -> dict[str, Any]:
         latest_timestamp = close.index[-1]
         latest_date = latest_timestamp.isoformat() if hasattr(latest_timestamp, "isoformat") else str(latest_timestamp)
         one_month_index = max(0, len(close) - 22)
-
+        status = RESULT_SUCCESS
         return {
             "ticker": normalized_ticker,
             "fetched_at": fetched_at,
             "data_available": True,
-            "source": "Yahoo Finance via yfinance",
+            "source": YAHOO_SOURCE,
             "latest_trading_date": latest_date,
             "period": period,
             "observations": int(len(close)),
@@ -74,49 +140,49 @@ def fetch_market_snapshot(ticker: str, period: str = "1y") -> dict[str, Any]:
             "volume_latest": int(history["Volume"].iloc[-1]) if "Volume" in history and not np.isnan(history["Volume"].iloc[-1]) else None,
         }
     except Exception as exc:
-        return {"ticker": normalized_ticker, "fetched_at": fetched_at, "data_available": False, "error": f"行情请求失败：{type(exc).__name__}: {exc}"}
+        error = _error_with_actual_attempts(classify_exception(exc, YAHOO_SOURCE, operation, attempts=attempts[0], elapsed_ms=int((time.monotonic() - started) * 1000)), attempts[0])
+        return {
+            "ticker": normalized_ticker, "fetched_at": fetched_at, "data_available": False,
+            "source": YAHOO_SOURCE, "error": error.message, "error_code": error.error_code.value,
+        }
+    finally:
+        _record_yahoo_call(operation, normalized_ticker, started, started_at, status, error, attempts[0], period=period)
 
 
 def fetch_financial_snapshot(ticker: str) -> dict[str, Any]:
-    """获取年度营收、净利润、自由现金流和估值指标，并保留各自数据日期。"""
+    """获取年度财报/估值；部分缺失明确降级，完全空响应不伪装成功。"""
     normalized_ticker = ticker.upper().strip()
     fetched_at = datetime.now(UTC).isoformat()
+    operation = "fetch_financial_snapshot"
+    started = time.monotonic()
+    started_at = datetime.now(UTC).isoformat()
+    attempts = [0]
+    error: ToolCallError | None = None
+    status = RESULT_FAILED
+    labels = ["营收", "净利润", "自由现金流", "滚动市盈率（PE）", "市净率（PB）"]
     try:
-        security = yf.Ticker(normalized_ticker)
-        income_stmt = security.get_income_stmt(freq="yearly")
-        cash_flow = security.get_cash_flow(freq="yearly")
-        info = security.get_info()
+        def fetch_financials():
+            security = yf.Ticker(normalized_ticker)
+            return security.get_income_stmt(freq="yearly"), security.get_cash_flow(freq="yearly"), security.get_info()
 
+        income_stmt, cash_flow, info = _run_yahoo_call(fetch_financials, operation, attempts)
         revenue, revenue_date = _latest_statement_value(income_stmt, "TotalRevenue")
         net_income, net_income_date = _latest_statement_value(income_stmt, "NetIncome")
         free_cash_flow, free_cash_flow_date = _latest_statement_value(cash_flow, "FreeCashFlow")
         trailing_pe = _as_float(info.get("trailingPE"))
         price_to_book = _as_float(info.get("priceToBook"))
-
-        unavailable_fields = []
-        values = {
-            "revenue": revenue,
-            "net_income": net_income,
-            "free_cash_flow": free_cash_flow,
-            "trailing_pe": trailing_pe,
-            "price_to_book": price_to_book,
-        }
-        labels = {
-            "revenue": "营收",
-            "net_income": "净利润",
-            "free_cash_flow": "自由现金流",
-            "trailing_pe": "滚动市盈率（PE）",
-            "price_to_book": "市净率（PB）",
-        }
-        for key, value in values.items():
-            if value is None:
-                unavailable_fields.append(labels[key])
-
+        values = [revenue, net_income, free_cash_flow, trailing_pe, price_to_book]
+        unavailable_fields = [label for label, value in zip(labels, values) if value is None]
+        data_available = len(unavailable_fields) < len(labels)
+        if unavailable_fields:
+            error = tool_error(YAHOO_SOURCE, operation, SourceErrorCode.EMPTY_RESPONSE, attempts=attempts[0], elapsed_ms=int((time.monotonic() - started) * 1000))
+        else:
+            status = RESULT_SUCCESS
         return {
             "ticker": normalized_ticker,
             "fetched_at": fetched_at,
-            "data_available": bool(revenue is not None or net_income is not None or free_cash_flow is not None or trailing_pe is not None or price_to_book is not None),
-            "source": "Yahoo Finance via yfinance",
+            "data_available": data_available,
+            "source": YAHOO_SOURCE,
             "revenue": revenue,
             "revenue_period_end": revenue_date,
             "net_income": net_income,
@@ -127,45 +193,87 @@ def fetch_financial_snapshot(ticker: str) -> dict[str, Any]:
             "price_to_book": price_to_book,
             "valuation_as_of": fetched_at,
             "unavailable_fields": unavailable_fields,
-            "error": None if not unavailable_fields else "部分财报或估值指标不可用。",
+            "error": "部分财报或估值指标不可用。" if unavailable_fields else None,
+            "error_code": error.error_code.value if error else None,
         }
     except Exception as exc:
+        error = _error_with_actual_attempts(classify_exception(exc, YAHOO_SOURCE, operation, attempts=attempts[0], elapsed_ms=int((time.monotonic() - started) * 1000)), attempts[0])
         return {
-            "ticker": normalized_ticker,
-            "fetched_at": fetched_at,
-            "data_available": False,
-            "source": "Yahoo Finance via yfinance",
-            "error": f"财报与估值请求失败：{type(exc).__name__}: {exc}",
-            "unavailable_fields": ["营收", "净利润", "自由现金流", "滚动市盈率（PE）", "市净率（PB）"],
+            "ticker": normalized_ticker, "fetched_at": fetched_at, "data_available": False,
+            "source": YAHOO_SOURCE, "error": f"财报与估值请求失败：{error.message}",
+            "error_code": error.error_code.value, "unavailable_fields": labels,
         }
+    finally:
+        _record_yahoo_call(operation, normalized_ticker, started, started_at, status, error, attempts[0])
 
 
-def fetch_recent_news(ticker: str, limit: int = 15) -> list[dict[str, str]]:
-    """Fetch up to fifteen recent Yahoo news items with title, summary and source fields."""
+class NewsRecords(list[dict[str, str]]):
+    """兼容 list 调用方，同时保留空结果与请求失败的可检查区别。"""
+
+    def __init__(self, records=(), *, error: ToolCallError | None = None):
+        super().__init__(records)
+        self.error = error
+        self.status = RESULT_FAILED if error else RESULT_SUCCESS
+
+
+def _record_yahoo_call(
+    operation: str,
+    ticker: str,
+    started: float,
+    started_at: str,
+    result_status: str,
+    error: ToolCallError | None,
+    attempts: int = 1,
+    *,
+    period: str | None = None,
+) -> None:
+    """把真实调用结果写入进程级健康登记表与审计账本。"""
+    registry = get_default_health_registry()
+    ledger = get_default_tool_call_ledger()
+    elapsed_ms = int((time.monotonic() - started) * 1000)
+    if error is None:
+        registry.record_success(YAHOO_SOURCE, operation, latency_ms=elapsed_ms)
+    else:
+        registry.record_failure(YAHOO_SOURCE, operation, error)
+    ledger.register(ToolCallAuditRecord(
+        job_id="", requested_by="", source=YAHOO_SOURCE, operation=operation,
+        ticker=ticker,
+        fingerprint=call_fingerprint(source=YAHOO_SOURCE, operation=operation, ticker=ticker, period=period),
+        attempts=attempts, started_at=started_at, finished_at=datetime.now(UTC).isoformat(),
+        result_status=result_status, error_code=error.error_code.value if error else None,
+    ))
+
+
+def fetch_recent_news(ticker: str, limit: int = 15) -> NewsRecords:
+    """请求成功但无新闻是正常空列表；调用失败通过结构化元数据区分。"""
     fetched_at = datetime.now(UTC).isoformat()
     normalized_ticker = ticker.upper().strip()
+    operation = "fetch_recent_news"
+    started = time.monotonic()
+    started_at = datetime.now(UTC).isoformat()
+    attempts = [0]
+    error: ToolCallError | None = None
+    status = RESULT_FAILED
     try:
-        raw_news = yf.Ticker(normalized_ticker).get_news(count=limit, tab="news") or []
-    except Exception:
-        return []
-
-    records: list[dict[str, str]] = []
-    for index, item in enumerate(raw_news[:limit], start=1):
-        content = item.get("content", item)
-        title = content.get("title") or item.get("title") or "\u672a\u547d\u540d\u65b0\u95fb"
-        summary = content.get("summary") or item.get("summary") or item.get("description") or ""
-        url = content.get("canonicalUrl", {}).get("url") or content.get("clickThroughUrl", {}).get("url") or item.get("link") or ""
-        provider = content.get("provider", {}).get("displayName") or item.get("publisher") or "Yahoo Finance"
-        publish_time = content.get("pubDate") or str(item.get("providerPublishTime") or "")
-        records.append({
-            "id": f"news-{normalized_ticker}-{index}",
-            "title": str(title),
-            "summary": str(summary),
-            "text": f"{title}\n\u6458\u8981\uff1a{summary}\n\u6765\u6e90\uff1a{provider}\n\u53d1\u5e03\u65e5\u671f\uff1a{publish_time}\n\u94fe\u63a5\uff1a{url}",
-            "source": str(provider),
-            "url": str(url),
-            "published_at": str(publish_time),
-            "fetched_at": fetched_at,
-            "ticker": normalized_ticker,
-        })
-    return records
+        raw_news = _run_yahoo_call(lambda: yf.Ticker(normalized_ticker).get_news(count=limit, tab="news") or [], operation, attempts)
+        records: list[dict[str, str]] = []
+        for index, item in enumerate(raw_news[:limit], start=1):
+            content = item.get("content", item)
+            title = content.get("title") or item.get("title") or "未命名新闻"
+            summary = content.get("summary") or item.get("summary") or item.get("description") or ""
+            url = content.get("canonicalUrl", {}).get("url") or content.get("clickThroughUrl", {}).get("url") or item.get("link") or ""
+            provider = content.get("provider", {}).get("displayName") or item.get("publisher") or "Yahoo Finance"
+            publish_time = content.get("pubDate") or str(item.get("providerPublishTime") or "")
+            records.append({
+                "id": f"news-{normalized_ticker}-{index}", "title": str(title), "summary": str(summary),
+                "text": f"{title}\n摘要：{summary}\n来源：{provider}\n发布日期：{publish_time}\n链接：{url}",
+                "source": str(provider), "url": str(url), "published_at": str(publish_time),
+                "fetched_at": fetched_at, "ticker": normalized_ticker,
+            })
+        status = RESULT_SUCCESS
+        return NewsRecords(records)
+    except Exception as exc:
+        error = _error_with_actual_attempts(classify_exception(exc, YAHOO_SOURCE, operation, attempts=attempts[0], elapsed_ms=int((time.monotonic() - started) * 1000)), attempts[0])
+        return NewsRecords(error=error)
+    finally:
+        _record_yahoo_call(operation, normalized_ticker, started, started_at, status, error, attempts[0], period=str(limit))

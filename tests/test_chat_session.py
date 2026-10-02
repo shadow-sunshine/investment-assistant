@@ -1,7 +1,7 @@
 """研究聊天的离线意图分流、会话切换与 API 编排测试。"""
 
 from investment_assistant.chat_session import (
-    dispatch_message, new_context, record_error, route_message, select_job, select_report, update_job,
+    dispatch_message, new_context, record_error, route_message, select_job, select_report, select_knowledge_corpus, update_job,
 )
 
 
@@ -75,3 +75,23 @@ def test_switching_to_new_research_discards_old_answer():
     assert started["report_id"] is None and started["ticker"] == "AAPL"
     assert all("旧回答" not in item["text"] for item in started["messages"])
 
+
+
+def test_chinese_corpus_chat_is_scoped_and_clears_previous_context():
+    calls = []
+    state = select_report(new_context(), {"id": "AAPL_1", "ticker": "AAPL"})
+    state = record_error(state, "先前问题", "旧回答")
+    state = select_knowledge_corpus(state, "300750.SZ")
+    assert state["report_id"] is None and state["messages"] == []
+    assert route_message("宁德时代货币资金是多少？", state) == ("knowledge", "宁德时代货币资金是多少？")
+    assert route_message("x" * 501, state)[0] == "guidance"
+
+    def knowledge_ask(payload):
+        calls.append(payload)
+        return {"status": "refused", "answer": "证据不足", "sources": []}
+
+    updated = dispatch_message(state, "宁德时代货币资金是多少？", lambda _: None, lambda _: None,
+                               "caller", knowledge_ask=knowledge_ask)
+    assert calls == [{"ticker": "300750.SZ", "question": "宁德时代货币资金是多少？", "requested_by": "caller"}]
+    assert updated["messages"][-1]["answer"]["status"] == "refused"
+    assert select_knowledge_corpus(updated, "000001.SZ")["messages"] == []
