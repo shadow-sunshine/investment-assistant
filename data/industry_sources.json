@@ -1,0 +1,25 @@
+{
+  "period": "2026-01-01/2026-08-31",
+  "sources": [
+    {
+      "id": "nbs_20260915_activity",
+      "source": "国家统计局",
+      "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260915_1965307.html",
+      "published_at": "2026-09-15",
+      "captured_at": "2026-10-04T10:09:04.589292+00:00",
+      "source_html_sha256": "7d339b3990b8fcac366131d2defad0b756d8583856491c6d1b211a19d7a90c11",
+      "file_name": "nbs_20260915_activity.txt",
+      "text_sha256": "f4c08755d1878fb8b447328e85ceb064c7b64f00aec3d9842ba11b69ee4be9d3"
+    },
+    {
+      "id": "nbs_20260928_profit",
+      "source": "国家统计局",
+      "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260928_1965425.html",
+      "published_at": "2026-09-28",
+      "captured_at": "2026-10-04T10:09:05.456715+00:00",
+      "source_html_sha256": "de0a8fa2bb77dc439eab0336a39b426f746d0c0efd9cc01de4c9725e46b262d0",
+      "file_name": "nbs_20260928_profit.txt",
+      "text_sha256": "9426b75839a908097f60e22c27f7d28a6a2cbc59aad363cb71375a0b9b7e286e"
+    }
+  ]
+}

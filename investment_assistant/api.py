@@ -21,6 +21,18 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from .config import JOB_DIR, REPORT_DIR
+from .official_document_answers import OfficialDocumentAnswerService
+from .official_document_ingestion import DocumentIngestError, OfficialDocumentStore
+from .official_document_sources import OfficialDocumentDiscovery
+from .research_answer import ResearchAnswerService
+from .bounded_general_qa import IssuerAnswerService, IndustryObservationService, BoundedSourceUnavailable
+from .company_qa import CompanyAnswerService, CompanySourceUnavailable, catalog, ANCHORS_PATH, _json
+from .company_discovery import (
+    CompanyDiscoveryInputError,
+    default_discovery_registry,
+    resolve_company_candidates,
+)
+from .company_onboarding import pending_requests, provision_approved, request_onboarding
 from .chinese_qa_service import (
     ChineseKnowledgeAnswerService, KnowledgeCorpusUnavailable,
     KnowledgeInvalidInput, KnowledgeTickerNotFound,
@@ -30,6 +42,25 @@ from .access_control import (
     default_auth_service, bind_report_ownership, check_report_tenant_access,
 )
 from .audit_log import record_audit_event
+from .chat_session import DISCOVERY_STATUS_LABELS, company_discovery_error_code
+from .conversation_memory import ConversationOrchestrator, clear_mode_specific_state
+from .conversation_store import (
+    ConversationStore,
+    ConversationStoreError,
+    get_store as get_conversation_store,
+)
+from .user_profile import FIELD_DISPLAY as PROFILE_FIELD_DISPLAY, ProfileManager, contains_sensitive_content
+from .research_tools import (
+    ToolInputError,
+    ToolPermissionError,
+    coverage_report,
+    get_market_snapshot_tool,
+    get_source_health_tool,
+    get_structured_financial_candidates_tool,
+    request_official_material_onboarding_tool,
+    resolve_company_candidates_tool,
+    tool_catalog,
+)
 from .evidence_gates import (
     GATE_BLOCKING_RELEASES,
     RELEASE_BLOCKED,
@@ -72,6 +103,11 @@ app = FastAPI(title="Investment Assistant Demo API", version="0.1.0")
 # Phase A：报告任务化。任务状态独立持久化在 data/jobs/，既有同步端点保持原样。
 job_service = JobService(JobStore(JOB_DIR))
 knowledge_answer_service = ChineseKnowledgeAnswerService()
+issuer_answer_service = IssuerAnswerService()
+industry_answer_service = IndustryObservationService()
+company_answer_service = CompanyAnswerService(knowledge_answer_service, issuer_answer_service)
+research_answer_service = ResearchAnswerService(company_answer_service, industry_answer_service)
+official_document_answer_service = OfficialDocumentAnswerService()
 job_service.recover_stale_jobs()
 team_transaction_lock = threading.RLock()
 
@@ -90,6 +126,7 @@ def _require_role(principal: Principal, *roles: str) -> None:
         raise HTTPException(status_code=403, detail={"error_code": "ROLE_REQUIRED", "message": "当前身份无权执行该操作。"})
 
 
+@app.exception_handler(ConversationStoreError)
 @app.exception_handler(OSError)
 @app.exception_handler(ValueError)
 def storage_failure(http_request: Request, exc: Exception) -> JSONResponse:
@@ -106,7 +143,7 @@ async def require_api_identity(request: Request, call_next: Any) -> Any:
     token = authorization[7:] if authorization.startswith("Bearer ") else None
     target = hashlib.sha256(request.url.path.encode("utf-8")).hexdigest()[:24]
     category = request.url.path.split('/')[2]
-    if category not in {"me", "reports", "report-jobs", "answers", "knowledge-answers", "source-health", "watchlists", "memories"}:
+    if category not in {"me", "reports", "report-jobs", "answers", "knowledge-answers", "issuer-answers", "industry-observations", "company-answers", "company-coverage", "company-material-requests", "company-discovery", "official-documents", "company-market-snapshot", "company-financial-candidates", "company-onboarding-requests", "research-answers", "source-health", "research-tools", "watchlists", "memories", "conversations", "user-profile"}:
         category = "unknown"
     action = f"{request.method} /api/{category}"
     try:
@@ -175,6 +212,47 @@ class AnswerRequest(BaseModel):
 
 class KnowledgeAnswerRequest(BaseModel):
     ticker: str = Field(min_length=1, max_length=20)
+    question: str = Field(min_length=1, max_length=500)
+
+
+class CompanyMaterialRequest(BaseModel):
+    ticker: str = Field(min_length=1, max_length=20)
+    year: str = Field(pattern=r"^20\d{2}$")
+
+
+class OfficialDocumentSearchRequest(BaseModel):
+    ticker: str = Field(min_length=2, max_length=20)
+    question: str = Field(min_length=1, max_length=500)
+
+
+class OfficialDocumentDiscoveryRequest(BaseModel):
+    source: str = Field(min_length=3, max_length=10)
+    ticker: str = Field(min_length=2, max_length=20)
+    year: str = Field(pattern=r"^20\d{2}$")
+    limit: int = Field(default=10, ge=1, le=50)
+    company_name: str | None = Field(default=None, max_length=100)
+
+
+class OfficialDocumentIngestRequest(OfficialDocumentDiscoveryRequest):
+    candidate_id: str = Field(pattern=r"^[0-9a-f]{24}$")
+
+
+class CompanyAnswerRequest(BaseModel):
+    ticker: str = Field(min_length=1, max_length=20)
+    question: str = Field(min_length=1, max_length=500)
+
+
+class IssuerAnswerRequest(BaseModel):
+    ticker: str = Field(min_length=1, max_length=20)
+    question: str = Field(min_length=1, max_length=500)
+
+
+class ResearchAnswerRequest(BaseModel):
+    question: str = Field(min_length=1, max_length=500)
+    ticker: str | None = Field(default=None, max_length=20)
+
+
+class IndustryObservationRequest(BaseModel):
     question: str = Field(min_length=1, max_length=500)
 
 
@@ -925,6 +1003,223 @@ def answer_report_question(request: AnswerRequest, http_request: Request) -> dic
     return payload
 
 
+@app.post("/api/company-material-requests")
+@serialized_team_action
+def request_company_material(request: CompanyMaterialRequest, http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        result = provision_approved(request.ticker, request.year)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "MATERIAL_REQUEST_INVALID", "message": "市场代码或年度无效。"}) from exc
+    except CompanySourceUnavailable as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "MATERIAL_ONBOARDING_FAILED", "message": "预审来源或下载校验未通过。"}) from exc
+    return {**result, "actor_id": principal.actor_id, "tenant_id": principal.tenant_id}
+
+
+@app.get("/api/company-coverage")
+def company_coverage(http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        records = catalog()
+        anchored = _json(ANCHORS_PATH)
+    except CompanySourceUnavailable as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "COMPANY_CATALOG_UNAVAILABLE", "message": "公司资料清单不可用。"}) from exc
+    return {"companies": [{"ticker": code, "year": row["year"], "answer_scope": "2025年中文年报已核验字段" if row["engine"] == "chinese" else "已核验收入/证券事实" if row["engine"] == "issuer" else "仅限已审定证据锚点" if code in anchored else "资料已登记，字段待核验", "company": next((alias for alias in row["aliases"] if any("\u4e00" <= c <= "\u9fff" for c in alias)), code)} for code, row in sorted(records.items())]}
+
+
+class CompanyDiscoveryRequest(BaseModel):
+    query: str = Field(min_length=1, max_length=100)
+    market: str | None = Field(default=None, max_length=8)
+    # 显式开启才允许调用外部候选源；默认只读本地清单与路由提示，不联网。
+    use_external_sources: bool = False
+
+
+@app.post("/api/company-discovery")
+def discover_company(request: CompanyDiscoveryRequest, http_request: Request) -> dict[str, Any]:
+    """解析公司候选。普通 analyst 即可查询；不写正式资料清单，不提升证据等级。"""
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        payload = resolve_company_candidates_tool(
+            principal=principal, query=request.query, market=request.market,
+            registry=default_discovery_registry() if request.use_external_sources else None,
+            allow_external=request.use_external_sources,
+        )
+    except ToolPermissionError as exc:
+        raise HTTPException(status_code=403, detail={"error_code": exc.error_code, "message": "当前身份无权查询公司候选。"}) from exc
+    except (ToolInputError, CompanyDiscoveryInputError) as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "COMPANY_DISCOVERY_INPUT_INVALID", "message": "公司查询条件无效。"}) from exc
+    payload["status_label"] = DISCOVERY_STATUS_LABELS.get(str(payload.get("status")), str(payload.get("status")))
+    payload["actor_id"] = principal.actor_id
+    payload["tenant_id"] = principal.tenant_id
+    return payload
+
+
+class MarketSnapshotRequest(BaseModel):
+    ticker: str = Field(min_length=1, max_length=24)
+    market: str | None = Field(default=None, max_length=8)
+
+
+@app.post("/api/company-market-snapshot")
+def company_market_snapshot(request: MarketSnapshotRequest, http_request: Request) -> dict[str, Any]:
+    """结构化行情快照；返回体显式标注不是官方年报证据，不能当财务事实。"""
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        payload = get_market_snapshot_tool(
+            principal=principal, ticker=request.ticker, market=request.market,
+        )
+    except ToolPermissionError as exc:
+        raise HTTPException(status_code=403, detail={"error_code": exc.error_code, "message": "当前身份无权查询行情快照。"}) from exc
+    except ToolInputError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "MARKET_SNAPSHOT_INPUT_INVALID", "message": "证券代码无效。"}) from exc
+    payload["actor_id"] = principal.actor_id
+    return payload
+
+
+class FinancialCandidatesRequest(BaseModel):
+    ticker: str = Field(min_length=1, max_length=24)
+    year: str | None = Field(default=None, pattern=r"^20\d{2}$")
+
+
+@app.post("/api/company-financial-candidates")
+def company_financial_candidates(request: FinancialCandidatesRequest, http_request: Request) -> dict[str, Any]:
+    """结构化财务候选；``verified`` 恒为 false，必须经官方年报复核。"""
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        payload = get_structured_financial_candidates_tool(
+            principal=principal, ticker=request.ticker, year=request.year,
+        )
+    except ToolPermissionError as exc:
+        raise HTTPException(status_code=403, detail={"error_code": exc.error_code, "message": "当前身份无权查询财务候选。"}) from exc
+    except ToolInputError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "FINANCIAL_CANDIDATES_INPUT_INVALID", "message": "证券代码或年度无效。"}) from exc
+    payload["actor_id"] = principal.actor_id
+    return payload
+
+
+class OnboardingRequestBody(BaseModel):
+    ticker: str = Field(min_length=1, max_length=24)
+    year: str = Field(pattern=r"^20\d{2}$")
+    market: str | None = Field(default=None, max_length=8)
+
+
+@app.get("/api/company-onboarding-requests")
+def list_onboarding_requests(http_request: Request) -> dict[str, Any]:
+    """待人工审批的接入申请台账（只读）。"""
+    _require_role(_principal(http_request), ROLE_ADMIN)
+    return {"requests": pending_requests()}
+
+
+@app.post("/api/company-onboarding-requests", status_code=201)
+def create_onboarding_request(request: OnboardingRequestBody, http_request: Request) -> dict[str, Any]:
+    """登记官方资料接入申请；**不联网、不写正式资料清单**。"""
+    principal = _principal(http_request)
+    _require_role(principal, ROLE_ADMIN)
+    try:
+        payload = request_official_material_onboarding_tool(
+            principal=principal, ticker=request.ticker, year=request.year, market=request.market,
+        )
+    except ToolPermissionError as exc:
+        raise HTTPException(status_code=403, detail={"error_code": exc.error_code, "message": "只有管理员可登记接入申请。"}) from exc
+    except (ToolInputError, ValueError) as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "ONBOARDING_REQUEST_INVALID", "message": "证券代码或年度无效。"}) from exc
+    payload["actor_id"] = principal.actor_id
+    payload["tenant_id"] = principal.tenant_id
+    return payload
+
+
+@app.get("/api/research-tools")
+def research_tool_catalog(http_request: Request) -> dict[str, Any]:
+    """白名单工具目录：输入/输出 schema、所需角色与硬约束。"""
+    _require_role(_principal(http_request), "analyst", ROLE_ADMIN)
+    return {"tools": tool_catalog(), "mcp_exposed": False,
+            "mcp_deferred_reason": "当前环境未安装 MCP SDK；任务卡禁止自动安装依赖，故只交付内部工具边界。"}
+
+
+@app.get("/api/company-evidence-state")
+def company_evidence_state(http_request: Request, question: str = "") -> dict[str, Any]:
+    """把问句映射为稳定的公司发现错误码，供 UI 显示"已识别/已核验/待接入/来源不可用"。"""
+    _require_role(_principal(http_request), "analyst", ROLE_ADMIN)
+    payload: dict[str, Any] = {"companies": coverage_report()}
+    if question.strip():
+        payload["question"] = question.strip()[:200]
+        payload["error_code"] = company_discovery_error_code(question.strip()[:200])
+    return payload
+
+
+@app.get("/api/official-documents")
+def list_official_documents(http_request: Request, ticker: str | None = None) -> dict[str, Any]:
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        records = OfficialDocumentStore().list_documents(ticker=ticker)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "OFFICIAL_SEARCH_INPUT_INVALID", "message": "检索输入无效。"}) from exc
+    except (DocumentIngestError, CompanySourceUnavailable) as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "OFFICIAL_INDEX_UNAVAILABLE", "message": "官方资料索引或公司目录不可用。"}) from exc
+    return {"documents": records, "count": len(records)}
+
+
+@app.post("/api/official-documents/search")
+def search_official_document(request: OfficialDocumentSearchRequest, http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        return official_document_answer_service.answer(request.ticker, request.question, requested_by=principal.actor_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "OFFICIAL_SEARCH_INPUT_INVALID", "message": "检索输入无效。"}) from exc
+    except (DocumentIngestError, CompanySourceUnavailable) as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "OFFICIAL_INDEX_UNAVAILABLE", "message": "官方资料索引或公司目录不可用。"}) from exc
+
+
+@app.post("/api/official-documents/discover")
+def discover_official_document(request: OfficialDocumentDiscoveryRequest, http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    _require_role(principal, ROLE_ADMIN)
+    try:
+        candidates = OfficialDocumentDiscovery().discover(
+            request.source, request.ticker, year=request.year, limit=request.limit, company_name=request.company_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "OFFICIAL_DISCOVERY_INPUT_INVALID", "message": str(exc)}) from exc
+    except DocumentIngestError as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "OFFICIAL_DISCOVERY_UNAVAILABLE", "message": str(exc)}) from exc
+    return {"candidates": candidates, "count": len(candidates), "state": "discovered_unverified"}
+
+
+@app.post("/api/official-documents/ingest")
+@serialized_team_action
+def ingest_official_document(request: OfficialDocumentIngestRequest, http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    _require_role(principal, ROLE_ADMIN)
+    try:
+        return OfficialDocumentDiscovery().download_and_ingest(
+            source=request.source, ticker=request.ticker, year=request.year,
+            candidate_id=request.candidate_id, company_name=request.company_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "OFFICIAL_INGEST_INPUT_INVALID", "message": str(exc)}) from exc
+    except DocumentIngestError as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "OFFICIAL_INGEST_FAILED", "message": str(exc)}) from exc
+
+
+@app.post("/api/company-answers")
+def answer_company_question(request: CompanyAnswerRequest, http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        payload = company_answer_service.answer(request.ticker, request.question, requested_by=principal.actor_id)
+    except (ValueError, KnowledgeInvalidInput) as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "COMPANY_INPUT_INVALID", "message": "公司问答输入无效。"}) from exc
+    except (CompanySourceUnavailable, KnowledgeCorpusUnavailable, BoundedSourceUnavailable) as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "COMPANY_SOURCE_UNAVAILABLE", "message": "官方资料缺失或证据版本不匹配。"}) from exc
+    payload["tenant_id"] = principal.tenant_id
+    payload["actor_id"] = principal.actor_id
+    return payload
+
+
 @app.post("/api/knowledge-answers")
 @serialized_team_action
 def answer_knowledge_question(request: KnowledgeAnswerRequest, http_request: Request) -> dict[str, Any]:
@@ -944,6 +1239,53 @@ def answer_knowledge_question(request: KnowledgeAnswerRequest, http_request: Req
     payload["actor_id"] = principal.actor_id
     return payload
 
+
+@app.post("/api/issuer-answers")
+def answer_issuer_question(request: IssuerAnswerRequest, http_request: Request) -> dict[str, Any]:
+    """仅由服务端身份授权；官方资料不完整或漂移时拒绝交付。"""
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        payload = issuer_answer_service.answer(request.ticker, request.question, requested_by=principal.actor_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "ISSUER_INPUT_INVALID", "message": str(exc)}) from exc
+    except BoundedSourceUnavailable as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "ISSUER_SOURCE_UNAVAILABLE", "message": "官方公司资料缺失或证据版本不匹配。"}) from exc
+    payload["tenant_id"] = principal.tenant_id
+    payload["actor_id"] = principal.actor_id
+    return payload
+
+
+@app.post("/api/industry-observations")
+def answer_industry_question(request: IndustryObservationRequest, http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        payload = industry_answer_service.answer(request.question, requested_by=principal.actor_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "INDUSTRY_INPUT_INVALID", "message": str(exc)}) from exc
+    except BoundedSourceUnavailable as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "INDUSTRY_SOURCE_UNAVAILABLE", "message": "官方行业资料缺失、漂移或已过期。"}) from exc
+    payload["tenant_id"] = principal.tenant_id
+    payload["actor_id"] = principal.actor_id
+    return payload
+
+
+@app.post("/api/research-answers")
+def answer_research_question(request: ResearchAnswerRequest, http_request: Request) -> dict[str, Any]:
+    """编排已核验子服务；客户端不能指定证据等级或伪造身份。"""
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    try:
+        payload = research_answer_service.answer(request.question, ticker=request.ticker,
+                                                 requested_by=principal.actor_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={"error_code": "RESEARCH_INPUT_INVALID", "message": str(exc)}) from exc
+    except (CompanySourceUnavailable, KnowledgeCorpusUnavailable, BoundedSourceUnavailable) as exc:
+        raise HTTPException(status_code=503, detail={"error_code": "RESEARCH_SOURCE_UNAVAILABLE", "message": "核验资料不可用或发生版本漂移。"}) from exc
+    payload["tenant_id"] = principal.tenant_id
+    payload["actor_id"] = principal.actor_id
+    return payload
 
 @app.get("/api/report-jobs")
 def list_report_jobs(http_request: Request, limit: int = 30) -> list[dict[str, Any]]:
@@ -1003,3 +1345,417 @@ def cancel_report_job(job_id: str, http_request: Request) -> dict[str, Any]:
     if job is None:
         raise HTTPException(status_code=404, detail="Report job not found")
     return job.to_dict()
+
+
+# --- 会话列表、短期记忆与用户画像 -------------------------------------------------
+#
+# 归属边界：客户端**不得**提交可信 owner_id/tenant_id。全部从服务端 Principal 推导，
+# 因此知道别人的 conversation_id / message_id / candidate_id 也读不到、改不了、删不掉。
+# 归属不匹配一律 404，不区分"不存在"与"不属于你"，避免泄露资源存在性。
+
+
+def _conversation_store() -> ConversationStore:
+    return get_conversation_store()
+
+
+def _profile_manager() -> ProfileManager:
+    return ProfileManager(_conversation_store())
+
+
+def _orchestrator() -> ConversationOrchestrator:
+    return ConversationOrchestrator(_conversation_store())
+
+
+def _conversation_or_404(conversation_id: str, principal: Principal) -> Any:
+    conversation = _conversation_store().get_conversation(
+        conversation_id, tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    if conversation is None:
+        raise HTTPException(status_code=404,
+                            detail={"error_code": "CONVERSATION_NOT_FOUND", "message": "指定会话不存在。"})
+    return conversation
+
+
+class CreateConversationRequest(BaseModel):
+    title: str = Field(default="", max_length=120)
+    answer_mode: str = Field(default="official", pattern=r"^(official|mcp)$")
+
+
+class RenameConversationRequest(BaseModel):
+    title: str = Field(min_length=1, max_length=120)
+
+
+class AnswerModeRequest(BaseModel):
+    answer_mode: str = Field(pattern=r"^(official|mcp)$")
+
+
+class ConversationTurnRequest(BaseModel):
+    """一轮对话。``request_id`` 由客户端生成，用于防重复提交。"""
+
+    text: str = Field(min_length=1, max_length=500)
+    request_id: str = Field(min_length=8, max_length=80)
+    answer_mode: str | None = Field(default=None, pattern=r"^(official|mcp)$")
+    horizon: str = Field(default="中期", pattern=r"^(短期|中期|长期)$")
+
+
+class ProfileUpdateRequest(BaseModel):
+    """改值请求体。
+
+    **故意不含 ``field``**：字段名只从路径参数取。若在 body 里声明同名字段，
+    FastAPI 会把它当必填项，客户端只传 value 时直接 422。
+    """
+
+    value: str = Field(min_length=1, max_length=200)
+
+
+class ProfileCandidateRequest(BaseModel):
+    """确认请求体。
+
+    **故意不含``candidate_id``**：候选编号只从路径参数取。
+    若在 body 里声明同名字段，FastAPI 会把它当必填项，客户端漏传就变成 422，
+    看起来像"确认接口坏了"，实际是参数归属混淆。
+    """
+
+    version: int | None = Field(default=None, ge=1)
+
+
+@app.post("/api/conversations", status_code=201)
+def create_conversation(request: CreateConversationRequest, http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    conversation = _conversation_store().create_conversation(
+        tenant_id=principal.tenant_id, owner_id=principal.actor_id,
+        title=request.title, answer_mode=request.answer_mode)
+    return conversation.to_dict()
+
+
+@app.get("/api/conversations")
+def list_conversations(http_request: Request, limit: int = 20, offset: int = 0) -> dict[str, Any]:
+    """按更新时间倒序返回**本人**会话；分页用于"加载更多"。"""
+    principal = _principal(http_request)
+    store = _conversation_store()
+    items = store.list_conversations(tenant_id=principal.tenant_id, owner_id=principal.actor_id,
+                                     limit=limit, offset=offset)
+    total = store.count_conversations(tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    return {"conversations": [item.to_dict() for item in items],
+            "total": total, "limit": limit, "offset": offset,
+            "has_more": offset + len(items) < total}
+
+
+@app.get("/api/conversations/{conversation_id}")
+def get_conversation(conversation_id: str, http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    conversation = _conversation_or_404(conversation_id, principal)
+    store = _conversation_store()
+    state = store.load_state(conversation_id, tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    summary = store.load_summary(conversation_id, tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    payload = conversation.to_dict()
+    # state里含 messages 镜像，这里只回结构化状态，避免同一份消息出现两次。
+    payload["state"] = {key: value for key, value in ((state or {}).get("state") or {}).items()
+                        if key != "messages"}
+    payload["state_version"] = (state or {}).get("version", 0)
+    payload["summary"] = summary
+    return payload
+
+
+@app.get("/api/conversations/{conversation_id}/messages")
+def get_conversation_messages(conversation_id: str, http_request: Request,
+                              limit: int | None = None, since_seq: int = 0) -> dict[str, Any]:
+    """恢复历史仅供查看：旧报告撤回/证据漂移后这里仍返回原文，但**不冒充当前有效官方事实**。"""
+    principal = _principal(http_request)
+    _conversation_or_404(conversation_id, principal)
+    messages = _conversation_store().list_messages(
+        conversation_id, tenant_id=principal.tenant_id, owner_id=principal.actor_id,
+        limit=limit, since_seq=since_seq)
+    return {"conversation_id": conversation_id,
+            "messages": [item.to_dict() for item in messages],
+            "count": len(messages),
+            "history_notice": "历史消息按原文展示，不代表其中的财务结论仍为当前已核验的官方事实。"}
+
+
+@app.post("/api/conversations/{conversation_id}/rename")
+def rename_conversation(conversation_id: str, request: RenameConversationRequest,
+                        http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    updated = _conversation_store().rename_conversation(
+        conversation_id, request.title, tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    if updated is None:
+        raise HTTPException(status_code=404,
+                            detail={"error_code": "CONVERSATION_NOT_FOUND", "message": "指定会话不存在。"})
+    return updated.to_dict()
+
+
+@app.post("/api/conversations/{conversation_id}/answer-mode")
+def set_conversation_answer_mode(conversation_id: str, request: AnswerModeRequest,
+                                 http_request: Request) -> dict[str, Any]:
+    """切换数据模式**不删消息**；只清不适用证据状态由编排层处理。"""
+    principal = _principal(http_request)
+    _conversation_or_404(conversation_id, principal)
+    store = _conversation_store()
+    store.set_answer_mode(conversation_id, request.answer_mode, tenant_id=principal.tenant_id,
+                          owner_id=principal.actor_id)
+    orchestrator = _orchestrator()
+    context = orchestrator.load_context(conversation_id, tenant_id=principal.tenant_id,
+                                       owner_id=principal.actor_id)
+    updated_context = clear_mode_specific_state(context, request.answer_mode)
+    orchestrator.persist(updated_context, tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    payload = store.get_conversation(conversation_id, tenant_id=principal.tenant_id,
+                                     owner_id=principal.actor_id).to_dict()
+    payload["messages_retained"] = True
+    payload["note"] = "已切换数据模式，历史消息保留；本轮回答会标明本次模式。"
+    return payload
+
+
+@app.delete("/api/conversations/{conversation_id}")
+def delete_conversation(conversation_id: str, http_request: Request) -> dict[str, Any]:
+    """单事务删除消息、状态、摘要与本会话待确认项；长期画像不随之删除。"""
+    principal = _principal(http_request)
+    deleted = _conversation_store().delete_conversation(
+        conversation_id, tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    if not deleted:
+        raise HTTPException(status_code=404,
+                            detail={"error_code": "CONVERSATION_NOT_FOUND", "message": "指定会话不存在。"})
+    return {"deleted": True, "conversation_id": conversation_id,
+            "note": "会话消息、状态、摘要与本会话待确认项已删除；长期画像保留。"}
+
+
+@app.post("/api/conversations/{conversation_id}/turns")
+def post_conversation_turn(conversation_id: str, request: ConversationTurnRequest,
+                           http_request: Request) -> dict[str, Any]:
+    """一轮真实对话：意图/补充项 → 合并状态 → 有效查询 → 受控能力 → 持久化。
+
+    这里复用既有受控服务（``/api/company-answers`` 等的同一批service 对象），
+    **不绕过证据边界**让模型凭记忆生成财务数字。
+    """
+    principal = _principal(http_request)
+    _require_role(principal, "analyst", ROLE_ADMIN)
+    conversation = _conversation_or_404(conversation_id, principal)
+    orchestrator = _orchestrator()
+    effective_mode = request.answer_mode or conversation.answer_mode
+
+    def dispatch(context: dict[str, Any], effective_question: str, **kwargs: Any) -> dict[str, Any]:
+        return _dispatch_conversation_turn(context, effective_question, principal=principal, **kwargs)
+
+    try:
+        result = orchestrator.handle_turn(
+            conversation_id, request.text, tenant_id=principal.tenant_id,
+            owner_id=principal.actor_id, request_id=request.request_id, dispatch=dispatch,
+            requested_by=principal.actor_id, answer_mode=request.answer_mode,
+            horizon=request.horizon,
+            extra_dispatch_kwargs={
+                "knowledge_ask": _conversation_company_ask_factory(principal),
+                "company_ask": _conversation_company_ask_factory(principal),
+                "issuer_ask": lambda payload: issuer_answer_service.answer(
+                    payload["ticker"], payload["question"], requested_by=payload.get("requested_by", principal.actor_id)),
+                "industry_ask": lambda payload: industry_answer_service.answer(
+                    payload["question"], requested_by=payload.get("requested_by", principal.actor_id)),
+                "document_ask": lambda payload: official_document_answer_service.inventory(payload["ticker"], payload["question"], requested_by=principal.actor_id),
+                "research_ask": lambda payload: research_answer_service.answer(
+                    payload["question"], requested_by=payload.get("requested_by", principal.actor_id),
+                    ticker=payload.get("ticker")),
+                "candidate_ask": _conversation_candidate_ask_factory(principal),
+                "market_snapshot_ask": _conversation_market_snapshot_factory(principal),
+                "create_job": _conversation_create_job_factory(principal),
+                "ask": _conversation_report_ask_factory(principal),
+                "company_discover": (lambda query, market=None: _conversation_discover(
+                    query, market, allow_external=(effective_mode == "mcp"))),
+            })
+    except ConversationStoreError:
+        raise HTTPException(status_code=503,
+                            detail={"error_code": "CONVERSATION_STORE_UNAVAILABLE",
+                                    "message": "会话存储暂时不可用，请稍后重试。"})
+    if result.get("status") == "conversation_not_found":
+        raise HTTPException(status_code=404,
+                            detail={"error_code": "CONVERSATION_NOT_FOUND", "message": "指定会话不存在。"})
+    return result
+
+
+def _conversation_market_snapshot_factory(principal: Principal) -> Any:
+    """实时/最新行情统一走结构化来源；结果仍标注为第三方候选。"""
+    def ask(payload: dict[str, Any]) -> dict[str, Any]:
+        return get_market_snapshot_tool(principal=principal, ticker=str(payload.get("ticker") or ""),
+                                        market=payload.get("market"))
+    return ask
+
+
+def _conversation_candidate_ask_factory(principal: Principal) -> Any:
+    """MCP 候选数据源适配器；复用既有白名单工具，失败时明确不可用，不回退官方资料。
+
+    用闭包绑定 principal，而不是模块级全局：请求作用域内不共享状态，
+    也不会跨请求泄漏身份。
+    """
+    def ask(payload: dict[str, Any]) -> dict[str, Any]:
+        ticker = str(payload.get("ticker") or "").strip().upper()
+        year = payload.get("year")
+        if not ticker:
+            return {"data_available": False, "error_codes": ["MCP_TICKER_MISSING"]}
+        try:
+            return get_structured_financial_candidates_tool(
+                principal=principal, ticker=ticker, year=str(year) if year else None)
+        except (ToolPermissionError, ToolInputError) as exc:
+            return {"data_available": False, "error_codes": [exc.error_code],
+                    "message": "第三方数据查询被拒绝或输入无效。"}
+    return ask
+
+
+def _conversation_create_job_factory(principal: Principal) -> Any:
+    """报告任务适配器；归属由服务端 Principal 绑定，不接受请求参数里的身份。"""
+    def create(payload: dict[str, str]) -> dict[str, Any]:
+        _require_role(principal, "analyst", ROLE_ADMIN)
+        ticker, topic = _normalize_request(str(payload["ticker"]), str(payload["topic"]))
+        job, created = job_service.create(ticker=ticker, topic=topic,
+            horizon=payload.get("horizon", "中期"), requested_by=principal.actor_id,
+            tenant_id=principal.tenant_id, actor_id=principal.actor_id)
+        return {"job_id": job.job_id, "status": job.status,
+                "message": "报告任务已提交。" if created else "相同任务正在执行，已关联该任务。"}
+    return create
+
+
+def _conversation_report_ask_factory(principal: Principal) -> Any:
+    """复用已发布报告问答完整门禁，不直接从历史 report_id 加载未审资料。"""
+    def ask(payload: dict[str, Any]) -> dict[str, Any]:
+        request = Request({"type": "http", "state": {"principal": principal}})
+        return answer_report_question(AnswerRequest(**payload), request)
+    return ask
+
+
+def _conversation_company_ask_factory(principal: Principal) -> Any:
+    """官方字段问答优先；未覆盖时保留既有官方原文检索能力。"""
+    def ask(payload: dict[str, Any]) -> dict[str, Any]:
+        result = company_answer_service.answer(payload["ticker"], payload["question"], requested_by=principal.actor_id)
+        if result.get("error_code") not in {"FIELD_NOT_VERIFIED", "REPORT_PERIOD_UNSUPPORTED", "MATERIAL_NOT_ONBOARDED",
+                                           "OFFICIAL_DOCUMENT_FIELD_UNVERIFIED", "OFFICIAL_PERIOD_NOT_ONBOARDED", "LATEST_OFFICIAL_DOCUMENT_REQUIRED"}:
+            return result
+        years = set(re.findall(r"(?<!\d)20\d{2}(?!\d)", payload["question"]))
+        if len(years) > 1 or (not years and not re.search(r"最新|最近|当前|现在|截至目前|今年", payload["question"])):
+            return result
+        try:
+            evidence = official_document_answer_service.answer(payload["ticker"], payload["question"], requested_by=principal.actor_id)
+        except (DocumentIngestError, CompanySourceUnavailable, ValueError):
+            return result
+        return evidence if evidence.get("status") == "evidence_retrieved" else result
+    return ask
+
+
+def _conversation_discover(query: str, market: str | None = None, *, allow_external: bool = False) -> dict[str, Any]:
+    """公司发现：本地优先；MCP 模式可显式启用外部候选，不能升级为官方证据。"""
+    registry = default_discovery_registry() if allow_external else None
+    result = resolve_company_candidates(query, market=market, registry=registry, allow_external=allow_external)
+    return result.to_dict() if hasattr(result, "to_dict") else dict(result)
+
+
+def _dispatch_conversation_turn(context: dict[str, Any], text: str, *, principal: Principal,
+                                requested_by: str = "anonymous", horizon: str = "中期",
+                                answer_mode: str = "official", **callbacks: Any) -> dict[str, Any]:
+    """把编排层的有效查询交给既有 :func:`dispatch_message`，不复制路由逻辑。"""
+    from .chat_session import dispatch_message
+    create_job = callbacks.pop("create_job", None) or _conversation_create_job_factory(principal)
+    memory = callbacks.pop("conversation_memory", None)
+    context = {**context, "conversation_memory": memory} if memory else context
+    ask = callbacks.pop("ask", None) or _conversation_report_ask_factory(principal)
+    return dispatch_message(context, text, create_job, ask, requested_by, horizon=horizon,
+                            answer_mode=answer_mode, **callbacks)
+
+
+@app.get("/api/user-profile")
+def get_user_profile(http_request: Request) -> dict[str, Any]:
+    """只显示本人**已确认**画像；不要求输入公司和年份。"""
+    principal = _principal(http_request)
+    manager = _profile_manager()
+    entries = manager.active_profile(tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    pending = manager.pending_candidates(tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    return {
+        "profile": entries,
+        "fields": [{"field": key, "label": label} for key, label in PROFILE_FIELD_DISPLAY.items()],
+        "pending_candidates": [item.to_dict() for item in pending],
+        "note": "画像是用户自述偏好，不是投资适当性结论，也不构成任何公司的财务事实。",
+    }
+
+
+@app.put("/api/user-profile/{field}")
+def update_user_profile(field: str, request: ProfileUpdateRequest, http_request: Request) -> dict[str, Any]:
+    """直接改值；返回修改前后，便于前端展示确认。"""
+    principal = _principal(http_request)
+    if field not in PROFILE_FIELD_DISPLAY or contains_sensitive_content(request.value):
+        raise HTTPException(status_code=422,
+                            detail={"error_code": "PROFILE_FIELD_UNKNOWN", "message": "不支持的偏好字段。"})
+    manager = _profile_manager()
+    previous = manager.active_profile(tenant_id=principal.tenant_id, owner_id=principal.actor_id).get(field)
+    entry = manager.set_field(field, request.value, tenant_id=principal.tenant_id,
+                              owner_id=principal.actor_id)
+    if entry is None:
+        raise HTTPException(status_code=422,
+                            detail={"error_code": "PROFILE_VALUE_INVALID", "message": "偏好内容无效。"})
+    return {"field": field, "previous_value": (previous or {}).get("value"),
+            "entry": entry.to_dict()}
+
+
+@app.delete("/api/user-profile/{field}")
+def delete_user_profile_field(field: str, http_request: Request) -> dict[str, Any]:
+    """单项删除：软删除 + 撤销标记，后续摘要/画像提取都不会复活它。"""
+    principal = _principal(http_request)
+    if not _profile_manager().delete_field(field, tenant_id=principal.tenant_id,
+                                           owner_id=principal.actor_id):
+        raise HTTPException(status_code=404,
+                            detail={"error_code": "PROFILE_FIELD_NOT_FOUND", "message": "该偏好不存在或已删除。"})
+    return {"deleted": True, "field": field,
+            "note": "已删除；历史消息仍可展示，但后续回答不再使用该偏好。"}
+
+
+@app.delete("/api/user-profile")
+def delete_user_profile_all(http_request: Request) -> dict[str, Any]:
+    """全部删除；返回实际删除条数，不谎报成功。"""
+    principal = _principal(http_request)
+    deleted = _profile_manager().delete_all(tenant_id=principal.tenant_id, owner_id=principal.actor_id)
+    return {"deleted": deleted, "note": "已删除全部长期偏好；下一轮不会继续使用。"}
+
+
+class ProfileStageRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=500)
+    conversation_id: str | None = Field(default=None, max_length=80)
+
+
+@app.post("/api/user-profile/candidates")
+def stage_profile_candidates(request: ProfileStageRequest, http_request: Request) -> dict[str, Any]:
+    """生成待确认候选；**不写画像**，前端必须再走确认。"""
+    principal = _principal(http_request)
+    if request.conversation_id:
+        _conversation_or_404(request.conversation_id, principal)
+    candidates = _profile_manager().stage_candidates(
+        request.text, tenant_id=principal.tenant_id, owner_id=principal.actor_id,
+        conversation_id=request.conversation_id)
+    return {"candidates": [item.to_dict() for item in candidates],
+            "note": "候选尚未保存；需按 candidate_id 确认。"}
+
+
+@app.post("/api/user-profile/candidates/{candidate_id}/confirm")
+def confirm_profile_candidate(candidate_id: str, request: ProfileCandidateRequest,
+                              http_request: Request) -> dict[str, Any]:
+    """确认绑定 candidate_id（可选 version）；跨用户/已处理/版本不符一律拒绝。"""
+    principal = _principal(http_request)
+    result = _profile_manager().confirm_candidate(
+        candidate_id, tenant_id=principal.tenant_id, owner_id=principal.actor_id,
+        expected_version=request.version)
+    if result["status"] == "not_found":
+        raise HTTPException(status_code=404,
+                            detail={"error_code": "CANDIDATE_NOT_FOUND", "message": "指定候选不存在。"})
+    if result["status"] in {"already_resolved", "expired"}:
+        raise HTTPException(status_code=409,
+                            detail={"error_code": "CANDIDATE_ALREADY_RESOLVED",
+                                    "message": "该候选已处理，不能重复确认。"})
+    if result["status"] == "version_mismatch":
+        raise HTTPException(status_code=409,
+                            detail={"error_code": "CANDIDATE_VERSION_MISMATCH",
+                                    "message": "候选已被替换，请重新确认。"})
+    return result
+
+
+@app.post("/api/user-profile/candidates/{candidate_id}/reject")
+def reject_profile_candidate(candidate_id: str, request: ProfileCandidateRequest,
+                             http_request: Request) -> dict[str, Any]:
+    principal = _principal(http_request)
+    result = _profile_manager().reject_candidate(
+        candidate_id, tenant_id=principal.tenant_id, owner_id=principal.actor_id,
+        expected_version=request.version)
+    if result["status"] == "not_found":
+        raise HTTPException(status_code=404,
+                            detail={"error_code": "CANDIDATE_NOT_FOUND", "message": "指定候选不存在。"})
+    return result

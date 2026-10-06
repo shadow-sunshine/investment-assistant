@@ -469,7 +469,7 @@ class OfficialMaterialFetcher:
         pdfs = [str(item.get("name")) for item in files if str(item.get("name") or "").lower().endswith(".pdf")]
         return pdfs[0] if pdfs else None
 
-    def _html_to_pdf(self, html: bytes, destination: Path, title: str) -> None:
+    def _html_to_pdf(self, html: bytes, destination: Path, title: str, *, invariant: bool = False) -> None:
         """Create a searchable local PDF from an official SEC HTML filing when SEC has no PDF rendition."""
         text = BeautifulSoup(html, "lxml").get_text("\n")
         lines = [" ".join(line.split()) for line in text.splitlines()]
@@ -477,7 +477,7 @@ class OfficialMaterialFetcher:
         if not lines:
             raise MaterialFetchError("\u5b98\u65b9 SEC HTML \u7533\u62a5\u4e0d\u542b\u53ef\u63d0\u53d6\u6587\u672c\uff0c\u65e0\u6cd5\u751f\u6210\u6587\u5b57\u5c42 PDF\u3002")
         buffer = BytesIO()
-        canvas = Canvas(buffer, pagesize=A4, pageCompression=1)
+        canvas = Canvas(buffer, pagesize=A4, pageCompression=1, invariant=int(invariant))
         width, height = A4
         margin = 40
         font_name = "Helvetica"

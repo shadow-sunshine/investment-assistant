@@ -1,0 +1,53 @@
+{
+  "0700.HK": {
+    "revenue": {
+      "year": "2025",
+      "file_name": "0700HK_annual_report_2025.pdf",
+      "source_sha256": "2a7547168077c3d9994af673125e77612e8656bc0f17ad189371d7e4088f4e98",
+      "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0409/2026040901231.pdf",
+      "page_authority": "official",
+      "page": 130,
+      "table": "Consolidated Income Statement",
+      "period": "For the year ended 31 December 2025",
+      "currency": "RMB",
+      "unit": "Million",
+      "value": "751,766",
+      "comparative": "660,257",
+      "section": "Revenues",
+      "first_component": "Value-added Services",
+      "last_component": "Others",
+      "total_note": "6",
+      "next_section": "Cost of revenues"
+    }
+  },
+  "300750.SZ": {
+    "revenue": {
+      "year": "2025",
+      "file_name": "300750_2025_annual_report.pdf",
+      "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "source_url": "https://static.cninfo.com.cn/finalpage/2026-03-10/1225002214.PDF",
+      "page_authority": "official",
+      "page": 11,
+      "currency": "RMB",
+      "unit": "千元",
+      "value": "423,701,834",
+      "verification": "人工核对官方PDF第11页年度主要会计数据表；该页中文字符提取损坏，单位不使用文本抽取推断"
+    }
+  },
+  "000001.SZ": {
+    "revenue": {
+      "year": "2025",
+      "file_name": "000001_2025_annual_report.pdf",
+      "source_sha256": "2273565ecbe1b32536631fd4a019a4f4a990f4c793cfd5b70eae90d44d3ff16c",
+      "source_url": "https://static.cninfo.com.cn/finalpage/2026-03-21/1225022887.PDF",
+      "page_authority": "official",
+      "page": 17,
+      "table": "2.1 关键指标",
+      "currency": "RMB",
+      "unit": "百万元",
+      "value": "131,442",
+      "comparative": "146,695",
+      "yoy_change": "(10.4%)"
+    }
+  }
+}

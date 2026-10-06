@@ -1,0 +1,33 @@
+{
+  "NETEASE_2025": {
+    "ticker": "9999.HK",
+    "aliases": [
+      "NTES",
+      "9999.HK",
+      "网易",
+      "NetEase"
+    ],
+    "source": "SEC EDGAR",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1110646/000110465926043468/ntes-20251231x20f.htm",
+    "filing_form": "20-F",
+    "filing_date": "2026-04-15",
+    "report_date": "2025-12-31",
+    "material_kind": "official_html_converted_to_pdf",
+    "page_authority": "generated",
+    "conversion_note": "本地 PDF 是 SEC 原始 HTML 的可检索文本转换，页码为本地转换页码，非官方页码。",
+    "file_name": "NTES_SEC_20F_2025_official-html.pdf",
+    "validation": {
+      "file_size_bytes": 748973,
+      "page_count": 304,
+      "sha256": "1b5fb652d9f6fd641d9cd09e7b345325211a69e4f1df902370bba5ed5d29a83b"
+    },
+    "verified_pages": {
+      "listing_us": 18,
+      "listing_hk": 19,
+      "shares_outstanding": 19,
+      "revenue_table": 107,
+      "revenue_summary": 108
+    },
+    "source_html_sha256": "03040461c8973a557d94fb693e23e9e6862599872d53c68238a571badfa76315"
+  }
+}

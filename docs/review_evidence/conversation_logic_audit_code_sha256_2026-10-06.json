@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-06",
+  "audit": "conversation_logic_audit",
+  "files": {
+    "investment_assistant/question_intents.py": "c034694806c643d5e658b288d0f0e8aa55af7f21440a99775de575f3c02bfbf8",
+    "investment_assistant/conversation_memory.py": "78490ff10cd58653e0fb3b4cfde5b92fd5bbe30de637705556fe5c89da76abf6",
+    "investment_assistant/company_qa.py": "b115fae32e8ee5e91f69c0551781a83e451b865ab754530a105987e570173d66",
+    "investment_assistant/official_document_answers.py": "d9ec28b27a512b4619bcd2d1ee7c5431d5e725aaa10563ef96a8f0d04f103375",
+    "investment_assistant/api.py": "84c6eaa4ab2a8b35c9968175567175791454e652c74c570ffbe810ee801d977d",
+    "investment_assistant/user_profile.py": "a4e43ca911b4867a447a94f04ff7508dab3b8f1447a6dc859e07691e31fbd882",
+    "investment_assistant/research_answer.py": "5d664dd1086bc6c6fdf90d11da74cc3d80eb11d66e777af692c3ad96bbd6f1a2",
+    "investment_assistant/chat_session.py": "6c6fe33f78d4c2e294cb81d1babeeffb7775aab75c475a859308f2f25d532a44",
+    "investment_assistant/web_app.py": "f9265908bee6fb011faf995eb8a3ad9b5c1360ff6b3b871f406fb9bfa1dfa3f8",
+    "tests/test_conversation_behavior_acceptance.py": "11e47b465e08cceb6ccaea520db44ebb01f736cc4726a92f0f11e136e53779f6",
+    "tests/test_company_qa.py": "7339858f39a41846dd90a04190bff1c55e60f3f6b45c064753df18f55c537384",
+    "tests/test_conversation_store.py": "2dd14106568ea68a2ccf6cd881353637bd8404c4a82f38bb1567da1e7eebcc2a"
+  },
+  "behavior_cases": 54,
+  "baseline_first_batch": {
+    "failed": 23,
+    "passed": 1
+  },
+  "online_official_refresh": false,
+  "paid_llm_smoke": false,
+  "targeted_tests": {
+    "passed": 198,
+    "warnings": 1
+  }
+}

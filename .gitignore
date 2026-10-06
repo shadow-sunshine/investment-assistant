@@ -30,9 +30,19 @@ data/audit_log/
 data/watchlists.json
 data/research_memories.json
 
+# 会话/画像用户数据库：属于本机运行数据，不进Git；连同 WAL/SHM 一并排除。
+data/conversation_memory.sqlite3
+data/conversation_memory.sqlite3-wal
+data/conversation_memory.sqlite3-shm
+*.sqlite3-wal
+*.sqlite3-shm
+
 # 本机评测缓存、日志和编辑器/Agent 会话记录不公开。
 .codebuddy/
 *.log
 data/evaluations/r3_chroma_tmp/
 scripts/_*.txt
 full-test-*.log
+
+# MinerU 解析后的官方原件和索引含大体量资料，保留清单哈希，不入 Git。
+data/official_documents/
